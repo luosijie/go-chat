@@ -202,12 +202,12 @@ func CheckAuth(c *gin.Context) {
 
 }
 
-// @Summary Verify Email
+// @Summary Send verification code to email
 // @Tags Auth
 // @Param email 	   formData  string   true "Email"
 // @Success 		   200     string     "go to check your email"
-// @Router 			   /verify-email [post]
-func VerifyEmail(c *gin.Context) {
+// @Router 			   /forgot-password [post]
+func ForgotPassword(c *gin.Context) {
 	email := c.PostForm("email")
 
 	user := sql.FindUserByEmail(email)
@@ -243,5 +243,57 @@ func VerifyEmail(c *gin.Context) {
 	response.Success(c, "go to check your email")
 }
 
-func ForgotPassword(c *gin.Context) {}
-func ResetPassword(c *gin.Context)  {}
+// @Summary Submit verification code
+// @Tags Auth
+// @Param email    formData string true "Email"
+// @Param code 	   formData  string   true "Code"
+// @Success 		   200     string     "success"
+// @Router 			   /verify-email VerifyEmailRes
+func VerifyEmail(c *gin.Context) {
+	email := c.PostForm("email")
+	code := c.PostForm("code")
+
+	user := &sql.User{
+		Email:             email,
+		VerificationToken: code,
+	}
+
+	if err := sql.FindUser(user); err != nil {
+		response.RequestFail(c, response.Error{
+			Code:    -1,
+			Message: "Verification fail",
+		})
+		return
+	}
+
+	now := time.Now()
+	if now.Before(*user.VerificationTokenExpiresAt) {
+		response.RequestFail(c, response.Error{
+			Code:    -1,
+			Message: "Verification fail",
+		})
+		return
+	}
+
+	user.IsVerified = true
+	user.VerificationToken = ""
+	user.VerificationTokenExpiresAt = nil
+
+	resetPasswordToken := utils.RandomString(10)
+	resetPasswordTokenExpiresAt := time.Now().Add(3 * time.Minute)
+
+	user.ResetPasswordToken = resetPasswordToken
+	user.ResetPasswordTokenExpiresAt = &resetPasswordTokenExpiresAt
+
+	if err := sql.UpdateUser(user); err != nil {
+		response.ServerFail(c, response.ErrorUnknown)
+		return
+	}
+
+	response.Success(c, VerifyEmailRes{
+		Token:    resetPasswordToken,
+		Username: user.Username,
+		Email:    user.Email,
+	})
+}
+func ResetPassword(c *gin.Context) {}

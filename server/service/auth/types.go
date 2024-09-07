@@ -17,3 +17,9 @@ type LoginRes struct {
 	Username string `json:"username"`
 	Email    string `json:"email"`
 }
+
+type VerifyEmailRes struct {
+	Token    string `json:"token"`
+	Username string `json:"username"`
+	Email    string `json:"email"`
+}

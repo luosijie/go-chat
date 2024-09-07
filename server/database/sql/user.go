@@ -28,6 +28,10 @@ func CreateUser(user *User) error {
 	return db.Create(user).Error
 }
 
+func FindUser(user *User) error {
+	return db.Where(user).First(user).Error
+}
+
 func UpdateUser(user *User) error {
 	return db.Model(user).Updates(user).Error
 }
