@@ -1,0 +1,114 @@
+definitions:
+  serviceAuth.LoginRes:
+    properties:
+      email:
+        type: string
+      token:
+        type: string
+      username:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /check-auth:
+    post:
+      parameters:
+      - description: Token
+        in: header
+        name: Token
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: bool
+      summary: Check Auth
+      tags:
+      - Auth
+  /login:
+    post:
+      parameters:
+      - description: Username
+        in: formData
+        name: username
+        required: true
+        type: string
+      - description: Password
+        in: formData
+        name: password
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/serviceAuth.LoginRes'
+      summary: Login
+      tags:
+      - Auth
+  /logout:
+    post:
+      parameters:
+      - description: Token
+        in: header
+        name: Token
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+      summary: Logout
+      tags:
+      - Auth
+  /sign-up:
+    post:
+      parameters:
+      - description: Username
+        in: formData
+        name: username
+        required: true
+        type: string
+      - description: Password
+        in: formData
+        name: password
+        required: true
+        type: string
+      - description: Password Confirmation
+        in: formData
+        name: confirmation
+        required: true
+        type: string
+      - description: Email
+        in: formData
+        name: email
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+      summary: Sign up
+      tags:
+      - Auth
+  /verify-email:
+    post:
+      parameters:
+      - description: Email
+        in: formData
+        name: email
+        required: true
+        type: string
+      responses:
+        "200":
+          description: go to check your email
+          schema:
+            type: string
+      summary: Verify Email
+      tags:
+      - Auth
+swagger: "2.0"
