@@ -1,5 +1,14 @@
 definitions:
-  serviceAuth.LoginRes:
+  serviceAuth.tLoginRes:
+    properties:
+      email:
+        type: string
+      token:
+        type: string
+      username:
+        type: string
+    type: object
+  serviceAuth.tVerifyEmailRes:
     properties:
       email:
         type: string
@@ -27,6 +36,22 @@ paths:
       summary: Check Auth
       tags:
       - Auth
+  /forgot-password:
+    post:
+      parameters:
+      - description: Email
+        in: formData
+        name: email
+        required: true
+        type: string
+      responses:
+        "200":
+          description: go to check your email
+          schema:
+            type: string
+      summary: Send verification code to email
+      tags:
+      - Auth
   /login:
     post:
       parameters:
@@ -44,7 +69,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/serviceAuth.LoginRes'
+            $ref: '#/definitions/serviceAuth.tLoginRes'
       summary: Login
       tags:
       - Auth
@@ -62,6 +87,32 @@ paths:
           schema:
             type: object
       summary: Logout
+      tags:
+      - Auth
+  /reset-password:
+    post:
+      parameters:
+      - description: Token
+        in: formData
+        name: toekm
+        required: true
+        type: string
+      - description: Passowrd
+        in: formData
+        name: password
+        required: true
+        type: string
+      - description: Confirmation
+        in: formData
+        name: confirmation
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: bool
+      summary: ResetPassword
       tags:
       - Auth
   /sign-up:
@@ -103,12 +154,17 @@ paths:
         name: email
         required: true
         type: string
+      - description: Code
+        in: formData
+        name: code
+        required: true
+        type: string
       responses:
         "200":
-          description: go to check your email
+          description: OK
           schema:
-            type: string
-      summary: Verify Email
+            $ref: '#/definitions/serviceAuth.tVerifyEmailRes'
+      summary: Submit verification code
       tags:
       - Auth
 swagger: "2.0"

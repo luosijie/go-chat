@@ -23,7 +23,7 @@ import (
 // @Router 			   /sign-up [post]
 func SinUp(c *gin.Context) {
 	// Get request data
-	var req SignUpReq
+	var req tSignUpReq
 	if err := c.ShouldBind(&req); err != nil {
 		response.RequestFail(c, response.ErrorParamLost)
 		return
@@ -78,11 +78,11 @@ func SinUp(c *gin.Context) {
 // @Tags Auth
 // @Param username 	   formData string   true "Username"
 // @Param password 	   formData string   true "Password"
-// @Success 		   200      {object} LoginRes
+// @Success 		   200      {object} tLoginRes
 // @Router 			   /login [post]
 func Login(c *gin.Context) {
 	// Get request data
-	var req LoginReq
+	var req tLoginReq
 	if err := c.ShouldBind(&req); err != nil {
 		response.RequestFail(c, response.ErrorParamLost)
 		return
@@ -138,7 +138,7 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	response.Success(c, LoginRes{
+	response.Success(c, tLoginRes{
 		Username: user.Username,
 		Email:    user.Email,
 		Token:    token,
@@ -219,24 +219,25 @@ func ForgotPassword(c *gin.Context) {
 		return
 	}
 
-	resetPasswordToken := utils.RandomString(4)
-	resetPasswordTokenExpiresAt := time.Now().Add(3 * time.Minute)
+	verificationToken := utils.RandomString(6)
+	verificationTokenExpiresAt := time.Now().Add(3 * time.Minute)
 
-	user.ResetPasswordToken = resetPasswordToken
-	user.ResetPasswordTokenExpiresAt = &resetPasswordTokenExpiresAt
+	user.VerificationToken = verificationToken
+	user.VerificationTokenExpiresAt = &verificationTokenExpiresAt
 
 	if err := sql.UpdateUser(user); err != nil {
 		response.ServerFail(c, response.ErrorUnknown)
 		return
 	}
 
-	if err := mail.SendResetPasswordToken(resetPasswordToken, user.Email); err != nil {
+	if err := mail.SendResetPasswordToken(verificationToken, user.Email); err != nil {
 		response.ServerFail(c, response.Error{
 			Code:    -1,
 			Message: "Send email failed",
 		})
 
 		fmt.Println("Send email fail:", err)
+
 		return
 	}
 
@@ -247,8 +248,8 @@ func ForgotPassword(c *gin.Context) {
 // @Tags Auth
 // @Param email    formData string true "Email"
 // @Param code 	   formData  string   true "Code"
-// @Success 		   200     string     "success"
-// @Router 			   /verify-email VerifyEmailRes
+// @Success 		   200     {object}    tVerifyEmailRes
+// @Router 			   /verify-email [post]
 func VerifyEmail(c *gin.Context) {
 	email := c.PostForm("email")
 	code := c.PostForm("code")
@@ -275,10 +276,12 @@ func VerifyEmail(c *gin.Context) {
 		return
 	}
 
+	// Clear verification setting
 	user.IsVerified = true
 	user.VerificationToken = ""
 	user.VerificationTokenExpiresAt = nil
 
+	// Set resetPasswordToken
 	resetPasswordToken := utils.RandomString(10)
 	resetPasswordTokenExpiresAt := time.Now().Add(3 * time.Minute)
 
@@ -290,10 +293,66 @@ func VerifyEmail(c *gin.Context) {
 		return
 	}
 
-	response.Success(c, VerifyEmailRes{
+	response.Success(c, tVerifyEmailRes{
 		Token:    resetPasswordToken,
 		Username: user.Username,
 		Email:    user.Email,
 	})
 }
-func ResetPassword(c *gin.Context) {}
+
+// @Summary ResetPassword
+// @Tags Auth
+// @Param toekm    formData string true "Token"
+// @Param password 	   formData  string   true "Passowrd"
+// @Param confirmation 	   formData  string   true "Confirmation"
+// @Success 		   200     bool     true
+// @Router 			   /reset-password [post]
+func ResetPassword(c *gin.Context) {
+	var req tResetPasswordReq
+
+	if err := c.ShouldBind(&req); err != nil {
+		response.RequestFail(c, response.ErrorParamLost)
+		return
+	}
+
+	if req.Password != req.Confirmation {
+		response.RequestFail(c, response.ErrorParamLost)
+		return
+	}
+
+	user := &sql.User{
+		Email:              req.Email,
+		ResetPasswordToken: req.Token,
+	}
+
+	if err := sql.FindUser(user); err != nil {
+		response.RequestFail(c, response.ErrorParamLost)
+		return
+	}
+
+	// Compare time
+	now := time.Now()
+	if now.Before(*user.VerificationTokenExpiresAt) {
+		response.RequestFail(c, response.Error{
+			Code:    -1,
+			Message: "Verification fail",
+		})
+		return
+	}
+
+	// Update new password
+	hashedPassword, err := utils.HashPassword(req.Password)
+	if err != nil {
+		response.ServerFail(c, response.ErrorUnknown)
+		return
+	}
+
+	user.Password = hashedPassword
+
+	if err := sql.UpdateUser(user); err != nil {
+		response.ServerFail(c, response.ErrorUnknown)
+		return
+	}
+
+	response.Success(c, true)
+}
