@@ -42,8 +42,11 @@ func SinUp(c *gin.Context) {
 	}
 
 	// Check if user exsisted
-	if existed := sql.FindUserByEmail(req.Username); existed != nil {
-		response.ServerFail(c, response.ErrorPasswordNotMatch)
+	if existed := sql.FindUserByEmail(req.Email); existed != nil {
+		response.ServerFail(c, response.Error{
+			Code:    -1,
+			Message: "Email existed",
+		})
 		return
 	}
 
@@ -302,12 +305,13 @@ func VerifyEmail(c *gin.Context) {
 
 // @Summary ResetPassword
 // @Tags Auth
-// @Param toekm    formData string true "Token"
-// @Param password 	   formData  string   true "Passowrd"
-// @Param confirmation 	   formData  string   true "Confirmation"
-// @Success 		   200     bool     true
-// @Router 			   /reset-password [post]
+// @Param token         path      string   true "Toke"
+// @Param password 	    formData  string   true "Password"
+// @Param confirmation 	formData  string   true "Confirmation"
+// @Success 		    200       bool     true
+// @Router 			    /reset-password [post]
 func ResetPassword(c *gin.Context) {
+	token := c.Param("token")
 	var req tResetPasswordReq
 
 	if err := c.ShouldBind(&req); err != nil {
@@ -322,7 +326,7 @@ func ResetPassword(c *gin.Context) {
 
 	user := &sql.User{
 		Email:              req.Email,
-		ResetPasswordToken: req.Token,
+		ResetPasswordToken: token,
 	}
 
 	if err := sql.FindUser(user); err != nil {

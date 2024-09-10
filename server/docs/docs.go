@@ -131,14 +131,14 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Token",
-                        "name": "toekm",
-                        "in": "formData",
+                        "description": "Toke",
+                        "name": "token",
+                        "in": "path",
                         "required": true
                     },
                     {
                         "type": "string",
-                        "description": "Passowrd",
+                        "description": "Password",
                         "name": "password",
                         "in": "formData",
                         "required": true

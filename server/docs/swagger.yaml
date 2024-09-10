@@ -92,12 +92,12 @@ paths:
   /reset-password:
     post:
       parameters:
-      - description: Token
-        in: formData
-        name: toekm
+      - description: Toke
+        in: path
+        name: token
         required: true
         type: string
-      - description: Passowrd
+      - description: Password
         in: formData
         name: password
         required: true

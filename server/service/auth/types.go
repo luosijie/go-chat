@@ -25,7 +25,6 @@ type tVerifyEmailRes struct {
 }
 
 type tResetPasswordReq struct {
-	Token        string `json:"token"`
 	Email        string `json:"email"`
 	Password     string `form:"password"`
 	Confirmation string `form:"confirmation"` // password confirmation
