@@ -1,8 +1,8 @@
 
-import Chat from '../components/Chat'
-import Info from '../components/Info'
+import Chat from '../../../components/Chat'
+import Info from '../../../components/Info'
 // import MessageList from '../components/MessageList'
-import MessageList from '../components/MessageList'
+import MessageList from '../../../components/MessageList'
 
 const Messages = () => {
 
@@ -17,7 +17,7 @@ const Messages = () => {
                 <Chat/>
             </div>
             {/* Info */}
-            <div className="w-80 border-l">
+            <div className="w-60 border-l">
                 <Info/>
             </div>
         </div>
