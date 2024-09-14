@@ -22,6 +22,9 @@ export default {
         },
         borderColor: {
             DEFAULT: "#e5e7eb"
+        },
+        animation: {
+          'spin-slow': 'spin 1.5s linear infinite'
         }
     }
   },
