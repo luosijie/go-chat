@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 const classItem = `
     flex text-gray-500 gap-2 border mt-8 w-full px-4 rounded-md h-16 items-center
-    [&>input]:flex-grow [&>input]:bg-transparent
+    [&>input]:flex-grow [&>input]:bg-transparent [&>input]:outline-none [&>input]:text-xl
 `
 
 const Login = () => {
