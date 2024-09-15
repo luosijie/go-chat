@@ -18,15 +18,16 @@ export default tseslint.config(
       'react-refresh': reactRefresh,
     },
     rules: {
-      ...reactHooks.configs.recommended.rules,
-      'react-refresh/only-export-components': [
-        'warn',
-        { allowConstantExport: true },
-      ],
-	  'indent': ['error', 4],
+        ...reactHooks.configs.recommended.rules,
+        'react-refresh/only-export-components': [ 'warn', { allowConstantExport: true }],
+	    
+        'indent': ['error', 4],
         'semi': ['error', 'never'],
         'quotes': ['error', 'single'],
-        'no-multiple-empty-lines': ['error', { max: 1 }]
-    },
-  },
+        'no-multiple-empty-lines': ['error', { max: 1 }],
+        'space-in-parens': ['error', 'never'],
+        'object-curly-spacing': ['error', 'always'],
+        'key-spacing': ['error', { 'beforeColon': false, 'afterColon': true }]
+    }
+  }
 )

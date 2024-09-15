@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+	.button {
+		@apply w-full p-4 bg-black rounded-md text-white text-center font-bold text-xl cursor-pointer hover:bg-gray-800;
+	}
+}
 
 :root {
     font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
