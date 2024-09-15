@@ -2,6 +2,7 @@ import FormInput from '@/components/FormInput'
 import { Lock, User } from 'lucide-react'
 import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
 import { Link } from 'react-router-dom'
 
 type FormData = {
@@ -15,9 +16,14 @@ const Login = () => {
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>()
 
     const onSubmit:SubmitHandler<FormData> = (data:FormData) => {
+        console.log('--submit--', data)
+        
         if (loading) return
         setLoading(true)
-        console.log('--submit--', data)
+        const loadId = toast.loading('Login...')
+        setTimeout(() => {
+            toast.dismiss(loadId)
+        }, 2000)
     }
 
     return (

@@ -66,7 +66,7 @@ const Page = () => {
                     />
                 </FormInput>
 
-                <input type="submit"  value='Submit' className='button'/>
+                <input type="submit" className='button'/>
             </form>
 
             {/* Actions */}
