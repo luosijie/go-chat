@@ -21,10 +21,12 @@ export default tseslint.config(
         ...reactHooks.configs.recommended.rules,
         'react-refresh/only-export-components': [ 'warn', { allowConstantExport: true }],
 	    
+        "@typescript-eslint/no-explicit-any": "never",
+        
         'indent': ['error', 4],
         'semi': ['error', 'never'],
         'quotes': ['error', 'single'],
-        'no-multiple-empty-lines': ['error', { max: 1 }],
+        'no-multiple-empty-lines': ['error', { max: 1, maxBOF: 0 }],
         'space-in-parens': ['error', 'never'],
         'object-curly-spacing': ['error', 'always'],
         'key-spacing': ['error', { 'beforeColon': false, 'afterColon': true }]

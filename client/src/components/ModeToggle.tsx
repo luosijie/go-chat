@@ -1,8 +1,8 @@
 
+import { getRemSize } from '@/utils'
 import { motion } from 'framer-motion'
 import { Moon, Sun } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
-import { getRemSize } from '../utils/utils'
 
 enum Mode  {
     Light='light',
