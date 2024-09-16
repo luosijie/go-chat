@@ -3,6 +3,7 @@ import request from '@/utils/request'
 import { Lock, User } from 'lucide-react'
 import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
 import { Link } from 'react-router-dom'
 
 const BASE = import.meta.env.VITE_APP_URL
@@ -18,7 +19,6 @@ const Login = () => {
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>()
 
     const onSubmit:SubmitHandler<FormData> = async (data:FormData) => {
-        console.log('--submit--', data)
 
         if (loading) return
         setLoading(true)
@@ -26,13 +26,14 @@ const Login = () => {
         const res = await request({
             url: BASE + '/login',
             method: 'post',
-            toast: true,
             data
         })
 
-        console.log('Request complete:', res)
-        setLoading(false)
+        if (res.err_code === undefined) {
+            toast.success('Login success !')
+        }
 
+        setLoading(false)
     }
 
     return (
@@ -52,6 +53,7 @@ const Login = () => {
                 
                 <FormInput Icon={Lock} error={errors.password}>
                     <input 
+                        type='password'
                         placeholder='Password'
                         { ...register('password', 
                             { required: 'Passowrd is required' },

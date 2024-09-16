@@ -21,6 +21,8 @@ const TIMEOUT = 3 * 1000
 
 const request = async (config: RequestConfig) => {
 
+    const toastError = config.toast === undefined ? true : config.toast
+
     // Parse url
     let url = config.url
 
@@ -48,14 +50,14 @@ const request = async (config: RequestConfig) => {
         mode: 'cors' 
     }
 
-    let json:any
+    let json: any
 
     try { 
         const res = await fetch(url, option)
         json = await res.json()
         
         if (!res.ok) {
-            if (config.toast && json) {
+            if (toastError && json) {
                 toast.error(json.message)
             }
         } 

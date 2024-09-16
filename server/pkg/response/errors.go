@@ -1,26 +1,26 @@
 package response
 
 type Error struct {
-	Code    int    `json:"code"`
+	ErrCode int    `json:"err_code"`
 	Message string `json:"message"`
 }
 
 var ErrorUnknown Error = Error{
-	Code:    -4,
+	ErrCode: -4,
 	Message: "Unknown error",
 }
 
 var ErrorParamLost Error = Error{
-	Code:    -1,
+	ErrCode: -1,
 	Message: "Params lost",
 }
 
 var ErrorPasswordNotMatch Error = Error{
-	Code:    -2,
+	ErrCode: -2,
 	Message: "Password not match",
 }
 
 var ErrorUserNotExist Error = Error{
-	Code:    -3,
+	ErrCode: -3,
 	Message: "User not exist",
 }

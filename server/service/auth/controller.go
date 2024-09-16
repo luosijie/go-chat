@@ -44,7 +44,7 @@ func SinUp(c *gin.Context) {
 	// Check if user exsisted
 	if existed := sql.FindUserByEmail(req.Email); existed != nil {
 		response.ServerFail(c, response.Error{
-			Code:    -1,
+			ErrCode: -1,
 			Message: "Email existed",
 		})
 		return
@@ -54,7 +54,7 @@ func SinUp(c *gin.Context) {
 	hash, err := utils.HashPassword(req.Password)
 	if err != nil {
 		response.ServerFail(c, response.Error{
-			Code:    -1,
+			ErrCode: -1,
 			Message: err.Error(),
 		})
 		return
@@ -68,7 +68,7 @@ func SinUp(c *gin.Context) {
 
 	if err := sql.CreateUser(user); err != nil {
 		response.ServerFail(c, response.Error{
-			Code:    -2,
+			ErrCode: -2,
 			Message: err.Error(),
 		})
 		return
@@ -107,7 +107,7 @@ func Login(c *gin.Context) {
 	// Check password
 	if err := utils.CheckPassword(user.Password, req.Password); err != nil {
 		response.RequestFail(c, response.Error{
-			Code:    -1,
+			ErrCode: -1,
 			Message: err.Error(),
 		})
 		fmt.Println("check password err:", err)
@@ -118,7 +118,7 @@ func Login(c *gin.Context) {
 	token, err := utils.CrateToken(user.ID, user.Username)
 	if err != nil {
 		response.ServerFail(c, response.Error{
-			Code:    -1,
+			ErrCode: -1,
 			Message: err.Error(),
 		})
 		fmt.Println("create token error:", err)
@@ -135,7 +135,7 @@ func Login(c *gin.Context) {
 	// Update user table
 	if err := sql.UpdateUser(user); err != nil {
 		response.ServerFail(c, response.Error{
-			Code:    -1,
+			ErrCode: -1,
 			Message: err.Error(),
 		})
 		return
@@ -163,7 +163,7 @@ func Logout(c *gin.Context) {
 
 	if err != nil {
 		response.RequestFail(c, response.Error{
-			Code:    -1,
+			ErrCode: -1,
 			Message: err.Error(),
 		})
 		fmt.Println("verfify token error:", tokenString, err)
@@ -194,7 +194,7 @@ func CheckAuth(c *gin.Context) {
 
 	if err != nil {
 		response.RequestFail(c, response.Error{
-			Code:    -1,
+			ErrCode: -1,
 			Message: err.Error(),
 		})
 		fmt.Println("verfify token error:", tokenString, err)
@@ -216,7 +216,7 @@ func ForgotPassword(c *gin.Context) {
 	user := sql.FindUserByEmail(email)
 	if user == nil {
 		response.RequestFail(c, response.Error{
-			Code:    -1,
+			ErrCode: -1,
 			Message: "Email not match",
 		})
 		return
@@ -235,7 +235,7 @@ func ForgotPassword(c *gin.Context) {
 
 	if err := mail.SendResetPasswordToken(verificationToken, user.Email); err != nil {
 		response.ServerFail(c, response.Error{
-			Code:    -1,
+			ErrCode: -1,
 			Message: "Send email failed",
 		})
 
@@ -264,7 +264,7 @@ func VerifyEmail(c *gin.Context) {
 
 	if err := sql.FindUser(user); err != nil {
 		response.RequestFail(c, response.Error{
-			Code:    -1,
+			ErrCode: -1,
 			Message: "Verification fail",
 		})
 		return
@@ -273,7 +273,7 @@ func VerifyEmail(c *gin.Context) {
 	now := time.Now()
 	if now.Before(*user.VerificationTokenExpiresAt) {
 		response.RequestFail(c, response.Error{
-			Code:    -1,
+			ErrCode: -1,
 			Message: "Verification fail",
 		})
 		return
@@ -338,7 +338,7 @@ func ResetPassword(c *gin.Context) {
 	now := time.Now()
 	if now.Before(*user.VerificationTokenExpiresAt) {
 		response.RequestFail(c, response.Error{
-			Code:    -1,
+			ErrCode: -1,
 			Message: "Verification fail",
 		})
 		return

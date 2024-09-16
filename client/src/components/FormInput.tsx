@@ -10,7 +10,7 @@ type Props = {
 
 const classInput = `
     flex text-gray-500 gap-2 border mt-5 mb-6 w-full h-16 items-center p-4 rounded-md
-    [&>input]:outline-none [&>input]:text-lg
+    [&>input]:outline-none [&>input]:text-lg [&>input]:bg-transparent
 `
 
 const FormInput = ({ Icon, children, error }:Props) => {
