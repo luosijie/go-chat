@@ -3,7 +3,6 @@ import request from '@/utils/request'
 import { Lock, User } from 'lucide-react'
 import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import toast from 'react-hot-toast'
 import { Link } from 'react-router-dom'
 
 const BASE = import.meta.env.VITE_APP_URL
@@ -23,7 +22,6 @@ const Login = () => {
 
         if (loading) return
         setLoading(true)
-        const loadId = toast.loading('Login...')
 
         const res = await request({
             url: BASE + '/login',
@@ -34,7 +32,6 @@ const Login = () => {
 
         console.log('Request complete:', res)
         setLoading(false)
-        toast.dismiss(loadId)
 
     }
 

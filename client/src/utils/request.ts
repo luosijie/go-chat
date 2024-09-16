@@ -1,3 +1,5 @@
+import toast from "react-hot-toast"
+
 export type Method =
     | 'get'    | 'GET'
     | 'delete' | 'DELETE'
@@ -50,6 +52,10 @@ const request = async (config: RequestConfig) => {
         if (res.ok) {
             return res
         } else {
+            if (config.toast) {
+                toast.error(res.statusText)
+            }
+            console.log('request not ok:', res)
             throw Error(res)
         }
     } catch(err) {
