@@ -56,15 +56,17 @@ paths:
     post:
       parameters:
       - description: Username
-        in: formData
+        in: body
         name: username
         required: true
-        type: string
+        schema:
+          type: string
       - description: Password
-        in: formData
+        in: body
         name: password
         required: true
-        type: string
+        schema:
+          type: string
       responses:
         "200":
           description: OK

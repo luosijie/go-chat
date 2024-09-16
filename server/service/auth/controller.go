@@ -79,14 +79,14 @@ func SinUp(c *gin.Context) {
 
 // @Summary Login
 // @Tags Auth
-// @Param username 	   formData string   true "Username"
-// @Param password 	   formData string   true "Password"
+// @Param username 	   body string   true "Username"
+// @Param password 	   body string   true "Password"
 // @Success 		   200      {object} tLoginRes
 // @Router 			   /login [post]
 func Login(c *gin.Context) {
 	// Get request data
 	var req tLoginReq
-	if err := c.ShouldBind(&req); err != nil {
+	if err := c.ShouldBindJSON(&req); err != nil {
 		response.RequestFail(c, response.ErrorParamLost)
 		return
 	}
