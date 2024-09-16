@@ -11,6 +11,7 @@ export type RequestConfig = {
     url: string,
     method: Method,
     data?: Record<string, any>,
+    formData?: FormData,
     query?: Record<string, any>,
     params?: Record<string, any>,
     toast?: boolean // if toast error
@@ -38,30 +39,31 @@ const request = async (config: RequestConfig) => {
         url += `?${seachParams.toString()}`
     }
 
+    const body = config.formData ? config.formData : config.data ? JSON.stringify(config.data) : null
+
     const option:RequestInit = {
         method: config.method,
-        body: JSON.stringify(config.data),
+        body,
         signal: AbortSignal.timeout(TIMEOUT),
         mode: 'cors' 
     }
 
-    let res:any
+    let json:any
 
     try { 
-        res = await fetch(url, option)
-        if (res.ok) {
-            return res
-        } else {
-            if (config.toast) {
-                toast.error(res.statusText)
+        const res = await fetch(url, option)
+        json = await res.json()
+        
+        if (!res.ok) {
+            if (config.toast && json) {
+                toast.error(json.message)
             }
-            console.log('request not ok:', res)
-            throw Error(res)
-        }
+        } 
     } catch(err) {
         console.error(err)
-        return null
     }
+
+    return json
 
 }
 
