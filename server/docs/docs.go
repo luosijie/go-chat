@@ -248,6 +248,9 @@ const docTemplate = `{
         "serviceAuth.tLoginRes": {
             "type": "object",
             "properties": {
+                "avatar": {
+                    "type": "string"
+                },
                 "email": {
                     "type": "string"
                 },

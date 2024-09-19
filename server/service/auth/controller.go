@@ -51,19 +51,22 @@ func SinUp(c *gin.Context) {
 		return
 	}
 
+	var avatar string = ""
 	// Handle avatar file
-	file, errFile := c.FormFile("avatar")
+	file, err := c.FormFile("avatar")
 
-	dir, errDir := os.Getwd()
+	if err != nil {
+		fmt.Println("File not founed:", file)
+	} else {
+		dir, _ := os.Getwd()
+		filename := file.Filename
+		filePath := dir + "/.temp/images/" + filename
 
-	if errFile != nil && errDir != nil {
-		fmt.Println("err:", errFile, errDir)
-	}
-
-	fileName := file.Filename
-	filePath := dir + "/.temp/images/" + fileName
-	if errSave := c.SaveUploadedFile(file, filePath); errSave != nil {
-		fmt.Println("err-save-error:", errSave)
+		if errSave := c.SaveUploadedFile(file, filePath); errSave != nil {
+			fmt.Println("err-save-error:", errSave)
+		} else {
+			avatar = utils.GetFullFilename(filename)
+		}
 	}
 
 	// Hash password
@@ -77,7 +80,7 @@ func SinUp(c *gin.Context) {
 	}
 
 	user := &sql.User{
-		Avatar:   fileName,
+		Avatar:   avatar,
 		Username: req.Username,
 		Email:    req.Email,
 		Password: hash,
@@ -90,8 +93,8 @@ func SinUp(c *gin.Context) {
 		})
 		return
 	} else {
-		response.Success(c, "Sign up success !", tSignUpRes{
-			Avatar:   utils.GetFullFilename(user.Avatar),
+		response.Success(c, "Sign up success!", tSignUpRes{
+			Avatar:   user.Avatar,
 			Username: user.Username,
 			Email:    user.Email,
 		})
@@ -162,8 +165,9 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	response.Success(c, "Login success !", tLoginRes{
+	response.Success(c, "Login success!", tLoginRes{
 		Username: user.Username,
+		Avatar:   user.Avatar,
 		Email:    user.Email,
 		Token:    token,
 	})

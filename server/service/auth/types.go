@@ -20,6 +20,7 @@ type tLoginReq struct {
 
 type tLoginRes struct {
 	Token    string `json:"token"`
+	Avatar   string `json:"avatar"`
 	Username string `json:"username"`
 	Email    string `json:"email"`
 }

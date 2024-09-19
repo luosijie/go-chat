@@ -1,10 +1,12 @@
 
+import { useMessageStore } from '@/stores/message'
 import Chat from '../../../components/Chat'
 import Info from '../../../components/Info'
 // import MessageList from '../components/MessageList'
 import MessageList from '../../../components/MessageList'
 
 const Messages = () => {
+    const current = useMessageStore(state => state.current)
 
     return (
         <div className="flex justify-between h-full">
@@ -17,9 +19,12 @@ const Messages = () => {
                 <Chat/>
             </div>
             {/* Info */}
-            <div className="w-60 border-l">
-                <Info/>
-            </div>
+            {
+                current &&
+                <div className="w-60 border-l">
+                    <Info/>
+                </div>
+            }
         </div>
     )
 }

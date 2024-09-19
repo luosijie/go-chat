@@ -1,6 +1,9 @@
 // import { mockMessages } from '@/mock/messages'
 import { mockMessages } from '@/mock/messages'
+import { userStorage } from '@/utils/storage'
 import { Random } from 'mockjs'
+import { useEffect } from 'react'
+import { Navigate, useNavigate } from 'react-router-dom'
 import { useMenuStore } from '../../stores/menu'
 import { useMessageStore } from '../../stores/message'
 import { useUserStore } from '../../stores/user'
@@ -11,8 +14,8 @@ import NavBar from './parts/NavBar'
 
 const mockData = () => {
     const user: User = {
-        id: String(Random.natural),
-        name: Random.name(),
+        username: Random.name(),
+        email: Random.email(),
         avatar: Random.dataImage(),
         token: Random.cparagraph()
     }
@@ -25,12 +28,20 @@ const mockData = () => {
 }
 
 function Home() {
+    const navigate = useNavigate()
+    const { user } = useUserStore()
+    // setUser()
 
     const activeMenu = useMenuStore(state => state.active)
 
-    mockData()
+    // mockData()
 
-    console.log()
+    useEffect(() => {
+        if (!user) {
+            navigate('/login')
+        }
+    }, [user])
+
 
     return (
         <>

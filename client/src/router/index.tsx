@@ -4,7 +4,9 @@ import ForgotPassword from '@/pages/ForgotPasword'
 import Login from '@/pages/Login'
 import ResetPassword from '@/pages/ResetPassword'
 import SignUp from '@/pages/SignUp'
-import { createBrowserRouter } from 'react-router-dom'
+import { useUserStore } from '@/stores/user'
+import { userStorage } from '@/utils/storage'
+import { createBrowserRouter, redirect } from 'react-router-dom'
 import Home from '../pages/Home'
 
 const router = createBrowserRouter([
@@ -14,6 +16,14 @@ const router = createBrowserRouter([
         children: [
             {
                 path: '/',
+                // loader: async() => {
+                //     const user = userStorage.get()
+                //     // setUser()
+                //     if (user === null) {
+                //         redirect('/login')
+                //     }
+                //     return null
+                // },
                 element: <Home/>,
             },
             {

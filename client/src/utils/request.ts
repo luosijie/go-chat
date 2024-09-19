@@ -17,14 +17,35 @@ export type RequestConfig = {
     toast?: boolean // if toast error
 }
 
+type Result = {
+    success: boolean
+    message: string
+    code: number
+    data: any
+}
+
+export const toFormData = (data:Record<string, any>) => {
+    const formData = new FormData()
+    
+    Object.keys(data).forEach(key => {
+        formData.append(key, data[key])
+    })
+
+    return formData
+}
+
 const TIMEOUT = 3 * 1000
 
-const request = async (config: RequestConfig) => {
+type RequestFunction = (config:RequestConfig) => Promise<Result>
+
+const request:RequestFunction = async (config) =>  {
 
     const toastError = config.toast === undefined ? true : config.toast
 
     // Parse url
     let url = config.url
+
+    const method = config.method.toUpperCase()
 
     // Parse url:params
     if (config.params) {
@@ -44,28 +65,49 @@ const request = async (config: RequestConfig) => {
     const body = config.formData ? config.formData : config.data ? JSON.stringify(config.data) : null
 
     const option:RequestInit = {
-        method: config.method,
+        method,
         body,
         signal: AbortSignal.timeout(TIMEOUT),
         mode: 'cors' 
     }
 
-    let json: any
+    const result: Result = {
+        success: false,
+        message: '',
+        code: 0,
+        data: null
+    }
 
     try { 
         const res = await fetch(url, option)
-        json = await res.json()
+        const json = await res.json()
         
+        for (const key in result) {
+            switch (key) {
+                case 'success':
+                    result[key] = Boolean(json[key])
+                    break
+                case 'message':
+                    result[key] = String(json[key])
+                    break
+                case 'code':
+                    result[key] = Number(json[key])
+                    break
+                case 'data':
+                    result[key] = json[key]         
+            }
+        }
+
         if (!res.ok) {
-            if (toastError && json) {
-                toast.error(json.message)
+            if (toastError && result.message) {
+                toast.error(result.message)
             }
         } 
     } catch(err) {
         console.error(err)
     }
 
-    return json
+    return result
 
 }
 

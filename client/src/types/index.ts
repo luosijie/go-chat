@@ -1,10 +1,8 @@
 export type User = {
-    id: string
-    name: string
     avatar: string
-    token?: string
-    gender?: number
-    birth?: string
+    username: string,
+    token: string
+    email: string
 }
 
 export type Content = {

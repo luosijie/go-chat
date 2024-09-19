@@ -1,5 +1,7 @@
 
+import { MessageSquareMoreIcon } from 'lucide-react'
 import { useMessageStore } from '../stores/message'
+import Empty from './Empty'
 import SearchBar from './SearchBar'
 
 const MessageList = () => {
@@ -13,18 +15,19 @@ const MessageList = () => {
                 {
                     messages.map(e => (
                         <div 
-                            key={e.contact.id} 
+                            key={e.contact.username} 
                             className="flex gap-3 items-center border mb-3 p-2 rounded-lg border-gray-100"
                             onClick={() => setCurrent(e) }
                         >
                             <img src={e.contact.avatar} alt="avatar" className="size-14 bg-gray-50 rounded-full object-fill"/>
                             <div>
-                                <div className="font-bold text-base">{e.contact.name}</div>
-                                <div className="text-sm text-gray-500">{e.history[0].content.slice(0, 10)}</div>
+                                <div className="font-bold text-base">{e.contact.username}</div>
+                                {e.history[0] &&<div className="text-sm text-gray-500">{e.history[0].content.slice(0, 10)}</div>}
                             </div>
                         </div>
                     ))
                 }
+                <Empty/>
             </div>
         </>
     )

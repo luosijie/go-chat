@@ -2,9 +2,14 @@
 import FormInput from '@/components/FormInput'
 import ImageUploader from '@/components/ImageUploader'
 import patterns from '@/config/patterns'
+import request, { toFormData } from '@/utils/request'
 import { Lock, Mail, User } from 'lucide-react'
+import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
+import toast from 'react-hot-toast'
+import { Link, useNavigate } from 'react-router-dom'
+
+const url = import.meta.env.VITE_APP_URL + '/sign-up'
 
 type FormData = {
     username: string
@@ -14,15 +19,49 @@ type FormData = {
 }
 
 const Page = () => {
-
+    const navigate = useNavigate()
+    
+    const [loading, setLoading] = useState<boolean>(false)
+    const [avatar, setAvatar] = useState<File | null>(null)
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>()
     
-    const onSubmit:SubmitHandler<FormData> = (data:FormData) => {
+    const onSubmit:SubmitHandler<FormData> = async (data:FormData) => {
+       
+        if (data.password !== data.confirmation) {
+            toast.error('Password and Confirmation not match')
+            return
+        }
+
+        if (loading) return
+
+        setLoading(true)
+
+       
+
+        const form = {
+            avatar,
+            ...data
+        }
+
+        const res = await request({
+            url,
+            method: 'POST',
+            formData: toFormData(form)
+        })
+
+
+        setLoading(false)
+
         console.log('--submit--', data)
+
+        if (res.success) {
+            toast.success('Sign up success!')
+            navigate('/login')
+        }
     }
 
     const onFileChange = (file:File | null) => {
-        console.log(file)
+        setAvatar(file)
     }
 
     return (
@@ -37,9 +76,12 @@ const Page = () => {
                 <FormInput Icon={User} error={errors.username}>
                     <input 
                         placeholder='Username' className='flex-grow'
-                        { ...register('username', 
-                            { required: 'Username is required' },
-                        )}
+                        { ...register('username', { 
+                            required: 'Username is required',
+                            minLength: {  value: 4, message: 'At least 4 charactor' },
+                            maxLength: {  value: 20, message: 'At max 20 charactor' },
+                            pattern: { value: patterns.username.value, message: patterns.username.desc }
+                        })}
                     />
                 </FormInput>
 
@@ -48,26 +90,25 @@ const Page = () => {
                         type="text" placeholder='Email' className='flex-grow'
                         { ...register('email',  { 
                             required: 'Email is required',
-                            pattern: {
-                                value: patterns.email,
-                                message: 'Email incorrect'
-                            }
+                            pattern: { value: patterns.email.value, message: 'email incorrect' },
                         }) }
                     />
                 </FormInput>
 
                 <FormInput Icon={Lock} error={errors.password}>
                     <input 
-                        type="text" placeholder='Password' className='flex-grow'
-                        { ...register('password', 
-                            { required: 'Password is required', maxLength: 10 }
-                        ) }
+                        type="password" placeholder='Password' className='flex-grow'
+                        { ...register('password',  { 
+                            required: 'Password is required',
+                            minLength: {  value: 6, message: 'At least 6 charactor' },
+                            maxLength: {  value: 20, message: 'At least 20 charactor' }
+                        })}
                     />
                 </FormInput>
 
                 <FormInput Icon={Lock} error={errors.confirmation}>
                     <input 
-                        type="text" placeholder='Confirmatioin' className='flex-grow'
+                        type="password" placeholder='Confirmatioin' className='flex-grow'
                         { ...register('confirmation', 
                             { required: 'Confirmation is required' }
                         ) }

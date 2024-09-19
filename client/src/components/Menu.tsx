@@ -43,7 +43,7 @@ const Menu = () => {
                         className={clsx(
                             'text-gray-500 flex items-center gap-4 my-2 p-2 rounded-xl  text-base cursor-pointer',
                             {
-                                ' border-gray-100 bg-white font-bold': active === e.name
+                                ' border-gray-100 bg-white font-bold [&>span]:text-black': active === e.name
                             }
                         )}
                         onClick={() => setActive(e.name)}
