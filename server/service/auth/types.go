@@ -7,6 +7,12 @@ type tSignUpReq struct {
 	Confirmation string `form:"confirmation"` // password confirmation
 }
 
+type tSignUpRes struct {
+	Avatar   string `json:"avatar"`
+	Email    string `json:"email"`
+	Username string `json:"username"`
+}
+
 type tLoginReq struct {
 	Username string `form:"username"`
 	Password string `form:"password"`

@@ -29,6 +29,9 @@ func NewRouter() *gin.Engine {
 
 	router.Use(cors.New(config))
 
+	// Static server
+	router.Static("/images", ".temp/images")
+
 	// Set for swagger
 	docs.SwaggerInfo.BasePath = ""
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))

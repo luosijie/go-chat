@@ -2,6 +2,7 @@ package serviceAuth
 
 import (
 	"fmt"
+	"os"
 	"strconv"
 	"time"
 
@@ -44,23 +45,39 @@ func SinUp(c *gin.Context) {
 	// Check if user exsisted
 	if existed := sql.FindUserByEmail(req.Email); existed != nil {
 		response.ServerFail(c, response.Error{
-			ErrCode: -1,
+			Code:    -1,
 			Message: "Email existed",
 		})
 		return
+	}
+
+	// Handle avatar file
+	file, errFile := c.FormFile("avatar")
+
+	dir, errDir := os.Getwd()
+
+	if errFile != nil && errDir != nil {
+		fmt.Println("err:", errFile, errDir)
+	}
+
+	fileName := file.Filename
+	filePath := dir + "/.temp/images/" + fileName
+	if errSave := c.SaveUploadedFile(file, filePath); errSave != nil {
+		fmt.Println("err-save-error:", errSave)
 	}
 
 	// Hash password
 	hash, err := utils.HashPassword(req.Password)
 	if err != nil {
 		response.ServerFail(c, response.Error{
-			ErrCode: -1,
+			Code:    -1,
 			Message: err.Error(),
 		})
 		return
 	}
 
 	user := &sql.User{
+		Avatar:   fileName,
 		Username: req.Username,
 		Email:    req.Email,
 		Password: hash,
@@ -68,12 +85,16 @@ func SinUp(c *gin.Context) {
 
 	if err := sql.CreateUser(user); err != nil {
 		response.ServerFail(c, response.Error{
-			ErrCode: -2,
+			Code:    -2,
 			Message: err.Error(),
 		})
 		return
 	} else {
-		response.Success(c, nil)
+		response.Success(c, "Sign up success !", tSignUpRes{
+			Avatar:   utils.GetFullFilename(user.Avatar),
+			Username: user.Username,
+			Email:    user.Email,
+		})
 	}
 }
 
@@ -107,7 +128,7 @@ func Login(c *gin.Context) {
 	// Check password
 	if err := utils.CheckPassword(user.Password, req.Password); err != nil {
 		response.RequestFail(c, response.Error{
-			ErrCode: -1,
+			Code:    -1,
 			Message: err.Error(),
 		})
 		fmt.Println("check password err:", err)
@@ -118,7 +139,7 @@ func Login(c *gin.Context) {
 	token, err := utils.CrateToken(user.ID, user.Username)
 	if err != nil {
 		response.ServerFail(c, response.Error{
-			ErrCode: -1,
+			Code:    -1,
 			Message: err.Error(),
 		})
 		fmt.Println("create token error:", err)
@@ -135,13 +156,13 @@ func Login(c *gin.Context) {
 	// Update user table
 	if err := sql.UpdateUser(user); err != nil {
 		response.ServerFail(c, response.Error{
-			ErrCode: -1,
+			Code:    -1,
 			Message: err.Error(),
 		})
 		return
 	}
 
-	response.Success(c, tLoginRes{
+	response.Success(c, "Login success !", tLoginRes{
 		Username: user.Username,
 		Email:    user.Email,
 		Token:    token,
@@ -163,7 +184,7 @@ func Logout(c *gin.Context) {
 
 	if err != nil {
 		response.RequestFail(c, response.Error{
-			ErrCode: -1,
+			Code:    -1,
 			Message: err.Error(),
 		})
 		fmt.Println("verfify token error:", tokenString, err)
@@ -177,7 +198,7 @@ func Logout(c *gin.Context) {
 	}
 	redis.DeleteJWT(uint(id))
 
-	response.Success(c, "success")
+	response.Success(c, "Logout success!", nil)
 }
 
 // @Summary Check Auth
@@ -194,14 +215,14 @@ func CheckAuth(c *gin.Context) {
 
 	if err != nil {
 		response.RequestFail(c, response.Error{
-			ErrCode: -1,
+			Code:    -1,
 			Message: err.Error(),
 		})
 		fmt.Println("verfify token error:", tokenString, err)
 		return
 	}
 
-	response.Success(c, true)
+	response.Success(c, "Auth valid", nil)
 
 }
 
@@ -216,7 +237,7 @@ func ForgotPassword(c *gin.Context) {
 	user := sql.FindUserByEmail(email)
 	if user == nil {
 		response.RequestFail(c, response.Error{
-			ErrCode: -1,
+			Code:    -1,
 			Message: "Email not match",
 		})
 		return
@@ -235,7 +256,7 @@ func ForgotPassword(c *gin.Context) {
 
 	if err := mail.SendResetPasswordToken(verificationToken, user.Email); err != nil {
 		response.ServerFail(c, response.Error{
-			ErrCode: -1,
+			Code:    -1,
 			Message: "Send email failed",
 		})
 
@@ -244,7 +265,7 @@ func ForgotPassword(c *gin.Context) {
 		return
 	}
 
-	response.Success(c, "go to check your email")
+	response.Success(c, "Go to check your email", nil)
 }
 
 // @Summary Submit verification code
@@ -264,7 +285,7 @@ func VerifyEmail(c *gin.Context) {
 
 	if err := sql.FindUser(user); err != nil {
 		response.RequestFail(c, response.Error{
-			ErrCode: -1,
+			Code:    -1,
 			Message: "Verification fail",
 		})
 		return
@@ -273,7 +294,7 @@ func VerifyEmail(c *gin.Context) {
 	now := time.Now()
 	if now.Before(*user.VerificationTokenExpiresAt) {
 		response.RequestFail(c, response.Error{
-			ErrCode: -1,
+			Code:    -1,
 			Message: "Verification fail",
 		})
 		return
@@ -296,7 +317,7 @@ func VerifyEmail(c *gin.Context) {
 		return
 	}
 
-	response.Success(c, tVerifyEmailRes{
+	response.Success(c, "Verification success", tVerifyEmailRes{
 		Token:    resetPasswordToken,
 		Username: user.Username,
 		Email:    user.Email,
@@ -338,7 +359,7 @@ func ResetPassword(c *gin.Context) {
 	now := time.Now()
 	if now.Before(*user.VerificationTokenExpiresAt) {
 		response.RequestFail(c, response.Error{
-			ErrCode: -1,
+			Code:    -1,
 			Message: "Verification fail",
 		})
 		return
@@ -358,5 +379,5 @@ func ResetPassword(c *gin.Context) {
 		return
 	}
 
-	response.Success(c, true)
+	response.Success(c, "Reset password success!", nil)
 }

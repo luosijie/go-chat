@@ -18,7 +18,7 @@ func Auth() gin.HandlerFunc {
 
 		if err != nil {
 			response.RequestFail(c, response.Error{
-				ErrCode: -100,
+				Code:    -100,
 				Message: err.Error(),
 			})
 			fmt.Println("verfify token error:", tokenString, err)
