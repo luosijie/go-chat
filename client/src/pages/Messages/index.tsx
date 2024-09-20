@@ -1,9 +1,9 @@
 
+import Chat from '@/components/Chat'
+import Info from '@/components/Info'
 import { useMessageStore } from '@/stores/message'
-import Chat from '../../../components/Chat'
-import Info from '../../../components/Info'
 // import MessageList from '../components/MessageList'
-import MessageList from '../../../components/MessageList'
+import MessageList from '@/components/MessageList'
 
 const Messages = () => {
     const current = useMessageStore(state => state.current)

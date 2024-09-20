@@ -166,6 +166,7 @@ func Login(c *gin.Context) {
 	}
 
 	response.Success(c, "Login success!", tLoginRes{
+		ID:       user.ID,
 		Username: user.Username,
 		Avatar:   user.Avatar,
 		Email:    user.Email,

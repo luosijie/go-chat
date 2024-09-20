@@ -1,30 +1,36 @@
 import LayoutMain from '@/layouts/Main'
+import LayoutRoot from '@/layouts/Root'
 import LayoutTitle from '@/layouts/Title'
+import Dashboard from '@/pages/Dashboard'
 import ForgotPassword from '@/pages/ForgotPasword'
 import Login from '@/pages/Login'
+import Messages from '@/pages/Messages'
 import ResetPassword from '@/pages/ResetPassword'
 import SignUp from '@/pages/SignUp'
-import { useUserStore } from '@/stores/user'
-import { userStorage } from '@/utils/storage'
-import { createBrowserRouter, redirect } from 'react-router-dom'
-import Home from '../pages/Home'
+import { createBrowserRouter } from 'react-router-dom'
 
 const router = createBrowserRouter([
     {
         path: '',
-        element: <LayoutMain/>,
+        element: <LayoutRoot/>,
         children: [
             {
-                path: '/',
-                // loader: async() => {
-                //     const user = userStorage.get()
-                //     // setUser()
-                //     if (user === null) {
-                //         redirect('/login')
-                //     }
-                //     return null
-                // },
-                element: <Home/>,
+                path: '',
+                element: <LayoutMain/>,
+                children: [
+                    {
+                        path: '/',
+                        element: <Dashboard/>
+                    },
+                    {
+                        path: '/dashboard',
+                        element: <Dashboard/>
+                    },
+                    {
+                        path: '/messages',
+                        element: <Messages/>
+                    }
+                ]
             },
             {
                 path: '/login',

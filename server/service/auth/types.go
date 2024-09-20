@@ -19,6 +19,7 @@ type tLoginReq struct {
 }
 
 type tLoginRes struct {
+	ID       uint   `json:"id"`
 	Token    string `json:"token"`
 	Avatar   string `json:"avatar"`
 	Username string `json:"username"`

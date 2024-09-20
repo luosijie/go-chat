@@ -1,12 +1,30 @@
-import { Outlet } from 'react-router-dom'
- 
-const Main = () => {
+// import { mockMessages } from '@/mock/messages'
+import NavBar from '@/components/NavBar'
+import { useUserStore } from '@/stores/user'
+import { useEffect } from 'react'
+import { Outlet, useNavigate } from 'react-router-dom'
+
+
+function Main() {
+    const navigate = useNavigate()
+    const { user } = useUserStore()
+    
+    useEffect(() => {
+        if (!user) {
+            navigate('/login')
+        }
+    }, [user])
+
+
     return (
-        < div className="w-screen h-screen flex justify-center items-center text-black">
-            <div className="w-11/12 h-5/6 bg-gray-light rounded-xl overflow-hidden relative flex py-2 pr-2">
+        <>
+            {/* navbar */}
+            <NavBar/>
+            {/* chat */}
+            <div className="h-full flex-grow  bg-white rounded-xl border border-gray-200">
                 <Outlet/>
             </div>
-        </div>
+        </>
     )
 }
 

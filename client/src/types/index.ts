@@ -1,6 +1,7 @@
 export type User = {
+    id: number
     avatar: string
-    username: string,
+    username: string
     token: string
     email: string
 }

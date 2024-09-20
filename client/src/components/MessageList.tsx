@@ -27,7 +27,7 @@ const MessageList = () => {
                         </div>
                     ))
                 }
-                <Empty/>
+                <Empty text='No message here...'/>
             </div>
         </>
     )

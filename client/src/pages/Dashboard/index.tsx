@@ -43,7 +43,7 @@ const Dashboard = () => {
                 {
                     itemData.map(e => (
                         <div key={e.label} className='flex border p-10 rounded-xl items-center gap-5 cursor-pointer'>
-                            <div className={clsx('size-12 flex justify-center rounded-lg items-center', e.bg )}>
+                            <div className={clsx('size-12 flex justify-center rounded-lg items-center flex-shrink-0', e.bg )}>
                                 <e.Icon color={e.color}/>
                             </div>
                             <div className='font-bold text-lg'>
