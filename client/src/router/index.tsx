@@ -3,6 +3,7 @@ import LayoutRoot from '@/layouts/Root'
 import LayoutTitle from '@/layouts/Title'
 import Dashboard from '@/pages/Dashboard'
 import ForgotPassword from '@/pages/ForgotPasword'
+import Groups from '@/pages/Groups'
 import Login from '@/pages/Login'
 import Messages from '@/pages/Messages'
 import ResetPassword from '@/pages/ResetPassword'
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
                     {
                         path: '/messages',
                         element: <Messages/>
+                    },
+                    {
+                        path: '/groups',
+                        element: <Groups/>
                     }
                 ]
             },

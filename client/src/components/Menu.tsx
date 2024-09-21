@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { LayoutDashboard, LucideProps, MessageCircle, Settings, Star, Users } from 'lucide-react'
+import { LayoutDashboard, LucideProps, MessageCircle, Settings, Star, Users, UserSearch } from 'lucide-react'
 import React, { ForwardRefExoticComponent } from 'react'
 import { useLocation, useNavigate, useNavigation, useRoutes } from 'react-router-dom'
 import { useMenuStore } from '../stores/menu'
@@ -20,6 +20,10 @@ const menuData: Array<Menu> = [
     {
         name: 'Groups',
         Icon: Users
+    },
+    {
+        name: 'Contacts',
+        Icon: UserSearch
     },
     {
         name: 'Favorites',
