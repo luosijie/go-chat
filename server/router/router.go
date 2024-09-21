@@ -37,6 +37,7 @@ func NewRouter() *gin.Engine {
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
 	routerAuth(router)
+	routerContact(router)
 
 	return router
 }

@@ -56,3 +56,12 @@ func DeleteContacts(userId uint, friendId uint) error {
 
 	return nil
 }
+
+func FindContacts(userId uint) []*Contacts {
+
+	var contacts []*Contacts
+
+	db.Where("user_id = ?", userId).Find(&contacts)
+
+	return contacts
+}
