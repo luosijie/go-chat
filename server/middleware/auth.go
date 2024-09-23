@@ -14,16 +14,21 @@ func Auth() gin.HandlerFunc {
 		tokenString := c.GetHeader("Token")
 
 		// Parse token
-		_, err := utils.ParseToken(tokenString)
+		claims, err := utils.ParseToken(tokenString)
 
 		if err != nil {
 			response.RequestFail(c, response.Error{
-				Code:    -100,
+				Code:    -300,
 				Message: err.Error(),
 			})
 			fmt.Println("verfify token error:", tokenString, err)
+			c.Abort()
 			return
 		}
+
+		c.Set("userId", claims.ID)
+
+		fmt.Println(claims)
 
 		c.Next()
 	}

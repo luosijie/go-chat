@@ -1,4 +1,6 @@
+import { useUserStore } from "@/stores/user"
 import toast from "react-hot-toast"
+import { userStorage } from "./storage"
 
 export type Method =
     | 'get'    | 'GET'
@@ -40,6 +42,8 @@ type RequestFunction = (config:RequestConfig) => Promise<Result>
 
 const request:RequestFunction = async (config) =>  {
 
+    const user = userStorage.get()
+
     const toastError = config.toast === undefined ? true : config.toast
 
     // Parse url
@@ -79,7 +83,12 @@ const request:RequestFunction = async (config) =>  {
     }
 
     try { 
-        const res = await fetch(url, option)
+        const res = await fetch(url, {
+            headers: {
+                Token: user ? user.token : ''
+            },
+            ...option
+        })
         const json = await res.json()
         
         for (const key in result) {
@@ -101,6 +110,10 @@ const request:RequestFunction = async (config) =>  {
         if (!res.ok) {
             if (toastError && result.message) {
                 toast.error(result.message)
+            }
+            // When token invalid: redirect to login
+            if (result.code === -300) {
+                location.href = '/login'
             }
         } 
     } catch(err) {

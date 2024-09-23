@@ -6,6 +6,13 @@ export type User = {
     email: string
 }
 
+export type UserSummary = {
+    id: number
+    avatar: string
+    username: string
+    email: string
+}
+
 export type Content = {
     from: User
     content: string

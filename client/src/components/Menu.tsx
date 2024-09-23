@@ -1,8 +1,8 @@
 import clsx from 'clsx'
-import { LayoutDashboard, LucideProps, MessageCircle, Settings, Star, Users, UserSearch } from 'lucide-react'
+import { Contact, LayoutDashboard, LucideProps, MessageCircle, Settings, Star, Users, UserSearch } from 'lucide-react'
 import React, { ForwardRefExoticComponent } from 'react'
-import { useLocation, useNavigate, useNavigation, useRoutes } from 'react-router-dom'
-import { useMenuStore } from '../stores/menu'
+import { useLocation, useNavigate } from 'react-router-dom'
+
 type Menu = {
     name: string
     Icon: ForwardRefExoticComponent<Omit<LucideProps, 'ref'> & React.RefAttributes<SVGSVGElement>>
@@ -23,11 +23,11 @@ const menuData: Array<Menu> = [
     },
     {
         name: 'Contacts',
-        Icon: UserSearch
+        Icon: Contact
     },
     {
-        name: 'Favorites',
-        Icon: Star
+        name: 'SearchUser',
+        Icon: UserSearch
     },
     {
         name: 'Setting',

@@ -1,8 +1,6 @@
 package serviceContacts
 
 import (
-	"strconv"
-
 	"github.com/gin-gonic/gin"
 	"github.com/luosijie/go-chat/server/database/sql"
 	"github.com/luosijie/go-chat/server/pkg/response"
@@ -10,21 +8,14 @@ import (
 
 // @Summary FindContacts
 // @Tags Contacts
-// @Param userId 	   path string   true "UsreId"
+// @Param Token        header string  true "Token"
+// @Param userId 	   path   string  true "UsreId"
 // @Success 		   200      {object} interface{}
 // @Router 			   /sign-up [post]
 func FindContacts(c *gin.Context) {
-	userId, err := strconv.Atoi(c.Param("userId"))
+	userId := c.MustGet("userId").(uint)
 
-	if err != nil {
-		response.RequestFail(c, response.Error{
-			Code:    12,
-			Message: "userId required",
-		})
-		return
-	}
-
-	contacts := sql.FindContacts(uint(userId))
+	contacts := sql.FindContacts(userId)
 
 	response.Success(c, "Success", contacts)
 
@@ -32,19 +23,12 @@ func FindContacts(c *gin.Context) {
 
 // @Summary AddContacts
 // @Tags Contacts
+// @Param Token        header string true "Token"
 // @Param userId 	   path string   true "UsreId"
 // @Success 		   200      {object} interface{}
 // @Router 			   /sign-up [post]
 func AddContacts(c *gin.Context) {
-	userId, err := strconv.Atoi(c.Param("userId"))
-
-	if err != nil {
-		response.RequestFail(c, response.Error{
-			Code:    12,
-			Message: "userId required",
-		})
-		return
-	}
+	userId := c.MustGet("userId").(uint)
 
 	contacts := sql.FindContacts(uint(userId))
 
@@ -58,17 +42,9 @@ func AddContacts(c *gin.Context) {
 // @Success 		   200      {object} interface{}
 // @Router 			   /sign-up [post]
 func DeleteContacts(c *gin.Context) {
-	userId, err := strconv.Atoi(c.Param("userId"))
+	userId := c.MustGet("userId").(uint)
 
-	if err != nil {
-		response.RequestFail(c, response.Error{
-			Code:    12,
-			Message: "userId required",
-		})
-		return
-	}
-
-	contacts := sql.FindContacts(uint(userId))
+	contacts := sql.FindContacts(userId)
 
 	response.Success(c, "Success", contacts)
 

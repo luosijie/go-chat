@@ -168,37 +168,61 @@ const docTemplate = `{
         "/sign-up": {
             "post": {
                 "tags": [
-                    "Auth"
+                    "Contacts"
                 ],
-                "summary": "Sign up",
+                "summary": "AddContacts",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "UsreId",
+                        "name": "userId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/page": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "UserPage",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Token",
+                        "name": "Token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "PageNo",
+                        "name": "page_no",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "PageSize",
+                        "name": "page_size",
+                        "in": "query",
+                        "required": true
+                    },
                     {
                         "type": "string",
                         "description": "Username",
                         "name": "username",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Password",
-                        "name": "password",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Password Confirmation",
-                        "name": "confirmation",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Email",
-                        "name": "email",
-                        "in": "formData",
-                        "required": true
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -253,6 +277,9 @@ const docTemplate = `{
                 },
                 "email": {
                     "type": "string"
+                },
+                "id": {
+                    "type": "integer"
                 },
                 "token": {
                     "type": "string"

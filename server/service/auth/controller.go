@@ -3,7 +3,6 @@ package serviceAuth
 import (
 	"fmt"
 	"os"
-	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -197,11 +196,11 @@ func Logout(c *gin.Context) {
 	}
 
 	// Delete token from redis
-	id, err := strconv.Atoi(claims.ID)
-	if err != nil {
-		response.ServerFail(c, response.ErrorUnknown)
-	}
-	redis.DeleteJWT(uint(id))
+	// id, eclaims.ID
+	// if err != nil {
+	// 	response.ServerFail(c, response.ErrorUnknown)
+	// }
+	redis.DeleteJWT(claims.ID)
 
 	response.Success(c, "Logout success!", nil)
 }

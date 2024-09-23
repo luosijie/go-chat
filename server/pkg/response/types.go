@@ -12,6 +12,13 @@ type Error struct {
 	Message string `json:"message"`
 }
 
+type Page struct {
+	PageNo   int   `json:"page_no"`
+	PageSize int   `json:"page_size"`
+	Total    int64 `json:"total"`
+	Rows     any   `json:"rows"`
+}
+
 func NewOK(message string, data any) Result {
 	return Result{
 		Success: true,

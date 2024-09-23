@@ -1,8 +1,10 @@
 package sql
 
 import (
+	"fmt"
 	"time"
 
+	"github.com/luosijie/go-chat/server/pkg/response"
 	"gorm.io/gorm"
 )
 
@@ -50,4 +52,25 @@ func FindUserByEmail(email string) *User {
 		return nil
 	}
 	return user
+}
+
+func FindUserPageByName(pageNo int, pageSize int, username string, rows any) response.Page {
+
+	total := int64(0)
+
+	limit := pageSize
+	offset := pageSize * (pageNo - 1)
+
+	query := "%" + username + "%"
+	db.Model(&User{}).Limit(limit).Offset(offset).Where("username LIKE ?", query).Find(&rows)
+	db.Model(&User{}).Where("username LIKE ?", query).Count(&total)
+
+	fmt.Println("Total:", total)
+
+	return response.Page{
+		PageNo:   pageNo,
+		PageSize: pageSize,
+		Total:    total,
+		Rows:     rows,
+	}
 }

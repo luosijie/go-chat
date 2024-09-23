@@ -1,12 +1,14 @@
-import { User } from '@/types'
+import { UserSummary } from '@/types'
+import clsx from 'clsx'
 
 type Props = {
-    user: User | null
+    className?: string
+    user: UserSummary | null
 }
 
-const Avatar = ({user}:Props) => {
+const Avatar = ({className, user}:Props) => {
   return (
-    <div className='size-12 rounded-full bg-black flex justify-center items-center text-white text-2xl font-bold'>
+    <div className={clsx('size-12 rounded-full bg-black flex justify-center items-center text-white text-2xl font-bold', className)}>
         {
             user === null ?  
             <> ?</> : 

@@ -10,7 +10,7 @@ import (
 
 type tJWTClaims struct {
 	jwt.RegisteredClaims
-	ID       string `json:"id"`
+	ID       uint   `json:"user_id"`
 	Username string `json:"username"`
 }
 
@@ -22,7 +22,7 @@ func CrateToken(id uint, username string) (string, error) {
 	duration := time.Duration(config.GetJWTExpire()) * time.Hour
 
 	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, tJWTClaims{
-		ID:       strconv.Itoa(int(id)),
+		ID:       id,
 		Username: username,
 		RegisteredClaims: jwt.RegisteredClaims{
 			Issuer:    strconv.Itoa(int(id)),

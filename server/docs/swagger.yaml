@@ -5,6 +5,8 @@ definitions:
         type: string
       email:
         type: string
+      id:
+        type: integer
       token:
         type: string
       username:
@@ -122,24 +124,9 @@ paths:
   /sign-up:
     post:
       parameters:
-      - description: Username
-        in: formData
-        name: username
-        required: true
-        type: string
-      - description: Password
-        in: formData
-        name: password
-        required: true
-        type: string
-      - description: Password Confirmation
-        in: formData
-        name: confirmation
-        required: true
-        type: string
-      - description: Email
-        in: formData
-        name: email
+      - description: UsreId
+        in: path
+        name: userId
         required: true
         type: string
       responses:
@@ -147,9 +134,39 @@ paths:
           description: OK
           schema:
             type: object
-      summary: Sign up
+      summary: AddContacts
       tags:
-      - Auth
+      - Contacts
+  /user/page:
+    get:
+      parameters:
+      - description: Token
+        in: header
+        name: Token
+        required: true
+        type: string
+      - description: PageNo
+        in: query
+        name: page_no
+        required: true
+        type: integer
+      - description: PageSize
+        in: query
+        name: page_size
+        required: true
+        type: integer
+      - description: Username
+        in: query
+        name: username
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+      summary: UserPage
+      tags:
+      - User
   /verify-email:
     post:
       parameters:

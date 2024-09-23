@@ -10,6 +10,10 @@ func Success(c *gin.Context, message string, data any) {
 	c.JSON(http.StatusOK, NewOK(message, data))
 }
 
+func SuccessPage(c *gin.Context, message string, data Page) {
+	c.JSON(http.StatusOK, NewOK(message, data))
+}
+
 func RequestFail(c *gin.Context, e Error) {
 	c.JSON(http.StatusBadRequest, NewError(e))
 }
