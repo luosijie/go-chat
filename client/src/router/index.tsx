@@ -42,7 +42,7 @@ const router = createBrowserRouter([
                         element: <Contacts/>
                     },
                     {
-                        path: '/searchUser',
+                        path: '/search-user',
                         element: <SearchUser/>
                     }
                 ]

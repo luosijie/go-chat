@@ -79,7 +79,7 @@ const UserPanel = () => {
                 <div className='w-full h-2/3 rounded-lg grid grid-cols-4  flex-wrap relative px-10 gap-5 auto-rows-min flex-grow'>
                     {
                     state.users.map(u => (
-                            <div key={u.id} className='bg-white rounded-md border p-2 flex items-center gap-3 cursor-pointer h-32'>
+                            <div key={u.id} className='bg-white rounded-md border p-2 flex items-center gap-3 cursor-pointer h-32 hover:bg-gray-50'>
                                 <Avatar user={u}/>
                                 <div>
                                     <div className='font-bold text-xl'>{ u.username }</div>

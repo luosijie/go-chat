@@ -26,7 +26,7 @@ const menuData: Array<Menu> = [
         Icon: Contact
     },
     {
-        name: 'SearchUser',
+        name: 'Search User',
         Icon: UserSearch
     },
     {
@@ -41,9 +41,15 @@ const Menu = () => {
     const navigate = useNavigate()
     const location = useLocation()
 
-    const isActive = (name:string) => {
-        return location.pathname === `/${name.toLowerCase()}`
+    const nameToPath = (name: string) => {
+        return name.toLowerCase().replace(' ', '-')
     }
+
+    const isActive = (name:string) => {
+        return location.pathname === `/${nameToPath(name)}`
+    }
+
+    
 
     return (
         
@@ -58,7 +64,7 @@ const Menu = () => {
                                 ' border-gray-100 bg-white font-bold [&>span]:text-black': isActive(e.name)
                             }
                         )}
-                        onClick={() => navigate(e.name.toLocaleLowerCase())}
+                        onClick={() => navigate(nameToPath(e.name))}
                     >
                         <e.Icon size={18}/>
                         <span>{ e.name }</span>
