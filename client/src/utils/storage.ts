@@ -6,15 +6,17 @@ type UserStore = {
     get: () => User | null
 }
 
+const STORAGE = sessionStorage
+
 export const userStorage:UserStore = {
     set: (user:User) => {
-        localStorage.setItem('user', JSON.stringify(user))
+        STORAGE.setItem('user', JSON.stringify(user))
     },
     delete: () => {
-        localStorage.removeItem('user')
+        STORAGE.removeItem('user')
     },
     get: () => {
-        const userString = localStorage.getItem('user')
+        const userString = STORAGE.getItem('user')
     
         if (userString === null) return null
     
