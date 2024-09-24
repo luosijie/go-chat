@@ -49,8 +49,6 @@ const Menu = () => {
         return location.pathname === `/${nameToPath(name)}`
     }
 
-    
-
     return (
         
         <div className="px-5 flex-grow">

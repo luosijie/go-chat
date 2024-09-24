@@ -2,8 +2,8 @@
 // import MessageList from '../components/MessageList'
 import SearchBar from '@/components/SearchBar'
 import { Search, UserPlus } from 'lucide-react'
-import ContactsList from './parts/ContactsList'
-import UserPanel from './parts/UserPanel'
+import ContactsList from './components/ContactsList'
+import UserPanel from './components/UserPanel'
 
 const Messages = () => {
     return (

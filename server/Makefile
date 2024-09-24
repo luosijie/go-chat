@@ -5,7 +5,7 @@ build:
 	@go build -o .bin/server
 
 run: swag build
-	@.bin/server
+	@ENV=dev .bin/server 
 
 test:
 	@go test -v ./...

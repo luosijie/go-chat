@@ -6,6 +6,7 @@ import request from '@/utils/request'
 import { ArrowLeftCircleIcon, ArrowRightCircleIcon, Search, SearchIcon, UserPlus, UserRoundXIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import Pagination from 'react-paginate'
+import UserCard from './components/UserCard'
 
 const BASE = import.meta.env.VITE_APP_URL
 
@@ -40,8 +41,6 @@ const UserPanel = () => {
             query
         })
 
-        console.log("get-user-page", res)
-
         if (res.data && res.data.rows) {
             setState({
                 total: res.data.total,
@@ -55,14 +54,12 @@ const UserPanel = () => {
     }, [query])
 
     const handlePageChange = (evt:any) => {
-        console.log('page-changed:', evt.selected)
         setQuery(query => ({
             ...query,
             page_no: evt.selected + 1
         }))
-        // console.log('sss', JSON.stringify)
-        // getUsers()
     }
+
     return (
         <div className="h-full flex-grow flex flex-col justify-center items-center">
             <div className='flex  justify-center items-center gap-6 h-28'>
@@ -78,15 +75,9 @@ const UserPanel = () => {
                 state.users.length ?
                 <div className='w-full h-2/3 rounded-lg grid grid-cols-4  flex-wrap relative px-10 gap-5 auto-rows-min flex-grow'>
                     {
-                    state.users.map(u => (
-                            <div key={u.id} className='bg-white rounded-md border p-2 flex items-center gap-3 cursor-pointer h-32 hover:bg-gray-50'>
-                                <Avatar user={u}/>
-                                <div>
-                                    <div className='font-bold text-xl'>{ u.username }</div>
-                                    <div>{ u.email }</div>
-                                </div>
-                        </div>
-                    ))
+                        state.users.map(u => (
+                            <UserCard user={u} key={u.id}/>
+                        ))
                     }
                 </div> :
                 <div className='flex-grow flex items-center justify-center'>

@@ -12,7 +12,7 @@ type User struct {
 	gorm.Model
 	Avatar                      string     `json:"avatar"`
 	Email                       string     `json:"email"`
-	Username                    string     `json:"username"`
+	Username                    string     `gorm:"unique" json:"username"`
 	Password                    string     `json:"password"`
 	LastLogin                   *time.Time `json:"last_login"`
 	IsVerified                  bool       `json:"is_verified"`

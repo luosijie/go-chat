@@ -1,13 +1,11 @@
 import FormInput from '@/components/FormInput'
 import { useUserStore } from '@/stores/user'
-import request from '@/utils/request'
 import { Lock, User } from 'lucide-react'
 import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { Link, useNavigate } from 'react-router-dom'
 
-const BASE = import.meta.env.VITE_APP_URL
 
 type FormData = {
     username: string
@@ -16,7 +14,7 @@ type FormData = {
 
 const Login = () => {
     const navigate = useNavigate()
-    const setUser  = useUserStore(state => state.setUser)
+    const login  = useUserStore(state => state.login)
 
     const [loading, setLoading] = useState<boolean>(false)
 
@@ -27,14 +25,9 @@ const Login = () => {
         if (loading) return
         setLoading(true)
 
-        const res = await request({
-            url: BASE + '/login',
-            method: 'post',
-            data
-        })
+        const res = await login(data.username, data.password)
 
         if (res.success) {
-            setUser(res.data)
             toast.success('Login success!')
             navigate('/')
         }

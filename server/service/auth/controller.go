@@ -128,7 +128,9 @@ func Login(c *gin.Context) {
 	}
 
 	// Check password
+
 	if err := utils.CheckPassword(user.Password, req.Password); err != nil {
+
 		response.RequestFail(c, response.Error{
 			Code:    -1,
 			Message: err.Error(),
@@ -139,6 +141,7 @@ func Login(c *gin.Context) {
 
 	// Generate jwt token
 	token, err := utils.CrateToken(user.ID, user.Username)
+
 	if err != nil {
 		response.ServerFail(c, response.Error{
 			Code:    -1,
