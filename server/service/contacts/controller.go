@@ -26,7 +26,7 @@ func ApplyContacts(c *gin.Context) {
 	response.Success(c, "Friend request has been sent", nil)
 }
 
-// @Summary FindContacts
+// @Summary Find Contacts
 // @Tags Contacts
 // @Param Token        header string  true "Token"
 // @Param userId 	   path   string  true "UserId"
@@ -39,6 +39,20 @@ func FindContacts(c *gin.Context) {
 
 	response.Success(c, "Success", contacts)
 
+}
+
+// @Summary Get Contacts
+// @Tags Contacts
+// @Param Token        header string  true "Token"
+// @Param userId 	   path   string  true "UserId"
+// @Success 		   200      {object} interface{}
+// @Router 			   /contacts/list [get]
+func GetContacts(c *gin.Context) {
+	userId := c.MustGet("userId").(uint)
+
+	contacts := sql.FindContacts(userId)
+
+	response.Success(c, "Success", contacts)
 }
 
 // @Summary AddContacts
