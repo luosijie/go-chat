@@ -40,6 +40,70 @@ const docTemplate = `{
                 }
             }
         },
+        "/contacts/apply": {
+            "post": {
+                "tags": [
+                    "Contacts"
+                ],
+                "summary": "ApplyContacts",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Token",
+                        "name": "Token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "UserId",
+                        "name": "userId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
+        "/contracts/:userId": {
+            "post": {
+                "tags": [
+                    "Contacts"
+                ],
+                "summary": "AddContacts",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Token",
+                        "name": "Token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "UserId",
+                        "name": "userId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
         "/forgot-password": {
             "post": {
                 "tags": [
@@ -174,7 +238,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "UsreId",
+                        "description": "UserId",
                         "name": "userId",
                         "in": "path",
                         "required": true

@@ -1,11 +1,13 @@
 import Avatar from '@/components/Avatar'
 import { useUserStore } from '@/stores/user'
 import { UserSummary } from '@/types'
+import request from '@/utils/request'
 import { motion } from 'framer-motion'
 import { LogIn, UserPlus } from 'lucide-react'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 
+const BaseUrl = import.meta.env.VITE_APP_URL
 
 type Props = {
     user: UserSummary
@@ -23,6 +25,16 @@ const UserCard = ({user}:Props) => {
             toast.success( `Logined as user: ${user.username}`)
         } else {
             toast.error(res.message)
+        }
+    }
+
+    const toAddFriend = async (user:UserSummary) => {
+        const res = await request({
+            url: BaseUrl + `/contacts/${user.id}`,
+            method: 'POST'
+        })
+        if (res.success) {
+            toast.success(`Friend request has been sent to: ${user.username}`)
         }
     }
 
@@ -45,7 +57,7 @@ const UserCard = ({user}:Props) => {
             <div className='flex flex-col items-center' onClick={() => toLogin(user)}>
                 <LogIn/> <span className='text-gray-500'>Login</span> 
             </div>
-            <div className='flex flex-col items-center'>
+            <div className='flex flex-col items-center' onClick={() => toAddFriend(user)}>
                 <UserPlus/> <span className='text-gray-500'>Add Friend</span>
             </div>
         </motion.div>

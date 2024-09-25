@@ -7,11 +7,12 @@ import (
 )
 
 func routerContact(router *gin.Engine) {
-	g := router.Group("/contacts")
+	group := router.Group("/contacts")
 
-	g.Use(middleware.Auth())
+	group.Use(middleware.Auth())
 
 	// Routes for auth
-	router.GET("/contacts/:userId", serviceContacts.FindContacts)
-	router.POST("/contacts/:userId", serviceContacts.AddContacts)
+	// group.POST("/apply/:userId", serviceContacts.ApplyContacts)
+	group.GET("/:userId", serviceContacts.FindContacts)
+	group.POST("/:userId", serviceContacts.AddContacts)
 }

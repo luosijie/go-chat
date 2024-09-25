@@ -34,6 +34,14 @@ func FindUser(user *User) error {
 	return db.Where(user).First(user).Error
 }
 
+func FindUserByID(id uint) *User {
+	var user = User{Model: gorm.Model{ID: id}}
+	if err := db.First(&user).Error; err != nil {
+		return nil
+	}
+	return &user
+}
+
 func UpdateUser(user *User) error {
 	return db.Model(user).Updates(user).Error
 }

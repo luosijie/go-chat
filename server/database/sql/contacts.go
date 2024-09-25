@@ -4,8 +4,8 @@ import "gorm.io/gorm"
 
 type Contacts struct {
 	gorm.Model
-	UserId   uint `gorm:"unique_index" json:"user_id"`
-	FriendId uint `gorm:"unique_index" json:"friend_id"`
+	UserId   uint `gorm:"uniqueIndex:contracts" json:"user_id"`
+	FriendId uint `gorm:"uniqueIndex:contracts" json:"friend_id"`
 }
 
 func (table *Contacts) TableName() string {

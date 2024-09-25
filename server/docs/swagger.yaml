@@ -40,6 +40,48 @@ paths:
       summary: Check Auth
       tags:
       - Auth
+  /contacts/apply:
+    post:
+      parameters:
+      - description: Token
+        in: header
+        name: Token
+        required: true
+        type: string
+      - description: UserId
+        in: path
+        name: userId
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+      summary: ApplyContacts
+      tags:
+      - Contacts
+  /contracts/:userId:
+    post:
+      parameters:
+      - description: Token
+        in: header
+        name: Token
+        required: true
+        type: string
+      - description: UserId
+        in: path
+        name: userId
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+      summary: AddContacts
+      tags:
+      - Contacts
   /forgot-password:
     post:
       parameters:
@@ -124,7 +166,7 @@ paths:
   /sign-up:
     post:
       parameters:
-      - description: UsreId
+      - description: UserId
         in: path
         name: userId
         required: true
