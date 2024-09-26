@@ -1,36 +1,52 @@
 
+import Avatar from '@/components/Avatar'
 import Empty from '@/components/Empty'
 import SearchBar from '@/components/SearchBar'
-import { useMessageStore } from '@/stores/message'
-import { MessageSquareMoreIcon } from 'lucide-react'
+import { useContractsStore } from '@/stores/contracts'
+import { UserSummary } from '@/types'
 
-const MessageList = () => {
-    const messages = useMessageStore(state => state.messages)
-    const setCurrent = useMessageStore(state => state.setCurrent)
-    console.log('messages:', messages)
+import { useEffect, useState } from 'react'
+
+type Props = {
+    onClick: (user: UserSummary) => void
+}
+
+const ContactsList = ({ onClick } : Props) => {
+    const contacts = useContractsStore(state => state.list)
+
+    const [list, setList] = useState<Array<UserSummary>>([])
+
+
+    useEffect(() => {
+        setList(contacts)
+    }, [contacts])
+
+    // const setCurrent = useMessageStore(state => state.setCurrent)
     return (
         <>
             <SearchBar/>
             <div className="flex-grow overflow-y-auto mt-2">
                 {
-                    messages.map(e => (
+                    list.length ?
+                    list.map(user => (
                         <div 
-                            key={e.contact.username} 
-                            className="flex gap-3 items-center border mb-3 p-2 rounded-lg border-gray-100"
-                            onClick={() => setCurrent(e) }
+                            key={user.id} 
+                            className="flex gap-3 items-center border mb-3 p-2 rounded-lg border-gray-100 cursor-pointer h-24 hover:bg-gray-50"
+                            onClick={() => onClick(user) }
                         >
-                            <img src={e.contact.avatar} alt="avatar" className="size-14 bg-gray-50 rounded-full object-fill"/>
-                            <div>
-                                <div className="font-bold text-base">{e.contact.username}</div>
-                                {e.history[0] &&<div className="text-sm text-gray-500">{e.history[0].content.slice(0, 10)}</div>}
+                            <Avatar user={user} className='flex-shrink-0'/>
+                            <div className='overflow-hidden [&>div]:text-ellipsis [&>div]:overflow-hidden'>
+                                <div className='font-bold text-xl'>{ user.username }</div>
+                                <div className='text-gray-500'>{ user.email }</div>
                             </div>
+                            
                         </div>
-                    ))
+                    )) :
+                    <Empty text='No contacts here...'/>
                 }
-                <Empty text='No message here...'/>
             </div>
         </>
     )
 }
 
-export default MessageList
+export default ContactsList

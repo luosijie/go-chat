@@ -72,6 +72,38 @@ const docTemplate = `{
                 }
             }
         },
+        "/contacts/list": {
+            "get": {
+                "tags": [
+                    "Contacts"
+                ],
+                "summary": "Get Contacts",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Token",
+                        "name": "Token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "UserId",
+                        "name": "userId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
         "/contracts/:userId": {
             "post": {
                 "tags": [

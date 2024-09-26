@@ -22,11 +22,8 @@ func Connect() {
 
 	fmt.Println("Connected to mysql successfully!")
 
-	if err := db.AutoMigrate(&User{}); err != nil {
-		fmt.Println("Mysql:User migrate error:", err)
+	if err := db.AutoMigrate(&User{}, &Contacts{}); err != nil {
+		fmt.Println("Mysql migrate error:", err)
 	}
 
-	if err := db.AutoMigrate(&Contacts{}); err != nil {
-		fmt.Println("Mysql:Contacts migrate error:", err)
-	}
 }

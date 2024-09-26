@@ -28,8 +28,6 @@ func Auth() gin.HandlerFunc {
 
 		c.Set("userId", claims.ID)
 
-		fmt.Println(claims)
-
 		c.Next()
 	}
 }

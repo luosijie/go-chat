@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/luosijie/go-chat/server/database/sql"
 	"github.com/luosijie/go-chat/server/pkg/response"
+	"github.com/luosijie/go-chat/server/types"
 )
 
 // @Summary ApplyContacts
@@ -26,33 +27,23 @@ func ApplyContacts(c *gin.Context) {
 	response.Success(c, "Friend request has been sent", nil)
 }
 
-// @Summary Find Contacts
-// @Tags Contacts
-// @Param Token        header string  true "Token"
-// @Param userId 	   path   string  true "UserId"
-// @Success 		   200      {object} interface{}
-// @Router 			   /sign-up [post]
-func FindContacts(c *gin.Context) {
-	userId := c.MustGet("userId").(uint)
-
-	contacts := sql.FindContacts(userId)
-
-	response.Success(c, "Success", contacts)
-
-}
-
-// @Summary Get Contacts
+// @Summary Get Contacts List
 // @Tags Contacts
 // @Param Token        header string  true "Token"
 // @Param userId 	   path   string  true "UserId"
 // @Success 		   200      {object} interface{}
 // @Router 			   /contacts/list [get]
-func GetContacts(c *gin.Context) {
+func GetContactsList(c *gin.Context) {
 	userId := c.MustGet("userId").(uint)
 
-	contacts := sql.FindContacts(userId)
+	var list []types.UserSummary
 
-	response.Success(c, "Success", contacts)
+	if err := sql.FindContacts(userId, &list); err != nil {
+		response.ServerFail(c, response.ErrorUnknown)
+		return
+	}
+
+	response.Success(c, "Success get contacts", list)
 }
 
 // @Summary AddContacts
@@ -94,10 +85,10 @@ func AddContacts(c *gin.Context) {
 // @Success 		   200      {object} interface{}
 // @Router 			   /sign-up [post]
 func DeleteContacts(c *gin.Context) {
-	userId := c.MustGet("userId").(uint)
+	// userId := c.MustGet("userId").(uint)
 
-	contacts := sql.FindContacts(userId)
+	// // contacts := sql.FindContacts(userId)
 
-	response.Success(c, "Success", contacts)
+	// response.Success(c, "Success", contacts)
 
 }

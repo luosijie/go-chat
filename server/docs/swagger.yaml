@@ -61,6 +61,27 @@ paths:
       summary: ApplyContacts
       tags:
       - Contacts
+  /contacts/list:
+    get:
+      parameters:
+      - description: Token
+        in: header
+        name: Token
+        required: true
+        type: string
+      - description: UserId
+        in: path
+        name: userId
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+      summary: Get Contacts
+      tags:
+      - Contacts
   /contracts/:userId:
     post:
       parameters:

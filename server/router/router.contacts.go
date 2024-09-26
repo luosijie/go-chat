@@ -13,6 +13,6 @@ func routerContact(router *gin.Engine) {
 
 	// Routes for auth
 	// group.POST("/apply/:userId", serviceContacts.ApplyContacts)
-	group.GET("/:userId", serviceContacts.FindContacts)
 	group.POST("/:userId", serviceContacts.AddContacts)
+	group.GET("/list", serviceContacts.GetContactsList)
 }

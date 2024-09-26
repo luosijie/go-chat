@@ -1,11 +1,14 @@
 package sql
 
-import "gorm.io/gorm"
+import (
+	"gorm.io/gorm"
+)
 
 type Contacts struct {
 	gorm.Model
-	UserId   uint `gorm:"uniqueIndex:contracts" json:"user_id"`
-	FriendId uint `gorm:"uniqueIndex:contracts" json:"friend_id"`
+	UserID   uint `gorm:"uniqueIndex:contacts" json:"user_id"`
+	FriendID uint `gorm:"uniqueIndex:contacts" json:"friend_id"`
+	Friend   User `gorm:"foreignKey:FriendID"`
 }
 
 func (table *Contacts) TableName() string {
@@ -17,8 +20,8 @@ func CreateContacts(userId uint, friendId uint) error {
 	tx := db.Begin()
 
 	contactsUser := Contacts{
-		UserId:   userId,
-		FriendId: friendId,
+		UserID:   userId,
+		FriendID: friendId,
 	}
 
 	if err := tx.Create(&contactsUser).Error; err != nil {
@@ -27,8 +30,8 @@ func CreateContacts(userId uint, friendId uint) error {
 	}
 
 	contactsFriend := &Contacts{
-		UserId:   friendId,
-		FriendId: userId,
+		UserID:   friendId,
+		FriendID: userId,
 	}
 
 	if err := tx.Create(&contactsFriend).Error; err != nil {
@@ -57,11 +60,16 @@ func DeleteContacts(userId uint, friendId uint) error {
 	return nil
 }
 
-func FindContacts(userId uint) []*Contacts {
+func FindContacts(userId uint, out interface{}) error {
 
-	var contacts []*Contacts
+	contacts := []Contacts{}
 
-	db.Where("user_id = ?", userId).Find(&contacts)
+	if err := db.Model(&Contacts{}).Where("user_id = ?", userId).Find(&contacts).Error; err != nil {
+		return err
+	}
 
-	return contacts
+	db.Model(&contacts).Association("Friend").Find(out)
+
+	return nil
+
 }
