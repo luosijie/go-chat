@@ -2,8 +2,10 @@ import Avatar from '@/components/Avatar'
 import SearchBar from '@/components/SearchBar'
 import { UserSummary } from '@/types'
 import request from '@/utils/request'
-import { Search, User2, UserPlus } from 'lucide-react'
+import clsx from 'clsx'
+import { Delete, LogIn, MessageCircleMore, Search, User2, UserPlus } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
 
 const BASE = import.meta.env.VITE_APP_URL
 
@@ -15,14 +17,30 @@ type Query = {
 
 type Props = {
 	contacts: UserSummary | null
+	onRemove: () => void
 }
 
-const ContactsPanel = ({ contacts } : Props) => {
+const btnClass = 'flex gap-2 border py-2 px-4 rounded-md hover:bg-gray-50 cursor-pointer'
+
+const ContactsPanel = ({ contacts, onRemove } : Props) => {
 
 
   useEffect(() => {
     // getUsers()
   }, [])
+
+  const removeContacts = async (friendId:number) => {
+	const res = await request({
+		url: BASE + `/contacts/${friendId}`,
+		method: 'DELETE'
+	})
+
+	if (res.success) {
+		toast.success(res.message)
+		onRemove()
+	}
+  }
+
   return (
     <div className="flex-grow flex flex-col gap-10 justify-center items-center">
 
@@ -36,8 +54,15 @@ const ContactsPanel = ({ contacts } : Props) => {
 				<div className='text-gray-500'>{ contacts.email }</div>
 			</div>
 			<div className='flex gap-5 items-center'>
-				<div className='border py-2 px-4 rounded-md hover:bg-gray-50 cursor-pointer'>Send Message</div>
-				<div className='border py-2 px-4 rounded-md hover:bg-gray-50 cursor-pointer'>Login</div>
+				<div className={btnClass}>
+					<MessageCircleMore/> Send Message
+				</div>
+				<div className={btnClass}>
+					<LogIn/> Login
+				</div>
+				<div className={clsx(btnClass, 'bg-red-500 hover:bg-red-400 text-white')} onClick={() => removeContacts(contacts.id)}>
+					<Delete/> Remove
+				</div>
 			</div>
 		</> :
 		<div className='flex gap-2 items-center text-xl text-gray-400 font-bold'>

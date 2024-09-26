@@ -15,4 +15,5 @@ func routerContact(router *gin.Engine) {
 	// group.POST("/apply/:userId", serviceContacts.ApplyContacts)
 	group.POST("/:userId", serviceContacts.AddContacts)
 	group.GET("/list", serviceContacts.GetContactsList)
+	group.DELETE("/:friendId", serviceContacts.DeleteContacts)
 }

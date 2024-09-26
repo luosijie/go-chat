@@ -40,6 +40,38 @@ const docTemplate = `{
                 }
             }
         },
+        "/contacts/:userId": {
+            "delete": {
+                "tags": [
+                    "Contacts"
+                ],
+                "summary": "Delete Contacts",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Token",
+                        "name": "Token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "UserId",
+                        "name": "userId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
         "/contacts/apply": {
             "post": {
                 "tags": [
@@ -77,7 +109,7 @@ const docTemplate = `{
                 "tags": [
                     "Contacts"
                 ],
-                "summary": "Get Contacts",
+                "summary": "Get Contacts List",
                 "parameters": [
                     {
                         "type": "string",
@@ -264,15 +296,36 @@ const docTemplate = `{
         "/sign-up": {
             "post": {
                 "tags": [
-                    "Contacts"
+                    "Auth"
                 ],
-                "summary": "AddContacts",
+                "summary": "Sign up",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "UserId",
-                        "name": "userId",
-                        "in": "path",
+                        "description": "Username",
+                        "name": "username",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Password",
+                        "name": "password",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Password Confirmation",
+                        "name": "confirmation",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Email",
+                        "name": "email",
+                        "in": "formData",
                         "required": true
                     }
                 ],

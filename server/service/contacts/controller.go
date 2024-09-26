@@ -79,16 +79,24 @@ func AddContacts(c *gin.Context) {
 
 }
 
-// @Summary AddContacts
+// @Summary Delete Contacts
 // @Tags Contacts
-// @Param userId 	   path string   true "UserId"
+// @Param Token        header            string   true        "Token"
+// @Param userId 	   path              string   true        "UserId"
 // @Success 		   200      {object} interface{}
-// @Router 			   /sign-up [post]
+// @Router 			   /contacts/:userId [delete]
 func DeleteContacts(c *gin.Context) {
-	// userId := c.MustGet("userId").(uint)
+	userId := c.MustGet("userId").(uint)
+	friendId, _ := strconv.Atoi(c.Param("friendId"))
 
-	// // contacts := sql.FindContacts(userId)
+	if err := sql.DeleteContacts(userId, uint(friendId)); err != nil {
+		response.ServerFail(c, response.Error{
+			Code:    -1,
+			Message: err.Error(),
+		})
+		return
+	}
 
-	// response.Success(c, "Success", contacts)
+	response.Success(c, "Remove contacts successful", nil)
 
 }

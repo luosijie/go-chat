@@ -19,6 +19,11 @@ const Messages = () => {
         getList()
     }, [])
     
+    const onRemove = () => {
+        getList()
+        setActive(null)
+    }
+
     return (
         <div className="flex justify-between h-full">
             {/* List */}
@@ -27,7 +32,7 @@ const Messages = () => {
                 <ContactsList onClick={u => setActive(u)}/>
             </div>
             {/* Chat */}
-            <ContactsPanel contacts={active}/>
+            <ContactsPanel contacts={active} onRemove={onRemove}/>
         </div>
     )
 }

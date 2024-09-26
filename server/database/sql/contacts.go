@@ -1,6 +1,8 @@
 package sql
 
 import (
+	"fmt"
+
 	"gorm.io/gorm"
 )
 
@@ -45,17 +47,20 @@ func CreateContacts(userId uint, friendId uint) error {
 }
 
 func DeleteContacts(userId uint, friendId uint) error {
+	fmt.Println("Delete Contacts Params:", userId, friendId)
 	tx := db.Begin()
 
-	if err := tx.Where("user_id = ? AND friend_id = ?", userId, friendId).Delete(&Contacts{}).Error; err != nil {
+	if err := tx.Unscoped().Where("user_id = ? AND friend_id = ?", userId, friendId).Delete(&Contacts{}).Error; err != nil {
 		tx.Rollback()
 		return err
 	}
 
-	if err := tx.Where("user_id = ? AND friend_id = ?", friendId, userId).Delete(&Contacts{}).Error; err != nil {
+	if err := tx.Unscoped().Where("user_id = ? AND friend_id = ?", friendId, userId).Delete(&Contacts{}).Error; err != nil {
 		tx.Rollback()
 		return err
 	}
+
+	tx.Commit()
 
 	return nil
 }

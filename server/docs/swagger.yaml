@@ -40,6 +40,27 @@ paths:
       summary: Check Auth
       tags:
       - Auth
+  /contacts/:userId:
+    delete:
+      parameters:
+      - description: Token
+        in: header
+        name: Token
+        required: true
+        type: string
+      - description: UserId
+        in: path
+        name: userId
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+      summary: Delete Contacts
+      tags:
+      - Contacts
   /contacts/apply:
     post:
       parameters:
@@ -79,7 +100,7 @@ paths:
           description: OK
           schema:
             type: object
-      summary: Get Contacts
+      summary: Get Contacts List
       tags:
       - Contacts
   /contracts/:userId:
@@ -187,9 +208,24 @@ paths:
   /sign-up:
     post:
       parameters:
-      - description: UserId
-        in: path
-        name: userId
+      - description: Username
+        in: formData
+        name: username
+        required: true
+        type: string
+      - description: Password
+        in: formData
+        name: password
+        required: true
+        type: string
+      - description: Password Confirmation
+        in: formData
+        name: confirmation
+        required: true
+        type: string
+      - description: Email
+        in: formData
+        name: email
         required: true
         type: string
       responses:
@@ -197,9 +233,9 @@ paths:
           description: OK
           schema:
             type: object
-      summary: AddContacts
+      summary: Sign up
       tags:
-      - Contacts
+      - Auth
   /user/page:
     get:
       parameters:
