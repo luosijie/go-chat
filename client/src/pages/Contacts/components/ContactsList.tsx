@@ -5,7 +5,7 @@ import SearchBar from '@/components/SearchBar'
 import { useContractsStore } from '@/stores/contracts'
 import { UserSummary } from '@/types'
 
-import { useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 
 type Props = {
     onClick: (user: UserSummary) => void
@@ -21,10 +21,16 @@ const ContactsList = ({ onClick } : Props) => {
         setList(contacts)
     }, [contacts])
 
+    const onSearchChange = (evt:ChangeEvent<HTMLInputElement>) => {
+        const keyword = evt.target.value
+
+        setList(contacts.filter(e => e.username.includes(keyword)))
+    }
+
     // const setCurrent = useMessageStore(state => state.setCurrent)
     return (
         <>
-            <SearchBar/>
+            <SearchBar placeholder='Search by name' onChange={onSearchChange}/>
             <div className="flex-grow overflow-y-auto mt-2">
                 {
                     list.length ?
