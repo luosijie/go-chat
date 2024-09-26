@@ -9,6 +9,7 @@ type UserStore = {
     user: User | null
     setUser: (user?: User) => void
     login: (username: string, password: string) => any
+    logout: () => void
 }
 
 export const useUserStore = create<UserStore>((set, get) => ({
@@ -17,7 +18,6 @@ export const useUserStore = create<UserStore>((set, get) => ({
 
         if (user === undefined) {
             const userStored = userStorage.get()
-            console.log('userStoreduserStored', userStored)
             set(() => ({ user: userStored }))
         } else {
             userStorage.set(user)
@@ -39,5 +39,10 @@ export const useUserStore = create<UserStore>((set, get) => ({
         }
 
         return res
+    },
+    logout: () => {
+        set(() => ({ user: null }))
+        userStorage.delete()
+        location.href = '/login'
     }
 }))

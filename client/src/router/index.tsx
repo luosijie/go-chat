@@ -9,6 +9,7 @@ import Login from '@/pages/Login'
 import Messages from '@/pages/Messages'
 import ResetPassword from '@/pages/ResetPassword'
 import SearchUser from '@/pages/SearchUser'
+import Setting from '@/pages/Setting'
 import SignUp from '@/pages/SignUp'
 import { createBrowserRouter } from 'react-router-dom'
 
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
                     {
                         path: '/search-user',
                         element: <SearchUser/>
+                    },
+                    {
+                        path: '/setting',
+                        element: <Setting/>
                     }
                 ]
             },

@@ -2,7 +2,7 @@ import { User } from "@/types";
 
 type UserStore = {
     set: (user:User) => void
-    delete: (user:User) => void
+    delete: () => void
     get: () => User | null
 }
 

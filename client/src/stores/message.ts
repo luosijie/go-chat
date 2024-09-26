@@ -1,20 +1,20 @@
+import { Message } from '@/types'
 import { create } from 'zustand'
-import { Message } from '../types'
 
 type MessageStore = {
-    current: Message | null
+    active: Message | null
     messages: Array<Message>
-    setCurrent: (message: Message) => void
+    setActive: (message: Message) => void
     setMessages: (messages: Array<Message>) => void
 }
 
 export const useMessageStore = create<MessageStore>((set) => ({
-    current: null,
+    active: null,
     messages: [],
     setMessages: (messages: Array<Message>) => {
-        set(() => ({messages}))
+        set(() => ({ messages }))
     },
-    setCurrent: (message: Message) => {
-        set(() => ({current: message}))
+    setActive: (message: Message) => {
+        set(() => ({ active: message }))
     }
 }))
