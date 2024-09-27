@@ -39,6 +39,7 @@ func NewRouter() *gin.Engine {
 	routerAuth(router)
 	routerUser(router)
 	routerContact(router)
+	routerWS(router)
 
 	return router
 }

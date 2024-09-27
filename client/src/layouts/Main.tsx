@@ -7,12 +7,16 @@ import { Outlet, useNavigate } from 'react-router-dom'
 
 function Main() {
     const navigate = useNavigate()
-    const { user } = useUserStore()
+    const user = useUserStore(state => state.user)
+    const connectWS = useUserStore(state => state.connectWS)
+
+    
     
     useEffect(() => {
         if (!user) {
             navigate('/login')
         }
+        connectWS()
     }, [user])
 
 
