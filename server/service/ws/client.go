@@ -14,10 +14,20 @@ type Client struct {
 }
 
 func (client *Client) ReadMessage(h *Hub) {
-	defer client.Conn.Close()
+	defer func() {
+		h.Logout <- client
+		client.Conn.Close()
+	}()
 
 	for {
-		_, msgJson, _ := client.Conn.ReadMessage()
+		_, msgJson, err := client.Conn.ReadMessage()
+
+		if err != nil {
+			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
+				fmt.Printf("[ws: unexpected close error] \n %+v", err)
+			}
+			break
+		}
 
 		msg := &Message{}
 

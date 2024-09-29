@@ -56,7 +56,7 @@ func ConnectClient(c *gin.Context) {
 		From:        userId,
 		To:          userId,
 		ToGroup:     0,
-		Type:        MessageFriend,
+		Type:        MessageNotice,
 		ContentType: ContentText,
 		Content:     "Logined",
 	}

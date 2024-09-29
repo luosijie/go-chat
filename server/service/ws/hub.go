@@ -27,30 +27,54 @@ func (h *Hub) Run() {
 		select {
 
 		case client := <-h.Login:
-			fmt.Println("1111111111111111111111")
+			fmt.Println("[Client login ...]")
 			if _, ok := h.Clients[client.ID]; !ok {
 				h.Clients[client.ID] = client
 			}
 
 		case client := <-h.Logout:
+			fmt.Println("[Client logout ...]")
 			if _, ok := h.Clients[client.ID]; ok {
 				delete(h.Clients, client.ID)
 				close(client.Messages)
 			}
 
 		case msg := <-h.Broadcast:
-			if msg.To != 0 {
-				if client, ok := h.Clients[msg.To]; ok {
-					client.Messages <- msg
+			fmt.Printf("[Client broadcast ...]%+v", msg)
+
+			// For couple message
+			if msg.Type == MessageCouple {
+				if msg.To != 0 {
+					if client, ok := h.Clients[msg.To]; ok {
+						client.Messages <- msg
+					}
 				}
-			}
-			if msg.ToGroup != 0 {
-				if g, ok := h.Groups[msg.ToGroup]; ok {
-					for _, client := range g.Clients {
+
+				if msg.From != 0 && msg.From != msg.To {
+					if client, ok := h.Clients[msg.From]; ok {
 						client.Messages <- msg
 					}
 				}
 			}
+
+			// For group message
+			if msg.Type == MessageGroup {
+				if msg.ToGroup != 0 {
+					if g, ok := h.Groups[msg.ToGroup]; ok {
+						for _, client := range g.Clients {
+							client.Messages <- msg
+						}
+					}
+				}
+			}
+
+			// For notice message
+			if msg.Type == MessageNotice {
+				if client, ok := h.Clients[msg.To]; ok {
+					client.Messages <- msg
+				}
+			}
+
 		}
 	}
 }

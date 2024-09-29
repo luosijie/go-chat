@@ -1,11 +1,14 @@
 package serviceWS
 
+import "time"
+
 // Define types for message
 
 type MessageType string
 
 const (
-	MessageFriend MessageType = "friend"
+	MessageNotice MessageType = "notice"
+	MessageCouple MessageType = "couple"
 	MessageGroup  MessageType = "group"
 )
 
@@ -20,15 +23,24 @@ const (
 type Message struct {
 	From        uint        `json:"from"`
 	To          uint        `json:"to"`
-	ToGroup     uint        `json:"to_group"`
+	ToGroup     uint        `json:"toGroup"`
 	Type        MessageType `json:"type"`
-	ContentType ContentType `json:"content_type"`
+	ContentType ContentType `json:"contentType"`
 	Content     string      `json:"content"`
+	Date        time.Time   `json:"date"`
 }
 
 // Define type for goup
 
+type GroupType string
+
+const (
+	GroupCouple   GroupType = "single"
+	GroupMultiple GroupType = "multiple"
+)
+
 type Group struct {
 	ID      uint            `json:"id"`
+	Type    GroupType       `json:"type"`
 	Clients map[uint]Client `json:"clients"`
 }
