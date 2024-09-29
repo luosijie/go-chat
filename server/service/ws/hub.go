@@ -1,18 +1,20 @@
 package serviceWS
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type Hub struct {
-	Groups    map[uint]*Group  `json:"group"`
-	Clients   map[uint]*Client `json:"clients"`
-	Login     chan *Client     `json:"login"`
-	Logout    chan *Client     `json:"logout"`
-	Broadcast chan *Message    `json:"broadcast"`
+	Groups    map[string]*Group `json:"group"`
+	Clients   map[uint]*Client  `json:"clients"`
+	Login     chan *Client      `json:"login"`
+	Logout    chan *Client      `json:"logout"`
+	Broadcast chan *Message     `json:"broadcast"`
 }
 
 func NewHub() *Hub {
 	return &Hub{
-		Groups:    make(map[uint]*Group),
+		Groups:    make(map[string]*Group),
 		Clients:   make(map[uint]*Client),
 		Login:     make(chan *Client),
 		Logout:    make(chan *Client),
@@ -42,29 +44,37 @@ func (h *Hub) Run() {
 		case msg := <-h.Broadcast:
 			fmt.Printf("[Client broadcast ...]%+v", msg)
 
-			// For couple message
-			if msg.Type == MessageCouple {
-				if msg.To != 0 {
-					if client, ok := h.Clients[msg.To]; ok {
-						client.Messages <- msg
+			// For chat message
+			if msg.Type == MessageChat {
+				group, ok := h.Groups[msg.GroupID]
+
+				if !ok {
+
+					group = &Group{
+						ID:      msg.GroupID,
+						Type:    "",
+						Members: []uint{},
 					}
+
+					if msg.GroupType == GroupSingle {
+						group.SetCoupleMembers(msg.GroupID)
+					}
+
 				}
 
-				if msg.From != 0 && msg.From != msg.To {
-					if client, ok := h.Clients[msg.From]; ok {
-						client.Messages <- msg
-					}
-				}
-			}
+				fmt.Println("\nmembers", group.Members)
+				fmt.Println("\nclients", h.Clients)
 
-			// For group message
-			if msg.Type == MessageGroup {
-				if msg.ToGroup != 0 {
-					if g, ok := h.Groups[msg.ToGroup]; ok {
-						for _, client := range g.Clients {
+				for _, id := range group.Members {
+
+					go func(id uint) {
+						if client, ok := h.Clients[id]; ok {
 							client.Messages <- msg
+						} else {
+							// store in redis when client not login
 						}
-					}
+
+					}(id)
 				}
 			}
 

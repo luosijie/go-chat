@@ -2,7 +2,7 @@
 import Avatar from '@/components/Avatar'
 import Empty from '@/components/Empty'
 import SearchBar from '@/components/SearchBar'
-import { useContractsStore } from '@/stores/contracts'
+import { useFriendStore } from '@/stores/friend'
 import { UserSummary } from '@/types'
 
 import { ChangeEvent, useEffect, useState } from 'react'
@@ -12,7 +12,7 @@ type Props = {
 }
 
 const ContactsList = ({ onClick } : Props) => {
-    const contacts = useContractsStore(state => state.list)
+    const contacts = useFriendStore(state => state.list)
 
     const [list, setList] = useState<Array<UserSummary>>([])
 

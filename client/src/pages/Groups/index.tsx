@@ -1,12 +1,12 @@
 
 import Chat from '@/components/Chat'
 import Info from '@/components/Info'
-import { useMessageStore } from '@/stores/message'
+import { useContactStore } from '@/stores/contact'
 // import MessageList from '../components/MessageList'
 import MessageList from '@/components/MessageList'
 
 const Groups = () => {
-    const current = useMessageStore(state => state.current)
+    const current = useContactStore(state => state.active)
 
     return (
         <div className="flex justify-between h-full">
@@ -16,7 +16,7 @@ const Groups = () => {
             </div>
             {/* Chat */}
             <div className="flex-grow">
-                <Chat/>
+                <Chat header={<></>}/>
             </div>
             {/* Info */}
             {

@@ -1,22 +1,19 @@
+import { UserSummary } from "@/types"
+import Avatar from "./Avatar"
 
-const data: Record<string, string> = {
-    gender: 'female',
-    birth: '1993-9-2'
+
+
+type Props = {
+    user: UserSummary
 }
 
-const Info = () => {
+const Info = ({user}:Props) => {
     return (
-        <div className="w-full flex flex-col items-center p-10 min-w-32">
-            <img src="" alt="avatar" className="size-28 rounded-full bg-gray-200" />
-            <div className="font-bold my-8 text-xl">Emi</div>
-            {
-                Object.keys(data).map((key: string) => (
-                    <div key={key} className="flex justify-between w-full border-b py-3">
-                        <span className="font-bold">{ key }</span> 
-                        <span>{ data[key] }</span>
-                    </div>
-                ))
-            }
+        <div className="w-full flex flex-col items-center justify-center  p-10 min-w-36">
+            <Avatar user={user} className="size-20 mt-10"/>
+            <div className="font-bold mt-4 text-3xl">{ user.username }</div>
+            <div className="mt-4 text-gray-500">{ user.email }</div>
+            <div className="btn-plain mt-5">Login</div>
         </div>
     )
 }

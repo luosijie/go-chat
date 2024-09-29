@@ -1,10 +1,15 @@
 
+import Avatar from '@/components/Avatar'
+import Empty from '@/components/Empty'
+import SearchBar from '@/components/SearchBar'
 import { useContactStore } from '@/stores/contact'
-import Empty from './Empty'
-import SearchBar from './SearchBar'
+import { Contact } from '@/types'
+import { useState } from 'react'
 
 const MessageList = () => {
     const messages = useContactStore(state => state.list)
+
+    const [list, setList] = useState<Array<Contact>>(messages)
     const setCurrent = useContactStore(state => state.setActive)
     console.log('messages:', messages)
     return (
@@ -12,21 +17,22 @@ const MessageList = () => {
             <SearchBar/>
             <div className="flex-grow overflow-y-auto mt-2">
                 {
-                    messages.map(e => (
+                    list.length ?
+                    list.map(e => (
                         <div 
                             key={e.user.username} 
-                            className="flex gap-3 items-center border mb-3 p-2 rounded-lg border-gray-100"
+                            className="flex gap-3 items-center border mb-3 p-2 rounded-lg border-gray-100 cursor-pointer hover:bg-gray-50"
                             onClick={() => setCurrent(e) }
                         >
-                            <img src={e.user.avatar} alt="avatar" className="size-14 bg-gray-50 rounded-full object-fill"/>
+                            <Avatar user={e.user} />
                             <div>
                                 <div className="font-bold text-base">{e.user.username}</div>
                                 {e.history[0] &&<div className="text-sm text-gray-500">{e.history[0].content.slice(0, 10)}</div>}
                             </div>
                         </div>
-                    ))
+                    )) :
+                    <Empty text='No message here...'/>
                 }
-                <Empty text='No message here...'/>
             </div>
         </>
     )

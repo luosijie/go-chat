@@ -3,6 +3,7 @@ package serviceWS
 import (
 	"encoding/json"
 	"fmt"
+	"time"
 
 	"github.com/gorilla/websocket"
 )
@@ -32,6 +33,7 @@ func (client *Client) ReadMessage(h *Hub) {
 		msg := &Message{}
 
 		json.Unmarshal(msgJson, msg)
+		msg.Date = time.Now()
 
 		h.Broadcast <- msg
 	}

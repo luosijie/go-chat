@@ -115,7 +115,7 @@ const Page = () => {
                     />
                 </FormInput>
 
-                <input type="submit" className='button'/>
+                <input type="submit" className='btn'/>
             </form>
 
             {/* Actions */}

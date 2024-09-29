@@ -3,6 +3,7 @@ package serviceWS
 import (
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
@@ -55,10 +56,10 @@ func ConnectClient(c *gin.Context) {
 	welcomeMsg := Message{
 		From:        userId,
 		To:          userId,
-		ToGroup:     0,
 		Type:        MessageNotice,
 		ContentType: ContentText,
 		Content:     "Logined",
+		Date:        time.Now(),
 	}
 
 	h.Broadcast <- &welcomeMsg

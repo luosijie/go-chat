@@ -4,12 +4,12 @@ import { create } from 'zustand'
 
 const BASE = import.meta.env.VITE_APP_URL
 
-type ContractsStore = {
+type FriendStore = {
     list: Array<UserSummary>
     getList: () => Promise<Array<UserSummary>>
 }
 
-export const useContractsStore = create<ContractsStore>((set, get) => ({
+export const useFriendStore = create<FriendStore>((set, get) => ({
     list: [],
     getList: async () => {
         const res = await request({

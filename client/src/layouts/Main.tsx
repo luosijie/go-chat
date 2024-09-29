@@ -1,6 +1,7 @@
 // import { mockMessages } from '@/mock/messages'
 import NavBar from '@/components/NavBar'
 import { useUserStore } from '@/stores/user'
+import { useWsStore } from '@/stores/ws'
 import { useEffect } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
 
@@ -8,7 +9,7 @@ import { Outlet, useNavigate } from 'react-router-dom'
 function Main() {
     const navigate = useNavigate()
     const user = useUserStore(state => state.user)
-    const connectWS = useUserStore(state => state.connectWS)
+    const initWs = useWsStore(state => state.init)
 
     
     
@@ -16,7 +17,7 @@ function Main() {
         if (!user) {
             navigate('/login')
         }
-        connectWS()
+        initWs()
     }, [user])
 
 

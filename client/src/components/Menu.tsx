@@ -22,7 +22,7 @@ const menuData: Array<Menu> = [
         Icon: Users
     },
     {
-        name: 'Contacts',
+        name: 'Friends',
         Icon: Contact
     },
     {

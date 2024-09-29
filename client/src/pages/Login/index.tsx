@@ -1,5 +1,6 @@
 import FormInput from '@/components/FormInput'
 import { useUserStore } from '@/stores/user'
+import { useWsStore } from '@/stores/ws'
 import { Lock, User } from 'lucide-react'
 import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -16,6 +17,8 @@ const Login = () => {
     const navigate = useNavigate()
     const login  = useUserStore(state => state.login)
 
+    const initWs = useWsStore(state => state.init)
+
     const [loading, setLoading] = useState<boolean>(false)
 
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>()
@@ -28,6 +31,8 @@ const Login = () => {
         const res = await login(data.username, data.password)
 
         if (res.success) {
+            initWs()
+            // initWs(user)
             toast.success('Login success!')
             navigate('/')
         }
@@ -60,7 +65,7 @@ const Login = () => {
                     />
                 </FormInput>
 
-                <input type='submit' className='button'/>
+                <input type='submit' className='btn'/>
 
                 {/* Actions */}
                 <div className='flex justify-between w-full text-gray-500 mt-3'>

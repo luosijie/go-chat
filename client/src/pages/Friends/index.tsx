@@ -1,16 +1,14 @@
 
 // import MessageList from '../components/MessageList'
-import SearchBar from '@/components/SearchBar'
-import { useContractsStore } from '@/stores/contracts'
+import { useFriendStore } from '@/stores/friend'
 import { UserSummary } from '@/types'
-import { Search, UserPlus } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import ContactsList from './components/ContactsList'
-import ContactsPanel from './components/ContactsPanel'
+import FriendList from './components/FriendList'
+import FriendPanel from './components/FriendPanel'
 
 const Messages = () => {
 
-    const getList = useContractsStore(state => state.getList)
+    const getList = useFriendStore(state => state.getList)
 
     const [active, setActive] = useState<UserSummary | null>(null) 
 
@@ -29,10 +27,10 @@ const Messages = () => {
             {/* List */}
             <div className="w-60 border-r p-2 relative flex flex-col">
                 {/* <MessageList/> */}
-                <ContactsList onClick={u => setActive(u)}/>
+                <FriendList onClick={u => setActive(u)}/>
             </div>
             {/* Chat */}
-            <ContactsPanel contacts={active} onRemove={onRemove}/>
+            <FriendPanel user={active} onRemove={onRemove}/>
         </div>
     )
 }
