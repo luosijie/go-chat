@@ -54,7 +54,7 @@ func ConnectClient(c *gin.Context) {
 	h.Login <- &client
 
 	welcomeMsg := Message{
-		From:        userId,
+		From:        0, // send from system
 		To:          userId,
 		Type:        MessageNotice,
 		ContentType: ContentText,
