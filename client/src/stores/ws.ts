@@ -1,4 +1,4 @@
-import { Message, User } from '@/types'
+import { Message, MessageType, User } from '@/types'
 import { create } from 'zustand'
 import { useUserStore } from './user'
 
@@ -27,8 +27,13 @@ export const useWsStore = create<WsStore>((set, get) => ({
             console.log('[ws:open]', evt)
         }
         ws.onmessage = evt => {
-            const data = JSON.parse(evt.data)
-            console.log('[ws:onmessage]', data)
+            const msg:Message = JSON.parse(evt.data)
+
+            if (msg.type === MessageType.Chat) {
+            
+                console.log('[ws:onmessage]', msg)
+
+            }
         }
 
         set(() => ({ ws }))

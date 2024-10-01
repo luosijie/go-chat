@@ -40,7 +40,7 @@ const ContactsList = ({ onClick } : Props) => {
                             className="flex gap-3 items-center border mb-3 p-2 rounded-lg border-gray-100 cursor-pointer h-24 hover:bg-gray-50"
                             onClick={() => onClick(user) }
                         >
-                            <Avatar user={user} className='flex-shrink-0'/>
+                            <Avatar name={user.username} avatar={user.avatar} className='flex-shrink-0'/>
                             <div className='overflow-hidden [&>div]:text-ellipsis [&>div]:overflow-hidden'>
                                 <div className='font-bold text-xl'>{ user.username }</div>
                                 <div className='text-gray-500'>{ user.email }</div>

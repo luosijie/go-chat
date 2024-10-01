@@ -28,14 +28,27 @@ export enum ContentType {
 	Image  = "image"
 }
 
+
 export enum GroupType {
     Single = "single",
     Multiple = "multiple"
 }
 
+export type Group = {
+    id: string
+    type: GroupType
+    name: string
+    avatar: string
+    owner: UserSummary
+    to: UserSummary /// only available when type = single
+    desc: string
+    members: Array<UserSummary>
+    history: Array<Message>
+}
+
 export type Message = {
     type: MessageType
-    
+
     from: number
     to: number
 
@@ -47,13 +60,8 @@ export type Message = {
     content: string
 }
 
-export type Contact = {
-    user: UserSummary
-    history: Array<Message>
-}
 
 export type Content = {
     type: ContentType
     value: string
 }
-

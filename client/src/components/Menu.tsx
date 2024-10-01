@@ -18,10 +18,6 @@ const menuData: Array<Menu> = [
         Icon: MessageCircle
     },
     {
-        name: 'Groups',
-        Icon: Users
-    },
-    {
         name: 'Friends',
         Icon: Contact
     },

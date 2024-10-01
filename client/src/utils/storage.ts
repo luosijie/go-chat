@@ -1,4 +1,4 @@
-import { Contact, User } from "@/types";
+import { Group, User } from "@/types";
 
 // type UserStore = {
 //     set: (user:User) => void
@@ -25,15 +25,15 @@ export const userStorage = {
 }
 
 
-export const contactStorage = {
-    setList: (list: Array<Contact>) => {
-        STORAGE.setItem('contact.list', JSON.stringify(list))
+export const groupStorage = {
+    setList: (list: Array<Group>) => {
+        STORAGE.setItem('group.list', JSON.stringify(list))
     },
     getList: () => {
-        const listString = STORAGE.getItem('contact.list')
+        const listString = STORAGE.getItem('group.list')
 
         if (listString === null) return []
 
-        return JSON.parse(listString) as Array<Contact>
+        return JSON.parse(listString) as Array<Group>
     }
 }

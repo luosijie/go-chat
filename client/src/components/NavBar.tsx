@@ -22,7 +22,7 @@ const NavBar = () => {
             {/* info */}
             <div className="border-t p-5 flex gap-2 items-center cursor-pointer relative">
 
-                <Avatar user={user} className='flex-shrink-0'/>
+                <Avatar name={user?.username} avatar={user?.avatar} className='flex-shrink-0'/>
                 <div className='relative overflow-hidden'>
                     <div className="text-base font-bold text-ellipsis overflow-hidden">{ user?.username }</div>
                     <div className="text-sm text-gray-500 text-ellipsis overflow-hidden">{ user?.email }</div>

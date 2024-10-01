@@ -1,11 +1,11 @@
 import Avatar from '@/components/Avatar'
-import { useContactStore } from '@/stores/contact'
+import { useGroupStore } from '@/stores/group'
+import { useUserStore } from '@/stores/user'
 
-import { UserSummary } from '@/types'
+import { GroupType, UserSummary } from '@/types'
 import request from '@/utils/request'
 import clsx from 'clsx'
 import { Delete, LogIn, MessageCircleMore } from 'lucide-react'
-import { useEffect } from 'react'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 
@@ -21,7 +21,8 @@ const btnClass = 'flex gap-2 border py-2 px-4 rounded-md hover:bg-gray-50 cursor
 
 const FriendPanel = ({ user, onRemove } : Props) => {
 	const navigate = useNavigate()
-	const { setActive, addContact } = useContactStore()
+	const { setActive, addGroup, findGroup } = useGroupStore()
+	const current = useUserStore(state => state.user)
 
 	const removeContacts = async (friendId:number) => {
 		const res = await request({
@@ -36,7 +37,26 @@ const FriendPanel = ({ user, onRemove } : Props) => {
 	}
 
 	const sendMessage = (user:UserSummary) => {
-		const contact = addContact(user)
+		if (current === null) return
+
+		const groupId = [current?.id, user.id].sort().join("-")
+		
+		let group = findGroup(groupId)
+
+		if (group === undefined){
+			group = {
+				id: groupId,
+				type: GroupType.Single,
+				name: user.username,
+				avatar: user.avatar,
+				owner: current,
+				to: user,
+				desc: "",
+				members: [current, user],
+				history: []
+			}
+		}
+		const contact = addGroup(group)
 		setActive(contact)
 		navigate('/messages')
 	}
@@ -49,7 +69,7 @@ const FriendPanel = ({ user, onRemove } : Props) => {
 			
 			<>
 				<div className='flex flex-col justify-center items-center gap-4'>
-					<Avatar user={user} className='size-20'/>
+					<Avatar name={user.username} avatar={user.avatar} className='size-20'/>
 					<div className='font-bold text-3xl'>{ user.username }</div>
 					<div className='text-gray-500'>{ user.email }</div>
 				</div>
