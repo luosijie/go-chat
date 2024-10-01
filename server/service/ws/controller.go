@@ -7,6 +7,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
+	"github.com/luosijie/go-chat/server/database/sql"
+	"github.com/luosijie/go-chat/server/types"
 	"github.com/luosijie/go-chat/server/utils"
 )
 
@@ -38,6 +40,12 @@ func ConnectClient(c *gin.Context) {
 	w := c.Writer
 	r := c.Request
 
+	user := sql.FindUserByID(userId)
+
+	if user == nil {
+		return
+	}
+
 	conn, err := upgrader.Upgrade(w, r, nil)
 
 	if err != nil {
@@ -53,9 +61,21 @@ func ConnectClient(c *gin.Context) {
 
 	h.Login <- &client
 
+	from := types.UserSummary{
+		ID:       0,
+		Username: "System",
+	}
+
+	to := types.UserSummary{
+		ID:       user.ID,
+		Avatar:   user.Avatar,
+		Username: user.Username,
+		Email:    user.Email,
+	}
+
 	welcomeMsg := Message{
-		From:        0, // send from system
-		To:          userId,
+		From:        from, // send from system
+		To:          to,
 		Type:        MessageNotice,
 		ContentType: ContentText,
 		Content:     "Logined",

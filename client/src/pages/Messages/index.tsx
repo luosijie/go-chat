@@ -1,21 +1,15 @@
 
-import Chat from '@/components/Chat'
 import Info from '@/components/Info'
+import Chat from '@/pages/Messages/components/Chat'
 import { useGroupStore } from '@/stores/group'
-// import ContactList from '../components/ContactList'
-import Avatar from '@/components/Avatar'
+
 import Empty from '@/components/Empty'
 import { useUserStore } from '@/stores/user'
 import { useWsStore } from '@/stores/ws'
-import { Content, ContentType, Group, GroupType, Message, MessageType, UserSummary } from '@/types'
-import ContactList from './components/ContactList'
+import { Content, GroupType, Message, MessageType, SingleGroup, UserSummary } from '@/types'
+import MessageList from './components/MessageList'
 
-const ChatHeader = (group: Group) => {
-    return <>
-        {/* <Avatar user={user} className='size-9'/> */}
-        <span className="font-bold text-lg">{ group.name }</span>
-    </>
-}
+
 
 const Messages = () => {
     const active = useGroupStore(state => state.active)
@@ -24,13 +18,21 @@ const Messages = () => {
 
     const onSend = (content:Content) => {
         if (!user || !active) return
+
+        const from:UserSummary = {
+            id: user.id,
+            username: user.username,
+            avatar: user.avatar,
+            email: user.email
+        }
+        
         const msg:Message = {
             type: MessageType.Chat,
 
-            from: user.id,
-            to: active.to.id,
+            from: from,
+            to: (active as SingleGroup).to,
 
-            groupId: [user.id, active.id].join("-"),
+            groupId: active.id,
             groupType: GroupType.Single,
 
             contentType: content.type,
@@ -44,14 +46,14 @@ const Messages = () => {
         <div className="flex justify-between h-full">
             {/* List */}
             <div className="w-60 border-r p-2 relative flex flex-col">
-                <ContactList/>
+                <MessageList/>
             </div>
             {/* Chat */}
 
             { 
                 active ? 
                 <>
-                    <Chat header={ChatHeader(active)} onSend={onSend}/>
+                    <Chat group={active} onSend={onSend}/>
                     <div className="w-60 border-l">
                         <Info group={active}/>
                     </div>

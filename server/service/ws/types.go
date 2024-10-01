@@ -1,6 +1,10 @@
 package serviceWS
 
-import "time"
+import (
+	"time"
+
+	"github.com/luosijie/go-chat/server/types"
+)
 
 // Define types for message
 
@@ -22,8 +26,8 @@ const (
 type Message struct {
 	Type MessageType `json:"type"`
 
-	From uint `json:"from"`
-	To   uint `json:"to"`
+	From types.UserSummary `json:"from"`
+	To   types.UserSummary `json:"to"`
 
 	GroupType GroupType `json:"groupType"`
 	GroupID   string    `json:"groupId"`

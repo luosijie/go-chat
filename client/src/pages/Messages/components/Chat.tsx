@@ -1,16 +1,20 @@
-import { Content, ContentType } from '@/types'
+import GroupAvatar from '@/components/GroupAvatar'
+import { Content, ContentType, Group, GroupType, MultipleGroup, SingleGroup } from '@/types'
 import { Send, Smile } from 'lucide-react'
 import { useState } from 'react'
-import ChatBody from './ChatBody'
+import Avatar from '../../../components/Avatar'
+import MessageBox from '../../../components/MessageBox'
 
 
 
 type Props = {
-    header: JSX.Element
+    group: Group
     onSend: (content:Content) => void
 }
 
-const Chat = ({header, onSend}:Props) => {
+const Chat = ({ group, onSend}:Props) => {
+    const singleGroup = group as SingleGroup
+    const multipleGroup = group as MultipleGroup
 
     const [text, setText] = useState<string>('')
 
@@ -28,11 +32,13 @@ const Chat = ({header, onSend}:Props) => {
         <div className="flex flex-col w-full h-full relative">
             {/* Head */}
             <div className="flex gap-2 items-center px-2 border-b h-14">
-                { header }
+                <GroupAvatar group={group}/>
+                { singleGroup.type === GroupType.Single && <span className="font-bold text-lg">{ singleGroup.to.username }</span> }
+                { multipleGroup.type === GroupType.Multiple && <span className="font-bold text-lg">{ multipleGroup.name }</span> }
             </div> 
 
             {/* Body */}
-            <ChatBody/>
+            <MessageBox messages={group.history}/>
             
             {/* Input */}
             <div className="h-20 border-t p-2 flex items-center gap-2">

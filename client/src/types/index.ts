@@ -34,30 +34,49 @@ export enum GroupType {
     Multiple = "multiple"
 }
 
-export type Group = {
+// export type Group = {
+//     id: string
+//     type: GroupType
+//     name: string
+//     owner: UserSummary
+//     desc: string
+//     members: Array<UserSummary>
+//     history: Array<Message>
+// }
+
+export type SingleGroup = {
+    type: GroupType.Single
     id: string
-    type: GroupType
+    from: UserSummary
+    to: UserSummary
+    history: Array<Message>
+}
+
+export type MultipleGroup = {
+    type: GroupType.Multiple
+    id: string
+    ower: UserSummary
     name: string
-    avatar: string
-    owner: UserSummary
-    to: UserSummary /// only available when type = single
     desc: string
     members: Array<UserSummary>
     history: Array<Message>
 }
 
+export type Group = SingleGroup | MultipleGroup
+
 export type Message = {
     type: MessageType
 
-    from: number
-    to: number
+    from: UserSummary
+    to: UserSummary
 
     groupType: GroupType
     groupId: string
-
     
     contentType: ContentType
     content: string
+
+    date?: string
 }
 
 

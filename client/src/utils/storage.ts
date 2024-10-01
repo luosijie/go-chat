@@ -26,6 +26,10 @@ export const userStorage = {
 
 
 export const groupStorage = {
+    fist: () => {
+        const list = groupStorage.getList()
+        return list.length ? list[0] : null
+    },
     setList: (list: Array<Group>) => {
         STORAGE.setItem('group.list', JSON.stringify(list))
     },

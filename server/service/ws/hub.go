@@ -80,7 +80,7 @@ func (h *Hub) Run() {
 
 			// For notice message
 			if msg.Type == MessageNotice {
-				if client, ok := h.Clients[msg.To]; ok {
+				if client, ok := h.Clients[msg.To.ID]; ok {
 					client.Messages <- msg
 				}
 			}
