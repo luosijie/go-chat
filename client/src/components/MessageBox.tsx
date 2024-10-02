@@ -1,6 +1,6 @@
 import { useUserStore } from "@/stores/user"
 import { Message } from "@/types"
-import clsx from "clsx"
+import { useEffect, useRef } from "react"
 import Avatar from "./Avatar"
 
 type Props = {
@@ -8,8 +8,23 @@ type Props = {
 }
 const MessageBox = ({ messages} : Props) => {
     const user = useUserStore(state => state.user)
+
+    const boxRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        // console.log('messages-change', messages)
+        scrollToBottom()
+    }, [messages])
+
+    const scrollToBottom = () => {
+        setTimeout(() => {
+            boxRef.current?.scrollIntoView({behavior: 'smooth', block: 'end'})
+        }, 100)
+    }
+
     return (
-        <div className="p-2 flex-grow overflow-y-auto w-full flex flex-col">
+        <div className="p-2 flex-grow overflow-y-auto w-full h-full flex flex-col">
+            <div ref={boxRef}>
             {
                 messages.map(e => (
                     <div key={e.date} className="flex">
@@ -31,6 +46,7 @@ const MessageBox = ({ messages} : Props) => {
                     </div>
                 ))
             }
+            </div>
         </div>
     )
 }

@@ -1,9 +1,9 @@
 import GroupAvatar from '@/components/GroupAvatar'
 import { Content, ContentType, Group, GroupType, MultipleGroup, SingleGroup } from '@/types'
 import { Send, Smile } from 'lucide-react'
-import { useState } from 'react'
-import Avatar from '../../../components/Avatar'
-import MessageBox from '../../../components/MessageBox'
+import { useRef, useState } from 'react'
+
+import MessageBox from '@/components/MessageBox'
 
 
 
@@ -16,6 +16,8 @@ const Chat = ({ group, onSend}:Props) => {
     const singleGroup = group as SingleGroup
     const multipleGroup = group as MultipleGroup
 
+    const inputRef = useRef<HTMLInputElement>(null)
+
     const [text, setText] = useState<string>('')
 
     const sendText = () => {
@@ -25,7 +27,11 @@ const Chat = ({ group, onSend}:Props) => {
             type: ContentType.Text,
             value: text
         }
+
+
         onSend(content)
+
+        setText("")
     }
 
     return (
@@ -42,12 +48,19 @@ const Chat = ({ group, onSend}:Props) => {
             
             {/* Input */}
             <div className="h-20 border-t p-2 flex items-center gap-2">
-                <input value={text} onChange={evt => setText(evt.target.value)} type="text" placeholder="Enter..." className="outline-none flex-grow"/>
+                <input 
+                    value={text} 
+                    onChange={evt => setText(evt.target.value)} 
+                    type="text" placeholder="Enter..." 
+                    className="outline-none flex-grow"
+                    ref={inputRef}
+                />
+
                 <div className='bg-orange cursor-pointer rounded-full size-8 flex items-center justify-center'>
                     <Smile color='white' size={20}/>
                 </div>
-                <div className='bg-black cursor-pointer rounded-full size-8 flex items-center justify-center'>
-                    <Send color='white' size={20} onClick={sendText}/>
+                <div className='bg-black cursor-pointer rounded-full size-8 flex items-center justify-center' onClick={sendText}>
+                    <Send color='white' size={20} />
                 </div>
             </div>
         </div>

@@ -1,4 +1,4 @@
-import { Message, MessageType, User } from '@/types'
+import { Message, MessageType } from '@/types'
 import { create } from 'zustand'
 import { useGroupStore } from './group'
 import { useUserStore } from './user'
