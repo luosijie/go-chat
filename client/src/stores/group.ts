@@ -99,7 +99,9 @@ export const useGroupStore = create<GroupStore>((set, get) => ({
         }
 
         set(produce((state:GroupStore) => {
-            state.list[groupIdex].history.push(msg)
+            const history = state.list[groupIdex].history
+            history.push(msg)
+            if (history.length > 100) history.shift()
         }))
 
         const group = get().list[groupIdex]

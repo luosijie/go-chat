@@ -7,6 +7,7 @@ import { Group, User } from "@/types";
 // }
 
 const STORAGE = sessionStorage
+const MAX = 100
 
 export const userStorage = {
     set: (user:User) => {
@@ -31,6 +32,7 @@ export const groupStorage = {
         return list.length ? list[0] : null
     },
     setList: (list: Array<Group>) => {
+        if (list.length > MAX) list.length = MAX
         STORAGE.setItem('group.list', JSON.stringify(list))
     },
     getList: () => {
