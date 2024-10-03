@@ -9,7 +9,7 @@ type Group struct {
 	Avatar  string `json:"avatar"`
 	Name    string `json:"name"`
 	Desc    string `json:"desc"`
-	OwnerId uint   `json:"owerId"`
+	OwnerID uint   `json:"owerId"`
 	Owner   User   `json:"owner" gorm:"foreignkey:OwnerId"`
 }
 
@@ -19,6 +19,10 @@ func (table *Group) TableName() string {
 
 func CreateGroup(group *Group) error {
 	return db.Create(group).Error
+}
+
+func FindGroupsByOwnerID(id uint, result interface{}) error {
+	return db.Model(Group{Model: gorm.Model{ID: id}}).Find(result).Error
 }
 
 func FindGroup(group *Group) error {

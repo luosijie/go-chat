@@ -1,6 +1,8 @@
 package serviceGroup
 
 import (
+	"strconv"
+
 	"github.com/gin-gonic/gin"
 	"github.com/luosijie/go-chat/server/database/sql"
 	"github.com/luosijie/go-chat/server/pkg/response"
@@ -26,7 +28,7 @@ func CreateGroup(c *gin.Context) {
 	group := sql.Group{
 		Name:    reqData.Name,
 		Desc:    reqData.Desc,
-		OwnerId: userID,
+		OwnerID: userID,
 	}
 
 	if err := sql.CreateGroup(&group); err != nil {
@@ -45,9 +47,10 @@ func CreateGroup(c *gin.Context) {
 // @Success 200         { object }  interface{}
 // @Router 	/group/list      [post]
 func GetGroupList(c *gin.Context) {
-	userID := c.MustGet("userID").(uint)
 
-	id := c.Request.URL.Path
+	id, _ := strconv.Atoi(c.Param("id"))
+
+	// sql.G
 
 	reqData := createGroupReq{}
 	if err := c.ShouldBindJSON(reqData); err != nil {
@@ -55,17 +58,13 @@ func GetGroupList(c *gin.Context) {
 		return
 	}
 
-	group := sql.Group{
-		Name:    reqData.Name,
-		Desc:    reqData.Desc,
-		OwnerId: userID,
-	}
+	var res getGroupListRes
 
-	if err := sql.CreateGroup(&group); err != nil {
+	if err := sql.FindGroupsByOwnerID(uint(id), res); err != nil {
 		response.ServerFail(c, response.ErrorUnknown)
 		return
 	}
 
-	response.Success(c, "Create Group Success", group)
+	response.Success(c, "Create Group Success", &res)
 
 }
