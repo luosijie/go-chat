@@ -5,7 +5,7 @@ import { create } from 'zustand'
 import { useFriendStore } from './friend'
 import { useUserStore } from './user'
 
-type GroupStore = {
+type MessageStore = {
     active: Group | null
     list: Array<Group>
     addGroup: (user: Group) => Group
@@ -16,7 +16,7 @@ type GroupStore = {
     addMessage: (msg: Message) => void
 }
 
-export const useGroupStore = create<GroupStore>((set, get) => ({
+export const useMessageStore = create<MessageStore>((set, get) => ({
     active: groupStorage.fist(),
     list: groupStorage.getList(),
     
@@ -72,7 +72,7 @@ export const useGroupStore = create<GroupStore>((set, get) => ({
                 history: []
             }
 
-            set(produce((state: GroupStore) => {
+            set(produce((state: MessageStore) => {
                 state.list.unshift(group)
             }))
 
@@ -98,7 +98,7 @@ export const useGroupStore = create<GroupStore>((set, get) => ({
             return
         }
 
-        set(produce((state:GroupStore) => {
+        set(produce((state:MessageStore) => {
             const history = state.list[groupIdex].history
             history.push(msg)
             if (history.length > 100) history.shift()

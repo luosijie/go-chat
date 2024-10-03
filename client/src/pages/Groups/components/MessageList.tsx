@@ -2,15 +2,15 @@
 import Avatar from '@/components/Avatar'
 import Empty from '@/components/Empty'
 import SearchBar from '@/components/SearchBar'
-import { useMessageStore } from '@/stores/message'
+import { useGroupStore } from '@/stores/group'
 import { Group, GroupType, MultipleGroup, SingleGroup } from '@/types'
 import { useEffect, useState } from 'react'
 
 const MessageList = () => {
-    const messages = useMessageStore(state => state.list)
+    const messages = useGroupStore(state => state.list)
 
     const [list, setList] = useState<Array<Group>>(messages)
-    const setCurrent = useMessageStore(state => state.setActive)
+    const setCurrent = useGroupStore(state => state.setActive)
 
     useEffect(() => {
         setList(messages)

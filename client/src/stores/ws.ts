@@ -1,6 +1,6 @@
 import { Message, MessageType } from '@/types'
 import { create } from 'zustand'
-import { useGroupStore } from './group'
+import { useMessageStore } from './message'
 import { useUserStore } from './user'
 
 const BASE_WS = import.meta.env.VITE_APP_WS
@@ -31,7 +31,7 @@ export const useWsStore = create<WsStore>((set, get) => ({
             const msg:Message = JSON.parse(evt.data)
 
             if (msg.type === MessageType.Chat) {
-                useGroupStore.getState().addMessage(msg)
+                useMessageStore.getState().addMessage(msg)
             }
         }
 

@@ -8,6 +8,7 @@ import EmojiPicker, { EmojiClickData } from 'emoji-picker-react'
 
 
 
+
 type Props = {
     group: Group
     onSend: (content:Content) => void
@@ -19,10 +20,10 @@ const Chat = ({ group, onSend}:Props) => {
 
     const inputRef = useRef<HTMLInputElement>(null)
 
-    const [openEmoji, setOpenEmoji] = useState<boolean>(false)
-
     const [text, setText] = useState<string>('')
     const textRef = useRef(text)
+
+    const [openEmoji, setOpenEmoji] = useState<boolean>(false)
 
     useEffect(() => {
         textRef.current = text
@@ -43,7 +44,6 @@ const Chat = ({ group, onSend}:Props) => {
     }, [])
 
     const sendText = (text:string) => {
-        console.log("text00", text)
         if (!text) return
 
         const content:Content = {
@@ -51,9 +51,7 @@ const Chat = ({ group, onSend}:Props) => {
             value: text
         }
 
-
         onSend(content)
-
 
         setText("")
     }
@@ -67,13 +65,12 @@ const Chat = ({ group, onSend}:Props) => {
         }
 
         onSend(content)
-       
+        setOpenEmoji(false)
     }
 
     const handleEmojiClick = (evt:EmojiClickData) => {
-        console.log(evt)
+        console.log('emoji-click', evt)
         sendEmoji(evt.unified)
-        setOpenEmoji(false)
     }
 
     return (
@@ -97,11 +94,13 @@ const Chat = ({ group, onSend}:Props) => {
                     className="outline-none flex-grow"
                     ref={inputRef}
                 />
-                <div className='size-8 relative'>
-                    <div className='bg-orange cursor-pointer size-full rounded-full flex items-center justify-center' onClick={() => setOpenEmoji(state => !state)}>
+
+                <div className=' size-8  relative' >
+                    <div className='bg-orange cursor-pointer rounded-full size-full flex items-center justify-center' onClick={() => setOpenEmoji(state => !state)}>
                         <Smile color='white' size={20}/>
                     </div>
-                    <div className='absolute right-3 bottom-16'>
+
+                    <div className='absolute bottom-16 right-0'>
                         <EmojiPicker open={openEmoji} onEmojiClick={handleEmojiClick}/>
                     </div>
                 </div>

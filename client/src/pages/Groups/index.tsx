@@ -39,6 +39,7 @@ const Messages = () => {
             content: content.value
         }
 
+        console.log('ws:send', msg)
         sendMessage(msg)
     }
 

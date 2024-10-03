@@ -1,5 +1,5 @@
 import Avatar from '@/components/Avatar'
-import { useGroupStore } from '@/stores/group'
+import { useMessageStore } from '@/stores/message'
 import { useUserStore } from '@/stores/user'
 
 import { GroupType, UserSummary } from '@/types'
@@ -21,7 +21,7 @@ const btnClass = 'flex gap-2 border py-2 px-4 rounded-md hover:bg-gray-50 cursor
 
 const FriendPanel = ({ user, onRemove } : Props) => {
 	const navigate = useNavigate()
-	const { setActive, addGroup, findGroup } = useGroupStore()
+	const { setActive, addGroup, findGroup } = useMessageStore()
 	const current = useUserStore(state => state.user)
 
 	const removeContacts = async (friendId:number) => {
@@ -47,12 +47,9 @@ const FriendPanel = ({ user, onRemove } : Props) => {
 			group = {
 				id: groupId,
 				type: GroupType.Single,
-				name: user.username,
-				avatar: user.avatar,
-				owner: current,
+				from: current,
 				to: user,
-				desc: "",
-				members: [current, user],
+
 				history: []
 			}
 		}

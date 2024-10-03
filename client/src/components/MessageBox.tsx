@@ -1,7 +1,20 @@
 import { useUserStore } from "@/stores/user"
-import { Message } from "@/types"
+import { ContentType, Message } from "@/types"
+import { Emoji } from "emoji-picker-react"
 import { useEffect, useRef } from "react"
 import Avatar from "./Avatar"
+
+const Content = (msg: Message) => {
+    return <>
+        {
+            msg.contentType === ContentType.Text && msg.content
+        }
+        {
+            msg.contentType === ContentType.Emoji && <Emoji unified={msg.content} />
+        }
+    </>
+}
+
 
 type Props = {
     messages: Array<Message>
@@ -32,14 +45,14 @@ const MessageBox = ({ messages} : Props) => {
                             e.from.id === user?.id ?
                             <div key={e.date} className="flex items-center justify-end w-full">
                                 <div key={e.date} className="border p-2 m-2 rounded-md bg-black text-white">
-                                    { e.content }
+                                    { Content(e) }
                                 </div>
                                 <Avatar name={user.username} avatar={user.avatar} className="size-7 text-sm"/>
                             </div>:
                             <div key={e.date} className=" flex items-center w-full">
                                 <Avatar name={e.from.username} avatar={e.from.avatar} className="size-7 text-sm"/>
                                 <div key={e.date} className="border p-2 m-2 rounded-md">
-                                    { e.content }
+                                    { Content(e) }
                                 </div>
                             </div>
                         }

@@ -1,7 +1,7 @@
-import clsx from 'clsx'
-import { Contact, LayoutDashboard, LucideProps, MessageCircle, Settings, Star, Users, UserSearch } from 'lucide-react'
-import React, { ForwardRefExoticComponent } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import clsx from 'clsx';
+import { Contact, LayoutDashboard, LucideProps, MessageCircle, Settings, UserSearch } from 'lucide-react';
+import React, { ForwardRefExoticComponent } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 type Menu = {
     name: string
