@@ -3,13 +3,13 @@ import Avatar from '@/components/Avatar'
 import Empty from '@/components/Empty'
 import SearchBar from '@/components/SearchBar'
 import { useMessageStore } from '@/stores/message'
-import { Group, GroupType, MultipleGroup, SingleGroup } from '@/types'
+import { Chat, ChatType, MultipleChat, SingleChat } from '@/types'
 import { useEffect, useState } from 'react'
 
 const MessageList = () => {
     const messages = useMessageStore(state => state.list)
 
-    const [list, setList] = useState<Array<Group>>(messages)
+    const [list, setList] = useState<Array<Chat>>(messages)
     const setCurrent = useMessageStore(state => state.setActive)
 
     useEffect(() => {
@@ -22,12 +22,12 @@ const MessageList = () => {
             <div className="flex-grow overflow-y-auto mt-2">
                 {
                     list.length ?
-                    list.map((e:Group) => {
-                        const single = e as SingleGroup
-                        const multiple = e as MultipleGroup
+                    list.map((e:Chat) => {
+                        const single = e as SingleChat
+                        const multiple = e as MultipleChat
                         return <div key={e.id}>
                             {
-                                single.type === GroupType.Single &&  <div 
+                                single.type === ChatType.Single &&  <div 
                                     key={single.to.username} 
                                     className="flex gap-3 items-center border mb-3 p-2 rounded-lg border-gray-100 cursor-pointer hover:bg-gray-50"
                                     onClick={() => setCurrent(e) }

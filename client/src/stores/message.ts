@@ -1,26 +1,26 @@
-import { Group, GroupType, Message, SingleGroup, UserSummary } from '@/types'
-import { groupStorage } from '@/utils/storage'
+import { Chat, ChatType, Message, SingleChat, UserSummary } from '@/types'
+import { chatStorage } from '@/utils/storage'
 import { produce } from 'immer'
 import { create } from 'zustand'
 import { useFriendStore } from './friend'
 import { useUserStore } from './user'
 
 type MessageStore = {
-    active: Group | null
-    list: Array<Group>
-    addGroup: (user: Group) => Group
+    active: Chat | null
+    list: Array<Chat>
+    addChat: (user: Chat) => Chat
     createCroupFromMessage: (msg:Message) => number
-    findGroup: (id: string) => Group | undefined
-    findGroupIndex: (id: string) => number
-    setActive: (contact: Group) => void
+    findChat: (id: string) => Chat | undefined
+    findChatIndex: (id: string) => number
+    setActive: (contact: Chat) => void
     addMessage: (msg: Message) => void
 }
 
 export const useMessageStore = create<MessageStore>((set, get) => ({
-    active: groupStorage.fist(),
-    list: groupStorage.getList(),
+    active: chatStorage.fist(),
+    list: chatStorage.getList(),
     
-    addGroup: (group: Group) => {
+    addChat: (group: Chat) => {
         console.log('add-group:', group)
         const list = get().list
         let exist = list.find(e => e.id === group.id)
@@ -31,14 +31,14 @@ export const useMessageStore = create<MessageStore>((set, get) => ({
             exist = group
         }
 
-        groupStorage.setList(get().list)
+        chatStorage.setList(get().list)
 
         return exist
     },
 
     createCroupFromMessage: (msg: Message) => {
 
-        if (msg.groupType === GroupType.Single) {
+        if (msg.chatType === ChatType.Single) {
             let owner: UserSummary | undefined
             const user = useUserStore.getState().user
             const users = useFriendStore.getState().list.slice()
@@ -56,7 +56,7 @@ export const useMessageStore = create<MessageStore>((set, get) => ({
 
             owner = users.find(e => e.id === msg.from.id)
             
-            const ids = msg.groupId.split('-')
+            const ids = msg.chatId.split('-')
             const toId = ids.find(e => String(e) !== String(owner?.id))
             const toUser = users.find(e => String(e.id) === String(toId))
 
@@ -64,9 +64,9 @@ export const useMessageStore = create<MessageStore>((set, get) => ({
             if (!owner) return -1
             if (!toUser) return -1
 
-            const group:SingleGroup = {
-                type: GroupType.Single,
-                id: msg.groupId,
+            const group:SingleChat = {
+                type: ChatType.Single,
+                id: msg.chatId,
                 from: owner,
                 to: toUser,
                 history: []
@@ -87,24 +87,24 @@ export const useMessageStore = create<MessageStore>((set, get) => ({
     },
 
     addMessage: (msg: Message) => {
-        let groupIdex = get().findGroupIndex(msg.groupId) 
+        let chatIdex = get().findChatIndex(msg.chatId) 
         
-        if (groupIdex === -1) {
-            groupIdex = get().createCroupFromMessage(msg)
+        if (chatIdex === -1) {
+            chatIdex = get().createCroupFromMessage(msg)
         }
 
 
-        if (groupIdex === -1) {
+        if (chatIdex === -1) {
             return
         }
 
         set(produce((state:MessageStore) => {
-            const history = state.list[groupIdex].history
+            const history = state.list[chatIdex].history
             history.push(msg)
             if (history.length > 100) history.shift()
         }))
 
-        const group = get().list[groupIdex]
+        const group = get().list[chatIdex]
 
         const active = get().active
         if (active !== null && active.id === group.id) {
@@ -114,18 +114,18 @@ export const useMessageStore = create<MessageStore>((set, get) => ({
 
         // get().setActive(group)
 
-        groupStorage.setList(get().list)
+        chatStorage.setList(get().list)
     },
 
-    findGroup: (id: string) =>  {
+    findChat: (id: string) =>  {
         return get().list.find(e => e.id === id)
     },
 
-    findGroupIndex: (id: string) => {
+    findChatIndex: (id: string) => {
         return get().list.findIndex(e => e.id === id)
     },
 
-    setActive: (group: Group) => {
+    setActive: (group: Chat) => {
         set(() => ({ active: group }))
     }
 

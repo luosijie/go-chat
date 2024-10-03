@@ -29,8 +29,8 @@ type Message struct {
 	From types.UserSummary `json:"from"`
 	To   types.UserSummary `json:"to"`
 
-	GroupType GroupType `json:"groupType"`
-	GroupID   string    `json:"groupId"`
+	ChatType ChatType `json:"chatType"`
+	ChatID   string   `json:"chatId"`
 
 	ContentType ContentType `json:"contentType"`
 	Content     string      `json:"content"`

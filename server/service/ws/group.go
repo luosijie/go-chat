@@ -8,26 +8,26 @@ import (
 
 // Define type for goup
 
-type GroupType string
+type ChatType string
 
 const (
-	GroupSingle   GroupType = "single"   // store in client
-	GroupMultiple GroupType = "multiple" // store in mySQL
+	SingleChat ChatType = "single" // store in client
+	GroupChat  ChatType = "group"  // store in mySQL
 )
 
-type Group struct {
-	ID      string    `json:"id"`
-	Type    GroupType `json:"type"`
-	Members []uint    `json:"members"`
+type Chat struct {
+	ID      string   `json:"id"`
+	Type    ChatType `json:"type"`
+	Members []uint   `json:"members"`
 }
 
-func (g *Group) HasMember(id uint) bool {
+func (g *Chat) HasMember(id uint) bool {
 	return slices.Contains(g.Members, id)
 }
 
 // id looks like "20-19"
 // means user:20 is now chating with user:19
-func (g *Group) SetCoupleMembers(id string) {
+func (g *Chat) SetCoupleMembers(id string) {
 	var members []uint
 	strs := strings.Split(id, "-")
 	for _, s := range strs {

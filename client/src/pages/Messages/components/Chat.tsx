@@ -1,5 +1,5 @@
-import GroupAvatar from '@/components/GroupAvatar'
-import { Content, ContentType, Group, GroupType, MultipleGroup, SingleGroup } from '@/types'
+import ChatAvatar from '@/components/ChatAvatar'
+import { Chat, ChatType, Content, ContentType, MultipleChat, SingleChat } from '@/types'
 import { Send, Smile } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 
@@ -9,13 +9,13 @@ import EmojiPicker, { EmojiClickData } from 'emoji-picker-react'
 
 
 type Props = {
-    group: Group
+    group: Chat
     onSend: (content:Content) => void
 }
 
-const Chat = ({ group, onSend}:Props) => {
-    const singleGroup = group as SingleGroup
-    const multipleGroup = group as MultipleGroup
+const ChatComponent = ({ group, onSend}:Props) => {
+    const singleChat = group as SingleChat
+    const multipleChat = group as MultipleChat
 
     const inputRef = useRef<HTMLInputElement>(null)
 
@@ -80,9 +80,9 @@ const Chat = ({ group, onSend}:Props) => {
         <div className="flex flex-col w-full h-full relative">
             {/* Head */}
             <div className="flex gap-2 items-center px-2 py-6 border-b h-14">
-                <GroupAvatar group={group} className='size-10'/>
-                { singleGroup.type === GroupType.Single && <span className="font-bold text-lg">{ singleGroup.to.username }</span> }
-                { multipleGroup.type === GroupType.Multiple && <span className="font-bold text-lg">{ multipleGroup.name }</span> }
+                <ChatAvatar group={group} className='size-10'/>
+                { singleChat.type === ChatType.Single && <span className="font-bold text-lg">{ singleChat.to.username }</span> }
+                { multipleChat.type === ChatType.Chat && <span className="font-bold text-lg">{ multipleChat.name }</span> }
             </div> 
 
             {/* Body */}
@@ -113,4 +113,4 @@ const Chat = ({ group, onSend}:Props) => {
     )
 }
 
-export default Chat
+export default ChatComponent

@@ -1,4 +1,4 @@
-import { Group, User } from "@/types";
+import { Chat, User } from "@/types";
 
 // type UserStore = {
 //     set: (user:User) => void
@@ -25,21 +25,38 @@ export const userStorage = {
     }
 }
 
-
-export const groupStorage = {
+export const chatStorage = {
     fist: () => {
-        const list = groupStorage.getList()
+        const list = chatStorage.getList()
         return list.length ? list[0] : null
     },
-    setList: (list: Array<Group>) => {
+    setList: (list: Array<Chat>) => {
         if (list.length > MAX) list.length = MAX
-        STORAGE.setItem('group.list', JSON.stringify(list))
+        STORAGE.setItem('chat.list', JSON.stringify(list))
     },
     getList: () => {
-        const listString = STORAGE.getItem('group.list')
+        const listString = STORAGE.getItem('chat.list')
 
         if (listString === null) return []
 
-        return JSON.parse(listString) as Array<Group>
+        return JSON.parse(listString) as Array<Chat>
     }
 }
+
+// export const groupStorage = {
+//     fist: () => {
+//         const list = groupStorage.getList()
+//         return list.length ? list[0] : null
+//     },
+//     setList: (list: Array<Group>) => {
+//         if (list.length > MAX) list.length = MAX
+//         STORAGE.setItem('group.list', JSON.stringify(list))
+//     },
+//     getList: () => {
+//         const listString = STORAGE.getItem('group.list')
+
+//         if (listString === null) return []
+
+//         return JSON.parse(listString) as Array<Group>
+//     }
+// }

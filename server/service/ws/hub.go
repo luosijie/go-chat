@@ -5,16 +5,16 @@ import (
 )
 
 type Hub struct {
-	Groups    map[string]*Group `json:"group"`
-	Clients   map[uint]*Client  `json:"clients"`
-	Login     chan *Client      `json:"login"`
-	Logout    chan *Client      `json:"logout"`
-	Broadcast chan *Message     `json:"broadcast"`
+	Chats     map[string]*Chat `json:"chat"`
+	Clients   map[uint]*Client `json:"clients"`
+	Login     chan *Client     `json:"login"`
+	Logout    chan *Client     `json:"logout"`
+	Broadcast chan *Message    `json:"broadcast"`
 }
 
 func NewHub() *Hub {
 	return &Hub{
-		Groups:    make(map[string]*Group),
+		Chats:     make(map[string]*Chat),
 		Clients:   make(map[uint]*Client),
 		Login:     make(chan *Client),
 		Logout:    make(chan *Client),
@@ -46,18 +46,18 @@ func (h *Hub) Run() {
 
 			// For chat message
 			if msg.Type == MessageChat {
-				group, ok := h.Groups[msg.GroupID]
+				group, ok := h.Chats[msg.ChatID]
 
 				if !ok {
 
-					group = &Group{
-						ID:      msg.GroupID,
+					group = &Chat{
+						ID:      msg.ChatID,
 						Type:    "",
 						Members: []uint{},
 					}
 
-					if msg.GroupType == GroupSingle {
-						group.SetCoupleMembers(msg.GroupID)
+					if msg.ChatType == SingleChat {
+						group.SetCoupleMembers(msg.ChatID)
 					}
 
 				}

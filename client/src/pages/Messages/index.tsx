@@ -6,7 +6,7 @@ import { useMessageStore } from '@/stores/message'
 import Empty from '@/components/Empty'
 import { useUserStore } from '@/stores/user'
 import { useWsStore } from '@/stores/ws'
-import { Content, GroupType, Message, MessageType, SingleGroup, UserSummary } from '@/types'
+import { ChatType, Content, Message, MessageType, SingleChat, UserSummary } from '@/types'
 import MessageList from './components/MessageList'
 
 
@@ -30,10 +30,10 @@ const Messages = () => {
             type: MessageType.Chat,
 
             from: from,
-            to: (active as SingleGroup).to,
+            to: (active as SingleChat).to,
 
-            groupId: active.id,
-            groupType: GroupType.Single,
+            chatId: active.id,
+            chatType: ChatType.Single,
 
             contentType: content.type,
             content: content.value

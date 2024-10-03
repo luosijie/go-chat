@@ -1,18 +1,19 @@
-import { Group } from "@/types"
+import { Chat, SingleChat } from "@/types"
 import Avatar from "./Avatar"
 
 
 
 type Props = {
-    group: Group
+    group: Chat
 }
 
 const Info = ({group}:Props) => {
+    const singleChat = group as SingleChat
     return (
         <div className="w-full flex flex-col items-center justify-center  p-10 min-w-36">
-            <Avatar name={group.name} avatar={group.avatar} empty={Boolean(group)} className="size-20 mt-10"/>
-            <div className="font-bold mt-4 text-3xl">{ group.owner.username }</div>
-            <div className="mt-4 text-gray-500">{ group.owner.email }</div>
+            <Avatar name={singleChat.to.username} avatar={singleChat.to.avatar}  className="size-20 mt-10"/>
+            <div className="font-bold mt-4 text-3xl">{ singleChat.to.username }</div>
+            <div className="mt-4 text-gray-500">{ singleChat.to.email }</div>
             <div className="btn-plain mt-5">Login</div>
         </div>
     )
