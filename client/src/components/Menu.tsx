@@ -1,5 +1,6 @@
+import Groups from '@/pages/Groups';
 import clsx from 'clsx';
-import { Contact, LayoutDashboard, LucideProps, MessageCircle, Settings, UserSearch } from 'lucide-react';
+import { Contact, LayoutDashboard, LucideProps, MessageCircle, Settings, Users, UserSearch } from 'lucide-react';
 import React, { ForwardRefExoticComponent } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -20,6 +21,10 @@ const menuData: Array<Menu> = [
     {
         name: 'Friends',
         Icon: Contact
+    },
+    {
+        name: 'Groups',
+        Icon: Users
     },
     {
         name: 'Search User',

@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/luosijie/go-chat/server/docs"
+	serviceGroup "github.com/luosijie/go-chat/server/service/group"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
@@ -40,6 +41,7 @@ func NewRouter() *gin.Engine {
 	routerUser(router)
 	routerContact(router)
 	routerWS(router)
+	serviceGroup.Router(router)
 
 	return router
 }

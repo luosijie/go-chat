@@ -1,16 +1,15 @@
 
 // import MessageList from '../components/MessageList'
-import { useFriendStore } from '@/stores/friend'
-import { UserSummary } from '@/types'
+import { Group, useGroupStore } from '@/stores/group'
 import { useEffect, useState } from 'react'
-import FriendList from './components/FriendList'
-import FriendPanel from './components/FriendPanel'
+import Detail from './components/Detail'
+import List from './components/List'
 
 const Groups = () => {
 
-    const getList = useFriendStore(state => state.getList)
+    const getList = useGroupStore(state => state.getList)
 
-    const [active, setActive] = useState<UserSummary | null>(null) 
+    const [active, setActive] = useState<Group | null>(null) 
 
 
     useEffect(() => {
@@ -27,10 +26,10 @@ const Groups = () => {
             {/* List */}
             <div className="w-60 border-r p-2 relative flex flex-col">
                 {/* <MessageList/> */}
-                <FriendList onClick={u => setActive(u)}/>
+                <List onClick={u => setActive(u)}/>
             </div>
             {/* Chat */}
-            <FriendPanel user={active} onRemove={onRemove}/>
+            {/* <Detail user={active} onRemove={onRemove}/> */}
         </div>
     )
 }

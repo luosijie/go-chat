@@ -2,29 +2,28 @@
 import Avatar from '@/components/Avatar'
 import Empty from '@/components/Empty'
 import SearchBar from '@/components/SearchBar'
-import { useFriendStore } from '@/stores/friend'
-import { UserSummary } from '@/types'
+import { Group, useGroupStore } from '@/stores/group'
 
 import { ChangeEvent, useEffect, useState } from 'react'
 
 type Props = {
-    onClick: (user: UserSummary) => void
+    onClick: (goup: Group) => void
 }
 
 const ContactsList = ({ onClick } : Props) => {
-    const contacts = useFriendStore(state => state.list)
+    const groups = useGroupStore(state => state.list)
 
-    const [list, setList] = useState<Array<UserSummary>>([])
+    const [list, setList] = useState<Array<Group>>([])
 
 
     useEffect(() => {
-        setList(contacts)
-    }, [contacts])
+        setList(groups)
+    }, [groups])
 
     const onSearchChange = (evt:ChangeEvent<HTMLInputElement>) => {
         const keyword = evt.target.value
 
-        setList(contacts.filter(e => e.username.includes(keyword)))
+        setList(groups.filter(e => e.name.includes(keyword)))
     }
 
     // const setCurrent = useMessageStore(state => state.setCurrent)
@@ -34,21 +33,21 @@ const ContactsList = ({ onClick } : Props) => {
             <div className="flex-grow overflow-y-auto mt-2">
                 {
                     list.length ?
-                    list.map(user => (
+                    list.map(goup => (
                         <div 
-                            key={user.id} 
+                            key={goup.id} 
                             className="flex gap-3 items-center border mb-3 p-2 rounded-lg border-gray-100 cursor-pointer h-24 hover:bg-gray-50"
-                            onClick={() => onClick(user) }
+                            onClick={() => onClick(goup) }
                         >
-                            <Avatar name={user.username} avatar={user.avatar} className='flex-shrink-0'/>
+                            {/* <Avatar name={goup.name} avatar={goup.avatar} className='flex-shrink-0'/> */}
                             <div className='overflow-hidden [&>div]:text-ellipsis [&>div]:overflow-hidden'>
-                                <div className='font-bold text-xl'>{ user.username }</div>
-                                <div className='text-gray-500'>{ user.email }</div>
+                                <div className='font-bold text-xl'>{ goup.name }</div>
+                                {/* <div className='text-gray-500'>{ goup.email }</div> */}
                             </div>
                             
                         </div>
                     )) :
-                    <Empty text='No contacts here...'/>
+                    <Empty text='No groups here...'/>
                 }
             </div>
         </>

@@ -19,7 +19,7 @@ type Props = {
 
 const btnClass = 'flex gap-2 border py-2 px-4 rounded-md hover:bg-gray-50 cursor-pointer'
 
-const FriendPanel = ({ user, onRemove } : Props) => {
+const Detail = ({ user, onRemove } : Props) => {
 	const navigate = useNavigate()
 	const { setActive, addChat, findChat } = useMessageStore()
 	const current = useUserStore(state => state.user)
@@ -90,4 +90,4 @@ const FriendPanel = ({ user, onRemove } : Props) => {
 	)
 }
 
-export default FriendPanel
+export default Detail

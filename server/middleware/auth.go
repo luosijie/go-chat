@@ -26,7 +26,7 @@ func Auth() gin.HandlerFunc {
 			return
 		}
 
-		c.Set("userId", claims.ID)
+		c.Set("userID", claims.ID)
 
 		c.Next()
 	}

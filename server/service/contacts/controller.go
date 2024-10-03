@@ -17,7 +17,7 @@ import (
 // @Success 		   200             {object} interface{}
 // @Router 			   /contacts/apply [post]
 func ApplyContacts(c *gin.Context) {
-	fromId := c.MustGet("userId").(uint)
+	fromId := c.MustGet("userID").(uint)
 	toId, _ := strconv.Atoi(c.Param("userId"))
 
 	// contacts := sql.FindContacts(userId)
@@ -34,7 +34,7 @@ func ApplyContacts(c *gin.Context) {
 // @Success 		   200      {object} interface{}
 // @Router 			   /contacts/list [get]
 func GetContactsList(c *gin.Context) {
-	userId := c.MustGet("userId").(uint)
+	userId := c.MustGet("userID").(uint)
 
 	var list []types.UserSummary
 
@@ -53,7 +53,7 @@ func GetContactsList(c *gin.Context) {
 // @Success 		   200      {object} interface{}
 // @Router 			   /contracts/:userId [post]
 func AddContacts(c *gin.Context) {
-	userId := c.MustGet("userId").(uint)
+	userId := c.MustGet("userID").(uint)
 	friendId, _ := strconv.Atoi(c.Param("userId"))
 
 	user := sql.FindUserByID(uint(friendId))
@@ -86,7 +86,7 @@ func AddContacts(c *gin.Context) {
 // @Success 		   200      {object} interface{}
 // @Router 			   /contacts/:userId [delete]
 func DeleteContacts(c *gin.Context) {
-	userId := c.MustGet("userId").(uint)
+	userId := c.MustGet("userID").(uint)
 	friendId, _ := strconv.Atoi(c.Param("friendId"))
 
 	if err := sql.DeleteContacts(userId, uint(friendId)); err != nil {
