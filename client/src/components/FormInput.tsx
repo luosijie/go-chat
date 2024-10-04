@@ -1,9 +1,11 @@
+import clsx from 'clsx'
 import { LucideProps } from 'lucide-react'
 import { ForwardRefExoticComponent } from 'react'
 import { FieldError } from 'react-hook-form'
 
 type Props = {
     Icon?: ForwardRefExoticComponent<Omit<LucideProps, 'ref'> & React.RefAttributes<SVGSVGElement>>
+    className?: string
     children: JSX.Element
     error?: FieldError
 }
@@ -15,12 +17,14 @@ const classInput = `
     [&>input]:bg-transparent
     [&>input]:flex-grow
     [&>input]:h-full
+    [&>textarea]:outline-none 
+
 `
 
-const FormInput = ({ Icon, children, error }:Props) => {
+const FormInput = ({ Icon, className, children, error }:Props) => {
     return (
         <div className='relative'>
-            <div className={classInput}>
+            <div className={clsx(classInput, className )}>
                 { Icon && <Icon/> }
                 { children }
             </div>

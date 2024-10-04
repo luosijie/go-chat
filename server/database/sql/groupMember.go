@@ -6,9 +6,9 @@ import (
 
 type GroupMember struct {
 	gorm.Model
-	GroupID uint  `json:"GroupId"`
-	Group   Group `json:"Group" gorm:"foreignKey:GroupID"`
-	UserID  uint  `json:"userId"`
+	GroupID uint  `json:"group_id"`
+	Group   Group `json:"group" gorm:"foreignKey:GroupID"`
+	UserID  uint  `json:"user_id"`
 	User    User  `json:"user" gorm:"foreignKey:UserID"`
 }
 
@@ -20,26 +20,15 @@ func CreateGroupMember(group *GroupMember) error {
 	return db.Create(group).Error
 }
 
-func FindGroupMember(group *GroupMember) error {
-	return db.Where(group).First(group).Error
-}
+func FindGroupMembers(groupID uint, out interface{}) error {
 
-func FindGroupMemberByID(id uint) *GroupMember {
-	var group = GroupMember{Model: gorm.Model{ID: id}}
-	if err := db.First(&group).Error; err != nil {
-		return nil
+	var groupMembers []*GroupMember
+
+	if err := db.Model(&GroupMember{}).Where("group_id = ?", groupID).Find(&groupMembers).Error; err != nil {
+		return err
 	}
-	return &group
-}
 
-func UpdateGroupMember(group *GroupMember) error {
-	return db.Model(group).Updates(group).Error
-}
+	db.Model(&groupMembers).Association("User").Find(out)
 
-func FindGroupMemberByName(groupname string) *GroupMember {
-	group := &GroupMember{}
-	if err := db.Where("groupname = ?", groupname).First(group).Error; err != nil {
-		return nil
-	}
-	return group
+	return nil
 }

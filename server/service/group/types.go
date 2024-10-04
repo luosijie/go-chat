@@ -6,6 +6,9 @@ type createGroupReq struct {
 }
 
 type getGroupListRes []struct {
-	Name string `json:"name"`
-	Desc string `json:"desc"`
+	ID      uint          `json:"id"`
+	Name    string        `json:"name"`
+	Desc    string        `json:"desc"`
+	OwnerID uint          `json:"owerId"`
+	Members []interface{} `json:"members"`
 }

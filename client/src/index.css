@@ -10,6 +10,9 @@
 	.btn-plain {
 		@apply border px-3 py-2 rounded-md hover:bg-gray-50 cursor-pointer
 	}
+	.input {
+		@apply border rounded-md p-2
+	}
 }
 
 :root {

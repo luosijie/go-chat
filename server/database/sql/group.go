@@ -10,7 +10,7 @@ type Group struct {
 	Name    string `json:"name"`
 	Desc    string `json:"desc"`
 	OwnerID uint   `json:"owerId"`
-	Owner   User   `json:"owner" gorm:"foreignkey:OwnerId"`
+	Owner   User   `json:"owner" gorm:"foreignkey:OwnerID"`
 }
 
 func (table *Group) TableName() string {
@@ -18,7 +18,18 @@ func (table *Group) TableName() string {
 }
 
 func CreateGroup(group *Group) error {
-	return db.Create(group).Error
+	var newGroup Group
+	if err := db.Create(group).First(&newGroup).Error; err != nil {
+		return err
+	}
+
+	// Put owner to group members
+	groupMember := GroupMember{
+		GroupID: newGroup.ID,
+		UserID:  newGroup.OwnerID,
+	}
+
+	return CreateGroupMember(&groupMember)
 }
 
 func FindGroupsByOwnerID(id uint, result interface{}) error {

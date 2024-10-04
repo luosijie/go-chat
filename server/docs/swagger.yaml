@@ -140,6 +140,60 @@ paths:
       summary: Send verification code to email
       tags:
       - Auth
+  /group:
+    post:
+      parameters:
+      - description: Token
+        in: header
+        name: Token
+        required: true
+        type: string
+      - description: Name
+        in: body
+        name: name
+        required: true
+        schema:
+          type: string
+      - description: Desc
+        in: body
+        name: desc
+        schema:
+          type: string
+      - description: OwnerId
+        in: body
+        name: ownerId
+        required: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: ""
+      summary: CreateGroup
+      tags:
+      - Group
+  /group/list:
+    post:
+      parameters:
+      - description: Token
+        in: header
+        name: Token
+        required: true
+        type: string
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: ""
+      summary: GetGroupList
+      tags:
+      - Group
   /login:
     post:
       parameters:

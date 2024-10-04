@@ -4,6 +4,7 @@ import LayoutTitle from '@/layouts/Title'
 import Dashboard from '@/pages/Dashboard'
 import ForgotPassword from '@/pages/ForgotPasword'
 import Friends from '@/pages/Friends'
+import GroupCreate from '@/pages/GroupCreate'
 import Groups from '@/pages/Groups'
 import Login from '@/pages/Login'
 import Messages from '@/pages/Messages'
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
                     {
                         path: '/groups',
                         element: <Groups/>
+                    },
+                    {
+                        path: '/group/create',
+                        element: <GroupCreate/>
                     },
                     {
                         path: '/search-user',

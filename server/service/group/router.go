@@ -12,5 +12,7 @@ func Router(router *gin.Engine) {
 	g.Use(middleware.Auth())
 
 	// Routes for auth
-	g.GET("", CreateGroup)
+	// g.GET("", CreateGroup)
+	g.GET("/list", GetGroupList)
+	g.POST("", CreateGroup)
 }
