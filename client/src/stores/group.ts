@@ -12,18 +12,19 @@ export type Group = {
 
 type GroupStore = {
     list: Array<Group>
-    createGroup: (name: string, desc: string) => Promise<boolean>
+    createGroup: (name: string, desc: string, memberIds: Array<number>) => Promise<boolean>
     getList: () => Promise<Array<Group>>
 }
 
 export const useGroupStore = create<GroupStore>((set, get) => ({
     list: [],
-    createGroup: async (name: string, desc: string) => {
+    createGroup: async (name: string, desc: string, memberIds: Array<number>) => {
         const res = await request({
             url: BASE + '/group',
             data: {
                 name,
-                desc
+                desc,
+                memberIds
             },
             method: 'POST'
         })

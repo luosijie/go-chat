@@ -21,7 +21,7 @@ const GroupCreate = () => {
 
     const friends = useFriendStore(state => state.list)
 
-    const { control, register, handleSubmit, setValue, formState: { errors } } = useForm<FormData>({
+    const { control, register, handleSubmit, formState: { errors } } = useForm<FormData>({
         defaultValues: {
             name: '',
             desc: '',
@@ -37,13 +37,14 @@ const GroupCreate = () => {
     
     const onSubmit:SubmitHandler<FormData> = async (data:FormData) => {
         console.log('2', data)
+        // data.members = data.members.map(e => e.id)
 
-        if (data.name) return
+        const memberIds = data.members.map(e => e.id)
 
         if (loading) return
         setLoading(true)
 
-        const success = await createGroup(data.name, data.desc)
+        const success = await createGroup(data.name, data.desc, memberIds)
 
         if (success) {
 

@@ -1,8 +1,9 @@
 package serviceGroup
 
 type createGroupReq struct {
-	Name string `json:"name"`
-	Desc string `json:"desc"`
+	Name      string `json:"name"`
+	Desc      string `json:"desc"`
+	MemberIDs string `json:"memberIds"`
 }
 
 type getGroupListRes []struct {
