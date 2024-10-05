@@ -7,7 +7,11 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/luosijie/go-chat/server/docs"
+	serviceAuth "github.com/luosijie/go-chat/server/service/auth"
+	serviceContacts "github.com/luosijie/go-chat/server/service/contacts"
 	serviceGroup "github.com/luosijie/go-chat/server/service/group"
+	serviceUser "github.com/luosijie/go-chat/server/service/user"
+	serviceWS "github.com/luosijie/go-chat/server/service/ws"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
@@ -37,10 +41,10 @@ func NewRouter() *gin.Engine {
 	docs.SwaggerInfo.BasePath = ""
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
-	routerAuth(router)
-	routerUser(router)
-	routerContact(router)
-	routerWS(router)
+	serviceAuth.Router(router)
+	serviceUser.Router(router)
+	serviceContacts.Router(router)
+	serviceWS.Router(router)
 	serviceGroup.Router(router)
 
 	return router

@@ -44,8 +44,7 @@ func CreateGroup(c *gin.Context) {
 		return
 	}
 
-	fmt.Println("Group:", group.ID)
-	fmt.Println("Members:", reqData.MemberIDs)
+	reqData.MemberIDs = append(reqData.MemberIDs, userID)
 
 	if err := sql.CreateGroupMembers(group.ID, reqData.MemberIDs); err != nil {
 		fmt.Println("Create members failed:", err)
@@ -65,6 +64,8 @@ func GetGroupList(c *gin.Context) {
 	userID := c.MustGet("userID").(uint)
 
 	var groups []groupFields
+
+	fmt.Println("-------------------------------------------------")
 
 	if err := sql.FindGroupsByOwnerID(userID, &groups); err != nil {
 		response.ServerFail(c, response.ErrorUnknown)

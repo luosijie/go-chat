@@ -10,7 +10,7 @@ type Contacts struct {
 	gorm.Model
 	UserID   uint `gorm:"uniqueIndex:contacts" json:"user_id"`
 	FriendID uint `gorm:"uniqueIndex:contacts" json:"friend_id"`
-	Friend   User `gorm:"foreignKey:FriendID"`
+	Friend   User `gorm:"foreignKey:FriendID" json:"friend"`
 }
 
 func (table *Contacts) TableName() string {

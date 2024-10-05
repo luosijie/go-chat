@@ -9,8 +9,8 @@ type Group struct {
 	Avatar  string `json:"avatar"`
 	Name    string `json:"name"`
 	Desc    string `json:"desc"`
-	OwnerID uint   `json:"owerId"`
-	Owner   User   `json:"owner" gorm:"foreignkey:OwnerID"`
+	OwnerID uint   `json:"owner_id"`
+	Owner   User   `json:"owner" gorm:"foreignKey:OwnerID"`
 }
 
 func (table *Group) TableName() string {

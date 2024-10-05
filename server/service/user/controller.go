@@ -16,7 +16,7 @@ import (
 // @Param   username       query     string      false "Username"
 // @Success 200        {object}  interface{}
 // @Router 	/user/page [get]
-func UserPage(c *gin.Context) {
+func userPage(c *gin.Context) {
 	userPage := []tUserPageRes{}
 
 	pageNo, _ := strconv.Atoi(c.Query("page_no"))

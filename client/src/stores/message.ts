@@ -127,10 +127,14 @@ export const useMessageStore = create<MessageStore>((set, get) => ({
     setActive: (chat: Chat) => {
         set(() => ({ active: chat }))
 
-        const index = get().findChatIndex(chat.id)
-        const find = get().list.splice(index, 1)
-        get().addChat(find[0])
+        const list = get().list.slice()
+        if (list.length) {
+            const index = get().findChatIndex(chat.id)
 
+            const find = list.splice(index, 1)
+            get().addChat(find[0])
+
+        }
 
     }
 

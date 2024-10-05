@@ -1,7 +1,10 @@
 package serviceWS
 
 import (
+	"encoding/json"
 	"fmt"
+
+	"github.com/luosijie/go-chat/server/database/redis"
 )
 
 type Hub struct {
@@ -46,32 +49,35 @@ func (h *Hub) Run() {
 
 			// For chat message
 			if msg.Type == MessageChat {
-				group, ok := h.Chats[msg.ChatID]
+				chat, ok := h.Chats[msg.ChatID]
 
 				if !ok {
 
-					group = &Chat{
+					chat = &Chat{
 						ID:      msg.ChatID,
-						Type:    "",
+						Type:    msg.ChatType,
 						Members: []uint{},
 					}
 
-					if msg.ChatType == SingleChat {
-						group.SetCoupleMembers(msg.ChatID)
-					}
+					chat.SetMembers(msg.ChatID)
 
 				}
 
-				fmt.Println("\nmembers", group.Members)
+				fmt.Println("\nmembers", chat.Members)
 				fmt.Println("\nclients", h.Clients)
 
-				for _, id := range group.Members {
+				for _, id := range chat.Members {
 
 					go func(id uint) {
 						if client, ok := h.Clients[id]; ok {
 							client.Messages <- msg
 						} else {
+							value, _ := json.Marshal(msg)
+							if err := redis.AddMessage(id, value); err != nil {
+								fmt.Println("message-to-redis error:", err)
+							}
 							// store in redis when client not login
+
 						}
 
 					}(id)

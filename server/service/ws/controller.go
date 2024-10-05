@@ -25,7 +25,7 @@ var upgrader = websocket.Upgrader{
 	},
 }
 
-func ConnectClient(c *gin.Context) {
+func connectClient(c *gin.Context) {
 	// Get token from header
 	tokenString := c.Query("Token")
 
