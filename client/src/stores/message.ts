@@ -20,15 +20,14 @@ export const useMessageStore = create<MessageStore>((set, get) => ({
     active: chatStorage.fist(),
     list: chatStorage.getList(),
     
-    addChat: (group: Chat) => {
-        console.log('add-group:', group)
+    addChat: (chat: Chat) => {
         const list = get().list
-        let exist = list.find(e => e.id === group.id)
+        let exist = list.find(e => e.id === chat.id)
 
         if (!exist) {
-            set(() => ({ list: [group, ...get().list]}))  
+            set(() => ({ list: [chat, ...get().list]}))  
 
-            exist = group
+            exist = chat
         }
 
         chatStorage.setList(get().list)
@@ -64,7 +63,7 @@ export const useMessageStore = create<MessageStore>((set, get) => ({
             if (!owner) return -1
             if (!toUser) return -1
 
-            const group:SingleChat = {
+            const chat:SingleChat = {
                 type: ChatType.Single,
                 id: msg.chatId,
                 from: owner,
@@ -73,7 +72,7 @@ export const useMessageStore = create<MessageStore>((set, get) => ({
             }
 
             set(produce((state: MessageStore) => {
-                state.list.unshift(group)
+                state.list.unshift(chat)
             }))
 
             return 0
@@ -104,15 +103,15 @@ export const useMessageStore = create<MessageStore>((set, get) => ({
             if (history.length > 100) history.shift()
         }))
 
-        const group = get().list[chatIdex]
+        const chat = get().list[chatIdex]
 
         const active = get().active
-        if (active !== null && active.id === group.id) {
+        if (active !== null && active.id === chat.id) {
             
-            get().setActive(group)
+            get().setActive(chat)
         }
 
-        // get().setActive(group)
+        // get().setActive(chat)
 
         chatStorage.setList(get().list)
     },
@@ -125,8 +124,14 @@ export const useMessageStore = create<MessageStore>((set, get) => ({
         return get().list.findIndex(e => e.id === id)
     },
 
-    setActive: (group: Chat) => {
-        set(() => ({ active: group }))
+    setActive: (chat: Chat) => {
+        set(() => ({ active: chat }))
+
+        const index = get().findChatIndex(chat.id)
+        const find = get().list.splice(index, 1)
+        get().addChat(find[0])
+
+
     }
 
 }))

@@ -1,4 +1,4 @@
-import ChatAvatar from '@/components/ChatAvatar'
+
 import { Chat, ChatType, Content, ContentType, GroupChat, SingleChat } from '@/types'
 import { Send, Smile } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'

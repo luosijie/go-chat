@@ -6,7 +6,7 @@ import { useMessageStore } from '@/stores/message'
 import Empty from '@/components/Empty'
 import { useUserStore } from '@/stores/user'
 import { useWsStore } from '@/stores/ws'
-import { ChatType, Content, Message, MessageType, SingleChat, UserSummary } from '@/types'
+import { Content, Message, MessageType, SingleChat, UserSummary } from '@/types'
 import { useEffect } from 'react'
 import MessageList from './components/MessageList'
 

@@ -1,7 +1,6 @@
 
-import Avatar from '@/components/Avatar'
+
 import Empty from '@/components/Empty'
-import GroupAvatar from '@/components/GroupAvatar'
 import SearchBar from '@/components/SearchBar'
 import { useMessageStore } from '@/stores/message'
 import { Chat, ChatType, GroupChat, SingleChat } from '@/types'
