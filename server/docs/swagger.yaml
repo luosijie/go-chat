@@ -165,6 +165,14 @@ paths:
         required: true
         schema:
           type: integer
+      - description: MemberIds
+        in: body
+        name: memberIds
+        required: true
+        schema:
+          items:
+            type: integer
+          type: array
       responses:
         "200":
           description: OK

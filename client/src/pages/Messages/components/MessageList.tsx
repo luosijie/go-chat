@@ -1,10 +1,13 @@
 
 import Avatar from '@/components/Avatar'
 import Empty from '@/components/Empty'
+import GroupAvatar from '@/components/GroupAvatar'
 import SearchBar from '@/components/SearchBar'
 import { useMessageStore } from '@/stores/message'
-import { Chat, ChatType, MultipleChat, SingleChat } from '@/types'
+import { Chat, ChatType, GroupChat, SingleChat } from '@/types'
 import { useEffect, useState } from 'react'
+import GroupCard from './GroupCard'
+import SingleCard from './SingleCard'
 
 const MessageList = () => {
     const messages = useMessageStore(state => state.list)
@@ -23,23 +26,14 @@ const MessageList = () => {
                 {
                     list.length ?
                     list.map((e:Chat) => {
-                        const single = e as SingleChat
-                        const multiple = e as MultipleChat
+                        const singleChat = e as SingleChat
+                        const groupChat = e as GroupChat
                         return <div key={e.id}>
                             {
-                                single.type === ChatType.Single &&  <div 
-                                    key={single.to.username} 
-                                    className="flex gap-3 items-center border mb-3 p-2 rounded-lg border-gray-100 cursor-pointer hover:bg-gray-50"
-                                    onClick={() => setCurrent(e) }
-                                >
-                                    <Avatar name={single.to.username} avatar={single.to.avatar}/>
-                                    <div>
-                                        <div className="font-bold text-base">{single.to.username}</div>
-                                        {   
-                                            single.history.length && <div className="text-sm text-gray-500">{single.history[single.history.length - 1].content.slice(0, 10)}</div>
-                                        }
-                                    </div>
-                                </div>
+                                singleChat.type === ChatType.Single &&  <SingleCard data={singleChat} onClick={ setCurrent }/>
+                            }
+                            {
+                                groupChat.type === ChatType.Group && <GroupCard data={groupChat} onClick={ setCurrent } /> 
                             }
                         </div>
                     }) :

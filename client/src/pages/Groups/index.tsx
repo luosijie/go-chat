@@ -1,5 +1,6 @@
 
 // import MessageList from '../components/MessageList'
+import EmptyPage from '@/components/EmptyPage'
 import { Group, useGroupStore } from '@/stores/group'
 import { useEffect, useState } from 'react'
 import Detail from './components/Detail'
@@ -29,7 +30,11 @@ const Groups = () => {
                 <List onClick={u => setActive(u)}/>
             </div>
             {/* Chat */}
-            {/* <Detail user={active} onRemove={onRemove}/> */}
+            {
+                active ?
+                <Detail group={active} onRemove={onRemove}/> :
+		        <EmptyPage/>
+            } 
         </div>
     )
 }

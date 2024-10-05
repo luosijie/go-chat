@@ -18,22 +18,12 @@ func (table *Group) TableName() string {
 }
 
 func CreateGroup(group *Group) error {
-	var newGroup Group
-	if err := db.Create(group).First(&newGroup).Error; err != nil {
-		return err
-	}
+	return db.Create(group).Error
 
-	// Put owner to group members
-	groupMember := GroupMember{
-		GroupID: newGroup.ID,
-		UserID:  newGroup.OwnerID,
-	}
-
-	return CreateGroupMember(&groupMember)
 }
 
 func FindGroupsByOwnerID(id uint, result interface{}) error {
-	return db.Model(Group{Model: gorm.Model{ID: id}}).Find(result).Error
+	return db.Model(Group{Model: gorm.Model{ID: id}}).Joins("Owner").Find(result).Error
 }
 
 func FindGroup(group *Group) error {

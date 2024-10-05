@@ -1,13 +1,14 @@
 
 import Avatar from '@/components/Avatar'
 import Empty from '@/components/Empty'
+import GroupAvatar from '@/components/GroupAvatar'
 import SearchBar from '@/components/SearchBar'
 import { Group, useGroupStore } from '@/stores/group'
 
 import { ChangeEvent, useEffect, useState } from 'react'
 
 type Props = {
-    onClick: (goup: Group) => void
+    onClick: (group: Group) => void
 }
 
 const ContactsList = ({ onClick } : Props) => {
@@ -33,16 +34,17 @@ const ContactsList = ({ onClick } : Props) => {
             <div className="flex-grow overflow-y-auto mt-2">
                 {
                     list.length ?
-                    list.map(goup => (
+                    list.map(group => (
                         <div 
-                            key={goup.id} 
-                            className="flex gap-3 items-center border mb-3 p-2 rounded-lg border-gray-100 cursor-pointer h-24 hover:bg-gray-50"
-                            onClick={() => onClick(goup) }
+                            key={group.id} 
+                            className="flex gap-3 items-center border mb-3 p-2 rounded-lg border-gray-100 cursor-pointer hover:bg-gray-50"
+                            onClick={() => onClick(group) }
                         >
-                            {/* <Avatar name={goup.name} avatar={goup.avatar} className='flex-shrink-0'/> */}
+                            <GroupAvatar members={group.members}/>
+                            {/* <Avatar name={group.name} avatar={group.avatar} className='flex-shrink-0'/> */}
                             <div className='overflow-hidden [&>div]:text-ellipsis [&>div]:overflow-hidden'>
-                                <div className='font-bold text-xl'>{ goup.name }</div>
-                                {/* <div className='text-gray-500'>{ goup.email }</div> */}
+                                <div className='font-bold text-xl'>{ group.name }</div>
+                                {/* <div className='text-gray-500'>{ group.email }</div> */}
                             </div>
                             
                         </div>

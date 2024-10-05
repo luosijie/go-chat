@@ -7,14 +7,22 @@ import Empty from '@/components/Empty'
 import { useUserStore } from '@/stores/user'
 import { useWsStore } from '@/stores/ws'
 import { ChatType, Content, Message, MessageType, SingleChat, UserSummary } from '@/types'
+import { useEffect } from 'react'
 import MessageList from './components/MessageList'
 
 
 
 const Messages = () => {
-    const active = useMessageStore(state => state.active)
+    const { active, list, setActive} = useMessageStore()
+
     const user = useUserStore(state => state.user)
     const sendMessage = useWsStore(state => state.sendMessage)
+
+    useEffect(() => {
+        if (list.length) {
+            setActive(list[0])
+        }
+    }, [])
 
     const onSend = (content:Content) => {
         if (!user || !active) return
@@ -33,7 +41,7 @@ const Messages = () => {
             to: (active as SingleChat).to,
 
             chatId: active.id,
-            chatType: ChatType.Single,
+            chatType: active.type,
 
             contentType: content.type,
             content: content.value
@@ -54,9 +62,9 @@ const Messages = () => {
                 active ? 
                 <>
                     <Chat group={active} onSend={onSend}/>
-                    <div className="w-60 border-l">
+                    {/* <div className="w-60 border-l">
                         <Info group={active}/>
-                    </div>
+                    </div> */}
                 </> :
                 <Empty/>
             }

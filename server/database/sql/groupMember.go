@@ -16,8 +16,27 @@ func (table *GroupMember) TableName() string {
 	return "groupMember"
 }
 
-func CreateGroupMember(group *GroupMember) error {
-	return db.Create(group).Error
+func CreateGroupMember(groupId uint, userId uint) error {
+	groupMember := &GroupMember{
+		GroupID: groupId,
+		UserID:  userId,
+	}
+	return db.Create(&groupMember).Error
+}
+
+func CreateGroupMembers(groupId uint, userIds []uint) error {
+	tx := db.Begin()
+
+	for _, id := range userIds {
+		if err := tx.Create(&GroupMember{
+			GroupID: groupId,
+			UserID:  id,
+		}).Error; err != nil {
+			tx.Rollback()
+		}
+	}
+
+	return tx.Commit().Error
 }
 
 func FindGroupMembers(groupID uint, out interface{}) error {

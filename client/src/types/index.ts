@@ -31,7 +31,7 @@ export enum ContentType {
 
 export enum ChatType {
     Single = "single",
-    Chat = "group"
+    Group = "group"
 }
 
 // export type Chat = {
@@ -52,17 +52,17 @@ export type SingleChat = {
     history: Array<Message>
 }
 
-export type MultipleChat = {
-    type: ChatType.Chat
+export type GroupChat = {
+    type: ChatType.Group
     id: string
-    ower: UserSummary
+    owner: UserSummary
     name: string
     desc: string
     members: Array<UserSummary>
     history: Array<Message>
 }
 
-export type Chat = SingleChat | MultipleChat
+export type Chat = SingleChat | GroupChat
 
 export type Message = {
     type: MessageType

@@ -1,15 +1,21 @@
 package serviceGroup
 
+import "github.com/luosijie/go-chat/server/types"
+
 type createGroupReq struct {
 	Name      string `json:"name"`
 	Desc      string `json:"desc"`
-	MemberIDs string `json:"memberIds"`
+	MemberIDs []uint `json:"memberIds"`
 }
 
-type getGroupListRes []struct {
-	ID      uint          `json:"id"`
-	Name    string        `json:"name"`
-	Desc    string        `json:"desc"`
-	OwnerID uint          `json:"owerId"`
-	Members []interface{} `json:"members"`
+type groupFields struct {
+	ID    uint              `json:"id"`
+	Name  string            `json:"name"`
+	Desc  string            `json:"desc"`
+	Owner types.UserSummary `json:"owner"`
+}
+
+type getGroupListItem struct {
+	Group   groupFields         `json:"group"`
+	Members []types.UserSummary `json:"members"`
 }

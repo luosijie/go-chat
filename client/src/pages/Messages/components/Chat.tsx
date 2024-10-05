@@ -1,12 +1,12 @@
 import ChatAvatar from '@/components/ChatAvatar'
-import { Chat, ChatType, Content, ContentType, MultipleChat, SingleChat } from '@/types'
+import { Chat, ChatType, Content, ContentType, GroupChat, SingleChat } from '@/types'
 import { Send, Smile } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 
+import Avatar from '@/components/Avatar'
+import GroupAvatar from '@/components/GroupAvatar'
 import MessageBox from '@/components/MessageBox'
 import EmojiPicker, { EmojiClickData } from 'emoji-picker-react'
-
-
 
 type Props = {
     group: Chat
@@ -15,7 +15,7 @@ type Props = {
 
 const ChatComponent = ({ group, onSend}:Props) => {
     const singleChat = group as SingleChat
-    const multipleChat = group as MultipleChat
+    const groupChat = group as GroupChat
 
     const inputRef = useRef<HTMLInputElement>(null)
 
@@ -80,9 +80,22 @@ const ChatComponent = ({ group, onSend}:Props) => {
         <div className="flex flex-col w-full h-full relative">
             {/* Head */}
             <div className="flex gap-2 items-center px-2 py-6 border-b h-14">
-                <ChatAvatar group={group} className='size-10'/>
-                { singleChat.type === ChatType.Single && <span className="font-bold text-lg">{ singleChat.to.username }</span> }
-                { multipleChat.type === ChatType.Chat && <span className="font-bold text-lg">{ multipleChat.name }</span> }
+                
+                { 
+                    singleChat.type === ChatType.Single &&
+                    <>
+                        <Avatar name={singleChat.to.username} avatar={singleChat.to.avatar} className='size-10'/>
+                        <span className="font-bold text-lg">{ singleChat.to.username }</span> 
+                    </>
+                }
+                { 
+                    groupChat.type === ChatType.Group && 
+                    <>
+                        <GroupAvatar members={groupChat.members}/>
+                        <span className="font-bold text-lg">{ groupChat.name }</span> 
+                    </>
+                }
+                
             </div> 
 
             {/* Body */}

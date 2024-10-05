@@ -1,9 +1,12 @@
 package serviceGroup
 
 import (
+	"fmt"
+
 	"github.com/gin-gonic/gin"
 	"github.com/luosijie/go-chat/server/database/sql"
 	"github.com/luosijie/go-chat/server/pkg/response"
+	"github.com/luosijie/go-chat/server/types"
 )
 
 // @Summary CreateGroup
@@ -12,6 +15,7 @@ import (
 // @Param   name        body     string  true  "Name"
 // @Param   desc        body     string  false  "Desc"
 // @Param   ownerId     body     uint    true   "OwnerId"
+// @Param   memberIds   body     []uint    true   "MemberIds"
 // @Success 200         { object }  interface{}
 // @Router 	/group      [post]
 func CreateGroup(c *gin.Context) {
@@ -40,6 +44,13 @@ func CreateGroup(c *gin.Context) {
 		return
 	}
 
+	fmt.Println("Group:", group.ID)
+	fmt.Println("Members:", reqData.MemberIDs)
+
+	if err := sql.CreateGroupMembers(group.ID, reqData.MemberIDs); err != nil {
+		fmt.Println("Create members failed:", err)
+	}
+
 	response.Success(c, "Create Group Success", group)
 
 }
@@ -53,11 +64,24 @@ func CreateGroup(c *gin.Context) {
 func GetGroupList(c *gin.Context) {
 	userID := c.MustGet("userID").(uint)
 
-	var res getGroupListRes
+	var groups []groupFields
 
-	if err := sql.FindGroupsByOwnerID(userID, &res); err != nil {
+	if err := sql.FindGroupsByOwnerID(userID, &groups); err != nil {
 		response.ServerFail(c, response.ErrorUnknown)
 		return
+	}
+
+	var res []getGroupListItem
+	for _, g := range groups {
+		fmt.Println("group", g)
+
+		var members []types.UserSummary
+		sql.FindGroupMembers(g.ID, &members)
+
+		res = append(res, getGroupListItem{
+			Group:   g,
+			Members: members,
+		})
 	}
 
 	response.Success(c, "Get group list success", &res)
