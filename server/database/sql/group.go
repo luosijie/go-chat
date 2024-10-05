@@ -23,7 +23,7 @@ func CreateGroup(group *Group) error {
 }
 
 func FindGroupsByOwnerID(id uint, result interface{}) error {
-	return db.Model(Group{Model: gorm.Model{ID: id}}).Joins("Owner").Find(result).Error
+	return db.Model(&Group{Model: gorm.Model{ID: id}}).Joins("Owner").Find(result).Error
 }
 
 func FindGroup(group *Group) error {
