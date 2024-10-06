@@ -36,7 +36,7 @@ const MessageBox = ({ messages} : Props) => {
     }
 
     return (
-        <div className="p-2 flex-grow overflow-y-auto w-full h-full flex flex-col">
+        <div className="p-5 flex-grow overflow-y-auto w-full h-full flex flex-col">
             <div ref={boxRef}>
             {
                 messages.map(e => (
