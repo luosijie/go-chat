@@ -33,8 +33,21 @@ func (h *Hub) Run() {
 
 		case client := <-h.Login:
 			fmt.Println("[Client login ...]")
-			if _, ok := h.Clients[client.ID]; !ok {
+			if client, ok := h.Clients[client.ID]; !ok {
 				h.Clients[client.ID] = client
+
+				// Check if there are unsend messages in redis
+				messages := redis.GetMessages(client.ID)
+				if len(messages) > 0 {
+					for _, string := range messages {
+						msg := Message{}
+						if err := json.Unmarshal([]byte(string), &msg); err != nil {
+							fmt.Println("Parse message error:", err)
+						}
+
+						client.Messages <- &msg
+					}
+				}
 			}
 
 		case client := <-h.Logout:
@@ -72,12 +85,11 @@ func (h *Hub) Run() {
 						if client, ok := h.Clients[id]; ok {
 							client.Messages <- msg
 						} else {
+							// Store in redis when client not login
 							value, _ := json.Marshal(msg)
 							if err := redis.AddMessage(id, value); err != nil {
 								fmt.Println("message-to-redis error:", err)
 							}
-							// store in redis when client not login
-
 						}
 
 					}(id)
