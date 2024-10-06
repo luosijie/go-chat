@@ -19,7 +19,7 @@ const MessageList = () => {
     }, [messages])
 
     return (
-        <>
+        <div className="w-60 border-r p-2 relative flex flex-col">
             <SearchBar/>
             <div className="flex-grow overflow-y-auto mt-2">
                 {
@@ -39,7 +39,7 @@ const MessageList = () => {
                     <Empty text='No message here...'/>
                 }
             </div>
-        </>
+        </div>
     )
 }
 

@@ -19,8 +19,8 @@ import (
 func userPage(c *gin.Context) {
 	userPage := []tUserPageRes{}
 
-	pageNo, _ := strconv.Atoi(c.Query("page_no"))
-	pageSize, _ := strconv.Atoi(c.Query("page_size"))
+	pageNo, _ := strconv.Atoi(c.Query("pageNo"))
+	pageSize, _ := strconv.Atoi(c.Query("pageSize"))
 	username := c.Query("username")
 
 	page := sql.FindUserPageByName(pageNo, pageSize, username, userPage)

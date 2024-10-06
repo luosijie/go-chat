@@ -29,7 +29,7 @@ const itemData:Array<Item> = [
         bg: 'bg-green'
     },
     {
-        label: 'AI chat',
+        label: 'Create Users',
         Icon: AtomIcon,
         color: '#DF3B9D',
         bg: 'bg-pink'
@@ -43,7 +43,11 @@ const Dashboard = () => {
         console.log('item-click:', i)
         switch (i.label) {
             case 'Create group':
-                navigate('/group/create')
+                navigate('/create-group')
+                break
+            case 'Create Users':
+                navigate('/create-users')
+
         }
     }
 

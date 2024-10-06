@@ -10,8 +10,8 @@ import UserCard from './components/UserCard'
 const BASE = import.meta.env.VITE_APP_URL
 
 type Query = {
-  page_no: number
-  page_size: number
+  pageNo: number
+  pageSize: number
   username: string
 }
 
@@ -22,8 +22,8 @@ type State = {
 
 const UserPanel = () => {
     const [query, setQuery] = useState<Query>({
-        page_no: 1,
-        page_size: 20,
+        pageNo: 1,
+        pageSize: 20,
         username: '',
     })
 
@@ -55,7 +55,7 @@ const UserPanel = () => {
     const handlePageChange = (evt:any) => {
         setQuery(query => ({
             ...query,
-            page_no: evt.selected + 1
+            pageNo: evt.selected + 1
         }))
     }
 
@@ -72,7 +72,7 @@ const UserPanel = () => {
             </div>
             {
                 state.users.length ?
-                <div className='w-full h-2/3 rounded-lg grid grid-cols-4  flex-wrap relative px-10 gap-5 auto-rows-min flex-grow'>
+                <div className='w-full h-2/3 rounded-lg grid grid-cols-4 overflow-y-auto  flex-wrap relative px-10 gap-5 auto-rows-min flex-grow'>
                     {
                         state.users.map(u => (
                             <UserCard user={u} key={u.id}/>
@@ -82,11 +82,11 @@ const UserPanel = () => {
                 <div className='flex-grow flex items-center justify-center'>
                     <Empty text='No user founded' Icon={UserRoundXIcon}/>
                 </div>
-
             }
+            
             <Pagination 
                 pageRangeDisplayed={6}
-                pageCount={state.total} 
+                pageCount={ Math.ceil(state.total / query.pageSize)} 
                 onPageChange={handlePageChange}
                 previousLabel={<ArrowLeftCircleIcon/>}
                 nextLabel={<ArrowRightCircleIcon/>}

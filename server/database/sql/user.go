@@ -70,7 +70,7 @@ func FindUserPageByName(pageNo int, pageSize int, username string, rows any) res
 	offset := pageSize * (pageNo - 1)
 
 	query := "%" + username + "%"
-	db.Model(&User{}).Limit(limit).Offset(offset).Where("username LIKE ?", query).Find(&rows)
+	db.Order("created_at desc").Model(&User{}).Limit(limit).Offset(offset).Where("username LIKE ?", query).Find(&rows)
 	db.Model(&User{}).Where("username LIKE ?", query).Count(&total)
 
 	fmt.Println("Total:", total)

@@ -13,8 +13,8 @@ type Error struct {
 }
 
 type Page struct {
-	PageNo   int   `json:"page_no"`
-	PageSize int   `json:"page_size"`
+	PageNo   int   `json:"pageNo"`
+	PageSize int   `json:"pageSize"`
 	Total    int64 `json:"total"`
 	Rows     any   `json:"rows"`
 }

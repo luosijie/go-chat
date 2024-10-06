@@ -44,10 +44,10 @@ const UserCard = ({user}:Props) => {
         onMouseEnter={() => setTop(0)}
         onMouseLeave={() => setTop('100%')}
     >
-        <Avatar user={ user }/>
-        <div>
-            <div className='font-bold text-xl'>{ user.username }</div>
-            <div>{ user.email }</div>
+        <Avatar name={user.username} avatar={user.avatar} className='flex-shrink-0'/>
+        <div className='overflow-hidden'>
+            <div className='font-bold text-xl text-ellipsis overflow-hidden'>{ user.username }</div>
+            <div className='text-ellipsis overflow-hidden'>{ user.email }</div>
         </div>
         <motion.div 
             className='absolute bg-white w-full h-full flex justify-center items-center bg-opacity-95 gap-10'

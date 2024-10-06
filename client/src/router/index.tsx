@@ -1,10 +1,11 @@
 import LayoutMain from '@/layouts/Main'
 import LayoutRoot from '@/layouts/Root'
 import LayoutTitle from '@/layouts/Title'
+import CreateGroup from '@/pages/CreateGroup'
+import CreateUsers from '@/pages/CreateUsers'
 import Dashboard from '@/pages/Dashboard'
 import ForgotPassword from '@/pages/ForgotPasword'
 import Friends from '@/pages/Friends'
-import GroupCreate from '@/pages/GroupCreate'
 import Groups from '@/pages/Groups'
 import Login from '@/pages/Login'
 import Messages from '@/pages/Messages'
@@ -44,8 +45,12 @@ const router = createBrowserRouter([
                         element: <Groups/>
                     },
                     {
-                        path: '/group/create',
-                        element: <GroupCreate/>
+                        path: '/create-group',
+                        element: <CreateGroup/>
+                    },
+                    {
+                        path: '/create-users',
+                        element: <CreateUsers/>
                     },
                     {
                         path: '/search-user',

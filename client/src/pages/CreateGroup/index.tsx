@@ -13,7 +13,7 @@ type FormData = {
     members: Array<UserSummary>
 }
 
-const GroupCreate = () => {
+const CreateGroup = () => {
     const navigate = useNavigate()
     const createGroup = useGroupStore(state => state.createGroup)
 
@@ -102,4 +102,4 @@ const GroupCreate = () => {
     )
 }
 
-export default GroupCreate
+export default CreateGroup
