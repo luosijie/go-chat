@@ -11,6 +11,7 @@ type FriendStore = {
 
 export const useFriendStore = create<FriendStore>((set, get) => ({
     list: [],
+
     getList: async () => {
         const res = await request({
             url: BASE + '/contacts/list',

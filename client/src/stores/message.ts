@@ -1,19 +1,20 @@
-import { Chat, ChatType, Message, SingleChat, UserSummary } from '@/types'
+import { Chat, ChatType, GroupChat, Message, SingleChat, UserSummary } from '@/types'
 import { chatStorage } from '@/utils/storage'
 import { produce } from 'immer'
 import { create } from 'zustand'
 import { useFriendStore } from './friend'
+import { Group, useGroupStore } from './group'
 import { useUserStore } from './user'
 
 type MessageStore = {
     active: Chat | null
     list: Array<Chat>
     addChat: (user: Chat) => Chat
-    createCroupFromMessage: (msg:Message) => number
+    createChatFromMessage: (msg:Message) => Promise<number>
     findChat: (id: string) => Chat | undefined
     findChatIndex: (id: string) => number
     setActive: (contact: Chat) => void
-    addMessage: (msg: Message) => void
+    addMessage: (msg: Message) => Promise<void>
 }
 
 export const useMessageStore = create<MessageStore>((set, get) => ({
@@ -35,9 +36,10 @@ export const useMessageStore = create<MessageStore>((set, get) => ({
         return exist
     },
 
-    createCroupFromMessage: (msg: Message) => {
+    createChatFromMessage: async (msg: Message) => {
 
         if (msg.chatType === ChatType.Single) {
+            await useFriendStore.getState().getList()
             let owner: UserSummary | undefined
             const user = useUserStore.getState().user
             const users = useFriendStore.getState().list.slice()
@@ -76,22 +78,38 @@ export const useMessageStore = create<MessageStore>((set, get) => ({
             }))
 
             return 0
-            
         }
 
+        if (msg.chatType === ChatType.Group) {
+            const groups = await useGroupStore.getState().getList()
+            const find = groups.find((g:Group) => String(g.id) === msg.chatId)
 
+            if (find === undefined) return -1
+
+            const chat:GroupChat = {
+                type: ChatType.Group,
+                id: String(find.id),
+                group: find,
+                history: []
+            }
+
+            set(produce((state: MessageStore) => {
+                state.list.unshift(chat)
+            }))
+
+            return 0
+        }
         
 
         return -1
     },
 
-    addMessage: (msg: Message) => {
+    addMessage: async (msg: Message) => {
         let chatIdex = get().findChatIndex(msg.chatId) 
         
         if (chatIdex === -1) {
-            chatIdex = get().createCroupFromMessage(msg)
+            chatIdex = await get().createChatFromMessage(msg)
         }
-
 
         if (chatIdex === -1) {
             return

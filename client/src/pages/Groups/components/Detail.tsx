@@ -38,10 +38,7 @@ const Detail = ({ group, onRemove } : Props) => {
 			groupChat  = {
 				type: ChatType.Group,
 				id: chatId,
-				owner: group.owner,
-				name: group.name,
-				desc: group.desc,
-				members: group.members,
+				group,
 				history: []
 			}
 		}

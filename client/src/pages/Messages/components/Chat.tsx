@@ -91,8 +91,8 @@ const ChatComponent = ({ group, onSend}:Props) => {
                 { 
                     groupChat.type === ChatType.Group && 
                     <>
-                        <GroupAvatar members={groupChat.members}/>
-                        <span className="font-bold text-lg">{ groupChat.name }</span> 
+                        <GroupAvatar members={groupChat.group.members}/>
+                        <span className="font-bold text-lg">{ groupChat.group.name }</span> 
                     </>
                 }
                 

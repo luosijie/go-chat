@@ -17,10 +17,10 @@ const GroupCard = ({ data, onClick }:Props) => {
         onClick={() => onClick(data) }
     >
         {/* <GroupAvatar */}
-        <GroupAvatar members={data.members} />
+        <GroupAvatar members={data.group.members} />
         {/* <Avatar name={single.to.username} avatar={single.to.avatar}/> */}
         <div>
-            <div className="font-bold text-base">{data.name}</div>
+            <div className="font-bold text-base">{data.group.name}</div>
             {   
                 historyLength > 0 &&
                 <div className="text-sm text-gray-500">{data.history[historyLength - 1].content.slice(0, 10)}</div>

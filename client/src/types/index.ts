@@ -1,3 +1,4 @@
+import { Group } from "@/stores/group"
 
 
 // Types for user
@@ -55,10 +56,7 @@ export type SingleChat = {
 export type GroupChat = {
     type: ChatType.Group
     id: string
-    owner: UserSummary
-    name: string
-    desc: string
-    members: Array<UserSummary>
+    group: Group
     history: Array<Message>
 }
 
