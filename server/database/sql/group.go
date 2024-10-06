@@ -19,7 +19,6 @@ func (table *Group) TableName() string {
 
 func CreateGroup(group *Group) error {
 	return db.Create(group).Error
-
 }
 
 func FindGroupsByOwnerID(id uint, result interface{}) error {

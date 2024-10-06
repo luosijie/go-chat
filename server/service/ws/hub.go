@@ -32,12 +32,15 @@ func (h *Hub) Run() {
 		select {
 
 		case client := <-h.Login:
-			fmt.Println("[Client login ...]")
-			if client, ok := h.Clients[client.ID]; !ok {
+			fmt.Println("[Client login ...]", client.ID, h.Clients)
+			if _, ok := h.Clients[client.ID]; !ok {
+				fmt.Println("logined client:", client)
 				h.Clients[client.ID] = client
 
 				// Check if there are unsend messages in redis
 				messages := redis.GetMessages(client.ID)
+				fmt.Println("messages:", messages)
+
 				if len(messages) > 0 {
 					for _, string := range messages {
 						msg := Message{}
@@ -76,9 +79,6 @@ func (h *Hub) Run() {
 
 				}
 
-				fmt.Println("\nmembers", chat.Members)
-				fmt.Println("\nclients", h.Clients)
-
 				for _, id := range chat.Members {
 
 					go func(id uint) {
@@ -93,6 +93,7 @@ func (h *Hub) Run() {
 						}
 
 					}(id)
+
 				}
 			}
 

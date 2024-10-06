@@ -67,7 +67,7 @@ func GetGroupList(c *gin.Context) {
 
 	fmt.Println("-------------------------------------------------")
 
-	if err := sql.FindGroupsByOwnerID(userID, &groups); err != nil {
+	if err := sql.FintMemberGroups(userID, &groups); err != nil {
 		response.ServerFail(c, response.ErrorUnknown)
 		return
 	}

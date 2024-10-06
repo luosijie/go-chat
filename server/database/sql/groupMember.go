@@ -47,7 +47,16 @@ func FindGroupMembers(groupID uint, out interface{}) error {
 		return err
 	}
 
-	db.Model(&groupMembers).Association("User").Find(out)
+	return db.Model(&groupMembers).Association("User").Find(out)
 
-	return nil
+}
+
+func FintMemberGroups(memberId uint, out interface{}) error {
+	var groupMembers []*GroupMember
+
+	if err := db.Model(&GroupMember{}).Where("user_id = ?", memberId).Find(&groupMembers).Error; err != nil {
+		return err
+	}
+
+	return db.Model(&groupMembers).Joins("Owner").Association("Group").Find(out)
 }
