@@ -5,7 +5,7 @@ import { UserSummary } from '@/types'
 import { useEffect, useState } from 'react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 type FormData = {
     name: string
@@ -80,7 +80,9 @@ const CreateGroup = () => {
                 </div>
 
                 <div className='w-full flex flex-col relative mb-5'>
-                    <div className='font-bold mb-2'>Members</div>
+                    <div className='font-bold mb-2'>
+                        Members <span className='text-gray-500 ml-5 inline-block'>if you have not a friend yet, go to <Link to='/search-user' className='text-blue-dark'>add one</Link> </span>
+                    </div>
                     <Controller 
                         name='members'
                         control={control}

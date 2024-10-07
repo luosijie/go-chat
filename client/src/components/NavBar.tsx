@@ -3,6 +3,7 @@ import Avatar from '@/components/Avatar'
 import Menu from '@/components/Menu'
 import ModeToggle from '@/components/ModeToggle'
 import { useUserStore } from '@/stores/user'
+import { Link } from 'react-router-dom'
 
 const NavBar = () => {
     const user = useUserStore(state => state.user)
@@ -20,14 +21,14 @@ const NavBar = () => {
             <ModeToggle/>
 
             {/* info */}
-            <div className="border-t p-5 flex gap-2 items-center cursor-pointer relative">
-
+            <Link to='/setting' className="border-t p-5 flex gap-2 items-center cursor-pointer relative">
+        
                 <Avatar name={user?.username} avatar={user?.avatar} className='flex-shrink-0'/>
                 <div className='relative overflow-hidden'>
                     <div className="text-base font-bold text-ellipsis overflow-hidden">{ user?.username }</div>
                     <div className="text-sm text-gray-500 text-ellipsis overflow-hidden">{ user?.email }</div>
                 </div>
-            </div>
+            </Link>
         </div>
     )
 }

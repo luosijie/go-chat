@@ -298,6 +298,22 @@ paths:
       summary: Sign up
       tags:
       - Auth
+  /upload:
+    post:
+      parameters:
+      - description: File
+        in: formData
+        name: file
+        required: true
+        type: file
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+      summary: Upload
+      tags:
+      - Static
   /user/page:
     get:
       parameters:

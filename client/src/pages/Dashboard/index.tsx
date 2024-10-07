@@ -22,12 +22,12 @@ const itemData:Array<Item> = [
         color: '#A06902',
         bg: 'bg-yellow'
     },
-    {
-        label: 'Edit profile',
-        Icon: List,
-        color: '#62753D',
-        bg: 'bg-green'
-    },
+    // {
+    //     label: 'Edit profile',
+    //     Icon: List,
+    //     color: '#62753D',
+    //     bg: 'bg-green'
+    // },
     {
         label: 'Create Users',
         Icon: AtomIcon,

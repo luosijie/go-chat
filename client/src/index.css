@@ -4,7 +4,7 @@
 
 @layer components {
 	.btn {
-		@apply w-full p-4 bg-black rounded-md text-white text-center font-bold text-xl cursor-pointer hover:bg-gray-800;
+		@apply w-full p-2 bg-black rounded-md text-white text-center font-bold text-xl cursor-pointer hover:bg-gray-800;
 	}
 
 	.btn-plain {

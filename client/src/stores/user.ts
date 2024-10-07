@@ -2,6 +2,9 @@ import { User } from '@/types'
 import request from '@/utils/request'
 import { userStorage } from '@/utils/storage'
 import { create } from 'zustand'
+import { useFriendStore } from './friend'
+import { useGroupStore } from './group'
+import { useMessageStore } from './message'
 
 const BASE = import.meta.env.VITE_APP_URL
 // const BASE_WS = import.meta.env.VITE_APP_WS
@@ -59,6 +62,12 @@ export const useUserStore = create<UserStore>((set, get) => ({
     logout: () => {
         set(() => ({ user: null }))
         userStorage.delete()
+
+        
         location.href = '/login'
+
+        useMessageStore.getState().clear()
+        useGroupStore.getState().clear()
+        useFriendStore.getState().clear()
     }
 }))

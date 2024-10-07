@@ -1,11 +1,13 @@
+import clsx from "clsx"
 import { ImagePlusIcon, Trash2 } from "lucide-react"
 import { ChangeEvent, useState } from "react"
 
 type Props = {
+    className?: string
     onChange: (file:File | null) => void
 }
 
-const ImageUploader = ({ onChange }:Props) => {
+const ImageUploader = ({ className, onChange }:Props) => {
 
     const [file, setFile] = useState<File | null>(null)
 
@@ -20,11 +22,9 @@ const ImageUploader = ({ onChange }:Props) => {
         onChange(file)
         
     }
-
     
     return (
-        <div className="size-28 border rounded-full text-gray-500 flex justify-center items-center cursor-pointer relative">
-            
+        <div className={clsx("size-28 border rounded-full text-gray-500 flex justify-center items-center cursor-pointer relative", className )} >
             
             { 
                 file ? 
@@ -39,6 +39,7 @@ const ImageUploader = ({ onChange }:Props) => {
             <input 
                 type="file" accept="image/*"
                 onChange={evt => handleChange(evt)}
+                
                 className="absolute w-full h-full left-0 top-0 opacity-0 cursor-pointer z-10 rounded-full"
             />
         </div>

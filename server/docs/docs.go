@@ -434,6 +434,31 @@ const docTemplate = `{
                 }
             }
         },
+        "/upload": {
+            "post": {
+                "tags": [
+                    "Static"
+                ],
+                "summary": "Upload",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "File",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
         "/user/page": {
             "get": {
                 "tags": [

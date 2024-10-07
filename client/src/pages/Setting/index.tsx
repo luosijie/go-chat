@@ -45,7 +45,7 @@ const Setting = () => {
         <div className="flex gap-3 flex-col items-center justify-center h-full">
             <div className='relative'>
 
-                <Avatar user={user} className='size-24'/>
+                <Avatar name={user?.username} avatar={user?.avatar} className='size-24 text-5xl'/>
                 <div className='bg-white absolute bottom-1 right-1 rounded-full p-1 border cursor-pointer'>
                     <EditIcon size={22}/>
                 </div>

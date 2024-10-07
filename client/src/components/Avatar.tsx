@@ -8,7 +8,7 @@ type Props = {
 
 const Avatar = ({className, name, avatar}:Props) => {
   return (
-    <div className={clsx('size-12 rounded-full bg-black flex justify-center items-center text-white text-2xl font-bold', className)}>
+    <div className={clsx('size-12 rounded-full overflow-hidden bg-black flex justify-center items-center text-white text-2xl font-bold', className)}>
         {
             !name && !avatar ?  
             <> ?</> : 

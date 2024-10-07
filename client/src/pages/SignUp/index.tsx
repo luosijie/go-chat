@@ -36,8 +36,6 @@ const Page = () => {
 
         setLoading(true)
 
-       
-
         const form = {
             avatar,
             ...data
@@ -61,6 +59,7 @@ const Page = () => {
     }
 
     const onFileChange = (file:File | null) => {
+        console.log(file)
         setAvatar(file)
     }
 
