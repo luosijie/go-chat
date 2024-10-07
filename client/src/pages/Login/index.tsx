@@ -69,7 +69,8 @@ const Login = () => {
 
                 {/* Actions */}
                 <div className='flex justify-between w-full text-gray-500 mt-3'>
-                    <Link className='hover:text-black cursor-pointer' to='/forgot-password'>Forgot password ?</Link>
+                    <div className='hover:text-black cursor-pointer' onClick={ () => toast('Comming soon !')}>Forgot password ?</div>
+                    {/* <Link className='hover:text-black cursor-pointer' to='/forgot-password'>Forgot password ?</Link> */}
                     <Link className='hover:text-black cursor-pointer' to='/sign-up'>Sign up</Link>
                 </div>
 

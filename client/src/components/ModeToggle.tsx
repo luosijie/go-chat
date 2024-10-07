@@ -21,9 +21,11 @@ const ModeToggle = () => {
         const left = LeftInit * getRemSize()
         if (mode === Mode.Light) {
             setLeft(left)
+            document.documentElement.classList.remove('dark')
         } else {
             const width = Number(container.current?.getBoundingClientRect().width)
             setLeft(width / 2 - left )
+            document.documentElement.classList.add('dark')
         }
     }, [mode])
 
