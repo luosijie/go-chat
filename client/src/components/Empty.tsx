@@ -10,7 +10,7 @@ type Props = {
 
 const Empty = ({Icon, text}:Props) => {
   return (
-    <div className='flex flex-col gap-2 justify-center items-center w-full h-full text-gray-500 text-sm'>
+    <div className='flex flex-col gap-2 justify-center items-center w-full h-full text-gray-500 text-sm text-center'>
         { Icon ? <Icon/> : <BookmarkX/> }
         { text || 'Empty'}
     </div>

@@ -1,12 +1,13 @@
 import clsx from 'clsx'
 import { AtomIcon, List, LucideProps, MessageCircleMore, Users } from 'lucide-react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 type Item = {
     label: string
     Icon: React.ForwardRefExoticComponent<Omit<LucideProps, 'ref'> & React.RefAttributes<SVGSVGElement>>
     color: string
     bg: string
+    link: string
 }
 
 const itemData:Array<Item> = [
@@ -14,13 +15,16 @@ const itemData:Array<Item> = [
         label: 'Create group',
         Icon: Users,
         color: '#1577CF',
-        bg: 'bg-blue'
+        bg: 'bg-blue',
+        link: '/create-group'
     },
     {
         label: 'Start chat',
         Icon: MessageCircleMore,
         color: '#A06902',
-        bg: 'bg-yellow'
+        bg: 'bg-yellow',
+        link: '/messages'
+
     },
     // {
     //     label: 'Edit profile',
@@ -32,7 +36,8 @@ const itemData:Array<Item> = [
         label: 'Create Users',
         Icon: AtomIcon,
         color: '#DF3B9D',
-        bg: 'bg-pink'
+        bg: 'bg-pink',
+        link: '/create-users'
     }
 ]
 
@@ -57,14 +62,14 @@ const Dashboard = () => {
             <div className='flex gap-5'>
                 {
                     itemData.map(e => (
-                        <div key={e.label} className='flex border p-10 rounded-xl items-center gap-5 cursor-pointer' onClick={() => handleItemClick(e)}>
+                        <Link to={e.link} key={e.label} className='flex border p-10 rounded-xl items-center gap-5 cursor-pointer' onClick={() => handleItemClick(e)}>
                             <div className={clsx('size-12 flex justify-center rounded-lg items-center flex-shrink-0', e.bg )}>
                                 <e.Icon color={e.color}/>
                             </div>
                             <div className='font-bold text-lg'>
                                 {e.label}
                             </div>
-                        </div>
+                        </Link>
                     ))
                 }
             </div>

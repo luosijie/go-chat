@@ -50,7 +50,7 @@ const MessageList = () => {
                             }
                         </div>
                     }) :
-                    <Empty text='No message here...'/>
+                    <Empty text='Start a chat from Friends or Groups'/>
                 }
             </div>
         </div>
