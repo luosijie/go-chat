@@ -19,7 +19,7 @@ const SingleCard = ({data, onClick}:Props) => {
         <div>
             <div className="font-bold text-base">{data.to.username}</div>
             {   
-                data.history.length && <div className="text-sm text-gray-500">{data.history[data.history.length - 1].content.slice(0, 10)}</div>
+                data.history.length > 0 && <div className="text-sm text-gray-500">{data.history[data.history.length - 1].content.slice(0, 10)}</div>
             }
         </div>
     </div>

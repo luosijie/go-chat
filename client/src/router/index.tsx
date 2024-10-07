@@ -13,7 +13,7 @@ import ResetPassword from '@/pages/ResetPassword'
 import SearchUser from '@/pages/SearchUser'
 import Setting from '@/pages/Setting'
 import SignUp from '@/pages/SignUp'
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter, redirect } from 'react-router-dom'
 
 const router = createBrowserRouter([
     {
@@ -26,7 +26,9 @@ const router = createBrowserRouter([
                 children: [
                     {
                         path: '/',
-                        element: <Dashboard/>
+                        loader: async () => redirect('/dashboard')
+        
+                        // element: <Dashboard/>
                     },
                     {
                         path: '/dashboard',

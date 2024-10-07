@@ -1,4 +1,5 @@
 import { UserSummary } from "@/types"
+import { toLogin } from "@/utils/fake"
 import Avatar from "../../../components/Avatar"
 
 
@@ -15,7 +16,7 @@ const SingleInfo = ({data}:Props) => {
             <Avatar name={data.username} avatar={data.avatar}  className="size-20 mt-10"/>
             <div className="font-bold mt-4 text-3xl text-center">{ data.username }</div>
             <div className="mt-4 text-gray-500">{ data.email }</div>
-            <div className="btn-plain mt-5">Login</div>
+            <div className="btn-plain mt-5" onClick={() => toLogin(data)}>Login</div>
         </div>
     )
 }

@@ -32,7 +32,7 @@ func (h *Hub) Run() {
 		select {
 
 		case client := <-h.Login:
-			fmt.Println("[Client login ...]", client.ID, h.Clients)
+			fmt.Println("[Client login ...]", client.ID)
 			if _, ok := h.Clients[client.ID]; !ok {
 				fmt.Println("logined client:", client)
 				h.Clients[client.ID] = client
@@ -54,7 +54,7 @@ func (h *Hub) Run() {
 			}
 
 		case client := <-h.Logout:
-			fmt.Println("[Client logout ...]")
+			fmt.Println("[Client logout ...]", client.ID)
 			if _, ok := h.Clients[client.ID]; ok {
 				delete(h.Clients, client.ID)
 				close(client.Messages)

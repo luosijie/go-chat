@@ -19,6 +19,7 @@ type GroupStore = {
     setActive: (group:Group) => void,
     createGroup: (name: string, desc: string, memberIds: Array<number>) => Promise<boolean>
     getList: () => Promise<Array<Group>>
+    clear: () => void
 }
 
 export const useGroupStore = create<GroupStore>((set, get) => ({
@@ -42,6 +43,7 @@ export const useGroupStore = create<GroupStore>((set, get) => ({
 
         return res.success
     },
+
     getList: async () => {
         const res = await request({
             url: BASE + '/group/list',
@@ -49,6 +51,7 @@ export const useGroupStore = create<GroupStore>((set, get) => ({
         })
 
         if (res.success) {
+            console.log('get-group:', res)
             const list = res.data.map((e:any) => ({
                 ...e.group,
                 members: e.members
@@ -57,5 +60,12 @@ export const useGroupStore = create<GroupStore>((set, get) => ({
         }
         
         return get().list
+    },
+
+    clear: () => {
+        set(() => ({
+            active: null,
+            list: []
+        }))
     }
 }))

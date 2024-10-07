@@ -7,6 +7,7 @@ const BASE = import.meta.env.VITE_APP_URL
 type FriendStore = {
     list: Array<UserSummary>
     getList: () => Promise<Array<UserSummary>>
+    clear: () => void
 }
 
 export const useFriendStore = create<FriendStore>((set, get) => ({
@@ -23,5 +24,11 @@ export const useFriendStore = create<FriendStore>((set, get) => ({
         }
         
         return get().list
+    },
+
+    clear: () => {
+        set(() => ({
+            list: []
+        }))
     }
 }))

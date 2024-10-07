@@ -10,14 +10,14 @@ const MESSAGE = "message:"
 func AddMessage(userId uint, value []byte) error {
 	key := MESSAGE + strconv.Itoa(int(userId))
 
-	return client.LPush(ctx, key, value).Err()
+	return client.RPush(ctx, key, value).Err()
 }
 
 func GetMessages(userId uint) []string {
 	key := MESSAGE + strconv.Itoa(int(userId))
 
 	length, _ := client.LLen(ctx, key).Result()
-	list, _ := client.LRange(ctx, key, 1, length).Result()
+	list, _ := client.LRange(ctx, key, 0, length).Result()
 
 	for i := 0; i < int(length); i++ {
 		client.LPop(ctx, key)

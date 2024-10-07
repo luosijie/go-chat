@@ -1,6 +1,8 @@
 import Avatar from '@/components/Avatar'
+import { useMessageStore } from '@/stores/message'
 import { useUserStore } from '@/stores/user'
 import { UserSummary } from '@/types'
+import { toLogin } from '@/utils/fake'
 import request from '@/utils/request'
 import { motion } from 'framer-motion'
 import { LogIn, UserPlus } from 'lucide-react'
@@ -19,14 +21,7 @@ const UserCard = ({user}:Props) => {
 
     const login = useUserStore(state => state.login)
 
-    const toLogin = async (user:UserSummary) => {
-        const res = await login(user.username, '123456')
-        if (res.success) {
-            toast.success( `Logined as user: ${user.username}`)
-        } else {
-            toast.error(res.message)
-        }
-    }
+    
 
     const toAddFriend = async (user:UserSummary) => {
         const res = await request({

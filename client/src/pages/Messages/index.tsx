@@ -12,14 +12,14 @@ import MessageList from './components/MessageList'
 
 
 const Messages = () => {
-    const { active, list, setActive} = useMessageStore()
+    const { active, chatList, setActive} = useMessageStore()
 
     const user = useUserStore(state => state.user)
     const sendMessage = useWsStore(state => state.sendMessage)
 
     useEffect(() => {
-        if (list.length) {
-            setActive(list[0])
+        if (chatList.length) {
+            setActive(chatList[0])
         }
     }, [])
 

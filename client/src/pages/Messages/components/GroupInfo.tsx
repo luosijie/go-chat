@@ -22,7 +22,7 @@ const GroupInfo = ({data}:Props) => {
             <div className="flex flex-col mt-5 gap-2 max-h-72 overflow-y-auto">
                 {
                     data.members.map(m => (
-                        <div className="flex items-center gap-2 cursor-pointer">
+                        <div className="flex items-center gap-2 cursor-pointer" key={m.id}>
                             <Avatar name={m.username} avatar={m.avatar} className="size-8 text-sm"/>
                             { m.username }
                         </div>

@@ -31,7 +31,7 @@ export const useWsStore = create<WsStore>((set, get) => ({
             const msg:Message = JSON.parse(evt.data)
 
             if (msg.type === MessageType.Chat) {
-                useMessageStore.getState().addMessage(msg)
+                useMessageStore.getState().onMessage(msg)
             }
         }
 

@@ -9,14 +9,14 @@ import GroupCard from './GroupCard'
 import SingleCard from './SingleCard'
 
 const MessageList = () => {
-    const messages = useMessageStore(state => state.list)
+    const chatList = useMessageStore(state => state.chatList)
 
-    const [list, setList] = useState<Array<Chat>>(messages)
+    const [list, setList] = useState<Array<Chat>>(chatList)
     const setCurrent = useMessageStore(state => state.setActive)
 
     useEffect(() => {
-        setList(messages)
-    }, [messages])
+        setList(chatList)
+    }, [chatList])
 
     return (
         <div className="w-60 border-r p-2 relative flex flex-col">

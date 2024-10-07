@@ -26,20 +26,24 @@ export const userStorage = {
 }
 
 export const chatStorage = {
+    NAME: 'chat.list',
     fist: () => {
         const list = chatStorage.getList()
         return list.length ? list[0] : null
     },
     setList: (list: Array<Chat>) => {
         if (list.length > MAX) list.length = MAX
-        STORAGE.setItem('chat.list', JSON.stringify(list))
+        STORAGE.setItem(chatStorage.NAME, JSON.stringify(list))
     },
     getList: () => {
-        const listString = STORAGE.getItem('chat.list')
+        const listString = STORAGE.getItem(chatStorage.NAME)
 
         if (listString === null) return []
 
         return JSON.parse(listString) as Array<Chat>
+    },
+    clear: () => {
+        STORAGE.removeItem(chatStorage.NAME)
     }
 }
 

@@ -3,6 +3,7 @@ import { useMessageStore } from '@/stores/message'
 import { useUserStore } from '@/stores/user'
 
 import { ChatType, UserSummary } from '@/types'
+import { toLogin } from '@/utils/fake'
 import request from '@/utils/request'
 import clsx from 'clsx'
 import { Delete, LogIn, MessageCircleMore } from 'lucide-react'
@@ -24,7 +25,7 @@ const FriendPanel = ({ user, onRemove } : Props) => {
 	const { setActive, addChat, findChat } = useMessageStore()
 	const current = useUserStore(state => state.user)
 
-	const removeContacts = async (friendId:number) => {
+	const removeFriend = async (friendId:number) => {
 		const res = await request({
 			url: BASE + `/contacts/${friendId}`,
 			method: 'DELETE'
@@ -74,10 +75,10 @@ const FriendPanel = ({ user, onRemove } : Props) => {
 					<div className={btnClass} onClick={() => sendMessage(user)}>
 						<MessageCircleMore/> Send Message
 					</div>
-					<div className={btnClass}>
+					<div className={btnClass} onClick={() => toLogin(user)}>
 						<LogIn/> Login
 					</div>
-					<div className={clsx(btnClass, 'bg-red-500 hover:bg-red-400 text-white')} onClick={() => removeContacts(user.id)}>
+					<div className={clsx(btnClass, 'bg-red-500 hover:bg-red-400 text-white')} onClick={() => removeFriend(user.id)}>
 						<Delete/> Remove
 					</div>
 				</div>
