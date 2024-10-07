@@ -4,7 +4,10 @@ import Empty from '@/components/Empty'
 import SearchBar from '@/components/SearchBar'
 import { useMessageStore } from '@/stores/message'
 import { Chat, ChatType, GroupChat, SingleChat } from '@/types'
-import { useEffect, useState } from 'react'
+
+import { ChangeEvent, useEffect, useState } from 'react'
+
+
 import GroupCard from './GroupCard'
 import SingleCard from './SingleCard'
 
@@ -18,9 +21,20 @@ const MessageList = () => {
         setList(chatList)
     }, [chatList])
 
+    const onSearchChange = (evt:ChangeEvent<HTMLInputElement>) => {
+        const keyword = evt.target.value
+
+        setList(chatList.filter(e => {
+            const sChat = e as SingleChat
+            const gChat = e as GroupChat
+            return (sChat.type === ChatType.Single && sChat.to.username.includes(keyword)) || 
+                 (gChat.type === ChatType.Group && gChat.group.name.includes(keyword))
+        }))
+    }
+
     return (
         <div className="w-60 border-r p-2 relative flex flex-col">
-            <SearchBar/>
+            <SearchBar onChange={onSearchChange}/>
             <div className="flex-grow overflow-y-auto mt-2">
                 {
                     list.length ?
