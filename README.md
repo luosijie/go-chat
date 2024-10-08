@@ -5,7 +5,7 @@
 
 ## Prepare
 
-You need run MySQL and Redis successfully on you maching
+You need run MySQL and Redis successfully on your maching
 ```yml
 server:
   host: 127.0.0.1
