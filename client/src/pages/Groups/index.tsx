@@ -3,24 +3,21 @@
 import EmptyPage from '@/components/EmptyPage'
 import { Group, useGroupStore } from '@/stores/group'
 import { useEffect, useState } from 'react'
+
 import Detail from './components/Detail'
 import List from './components/List'
 
 const Groups = () => {
 
-    const getList = useGroupStore(state => state.getList)
+    const { active, setActive, getList, deleteGroup, exitGroup} = useGroupStore()
 
-    const [active, setActive] = useState<Group | null>(null) 
+
 
 
     useEffect(() => {
         getList()
     }, [])
     
-    const onRemove = () => {
-        getList()
-        setActive(null)
-    }
 
     return (
         <div className="flex justify-between h-full">
@@ -32,7 +29,7 @@ const Groups = () => {
             {/* Chat */}
             {
                 active ?
-                <Detail group={active} onRemove={onRemove}/> :
+                <Detail group={active} onDelete={() => deleteGroup(active.id)} onExit={() => exitGroup(active.id)}/> :
 		        <EmptyPage/>
             } 
         </div>

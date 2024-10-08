@@ -37,6 +37,23 @@ func FindGroupByID(id uint) *Group {
 	return &group
 }
 
+func DeleteGroup(groupId uint) error {
+	tx := db.Begin()
+
+	if err := tx.Delete(&Group{}, groupId).Error; err != nil {
+		return err
+	}
+
+	if err := tx.Unscoped().Where("group_id = ?", groupId).Delete(&GroupMember{}).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	tx.Commit()
+
+	return nil
+}
+
 func UpdateGroup(group *Group) error {
 	return db.Model(group).Updates(group).Error
 }

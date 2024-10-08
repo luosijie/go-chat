@@ -13,6 +13,8 @@ func Router(router *gin.Engine) {
 
 	// Routes for auth
 	// g.GET("", CreateGroup)
-	g.GET("/list", GetGroupList)
-	g.POST("", CreateGroup)
+	g.POST("", createGroup)
+	g.GET("/list", getGroupList)
+	g.DELETE("/:groupId", deleteGroup)
+	g.POST("/exit/:groupId", exitGroup)
 }

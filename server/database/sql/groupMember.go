@@ -39,6 +39,10 @@ func CreateGroupMembers(groupId uint, userIds []uint) error {
 	return tx.Commit().Error
 }
 
+func DeleteGroupMembers(groupId uint, userId uint) error {
+	return db.Unscoped().Where("group_id = ? AND user_id = ?", groupId, userId).Delete(&GroupMember{}).Error
+}
+
 func FindGroupMembers(groupID uint, out interface{}) error {
 
 	var groupMembers []*GroupMember

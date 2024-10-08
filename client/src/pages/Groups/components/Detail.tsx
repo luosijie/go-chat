@@ -1,6 +1,7 @@
 import GroupAvatar from '@/components/GroupAvatar'
 import { Group } from '@/stores/group'
 import { useMessageStore } from '@/stores/message'
+import { useUserStore } from '@/stores/user'
 
 import { ChatType } from '@/types'
 
@@ -10,20 +11,19 @@ import { useNavigate } from 'react-router-dom'
 
 type Props = {
 	group: Group
-	onRemove: () => void
+	onDelete: () => void
+	onExit: () => void
 }
 
 const btnClass = 'flex gap-2 border py-2 px-4 rounded-md hover:bg-gray-50 cursor-pointer'
 
-const Detail = ({ group, onRemove } : Props) => {
+const Detail = ({ group, onDelete, onExit } : Props) => {
+	const user = useUserStore(state => state.user)
+
 	const navigate = useNavigate()
 
 	const findChat = useMessageStore(state => state.findChat)
 	const addChat = useMessageStore(state => state.addChat)
-
-	const remove = async () => {
-		onRemove()
-	}
 
 	const sendMessage = () => {
 		// if (current === null) return
@@ -60,13 +60,18 @@ const Detail = ({ group, onRemove } : Props) => {
 				<div className={btnClass} onClick={() => sendMessage()}>
 					<MessageCircleMore/> Send Message
 				</div>
-				<div className={clsx(btnClass, 'bg-red-500 hover:bg-red-400 text-white')} onClick={() => remove()}>
-					<Delete/> Delete
-				</div>
+				{
 
-				<div className={clsx(btnClass, 'bg-red-500 hover:bg-red-400 text-white')} onClick={() => remove()}>
-					<Delete/> Exit
-				</div>
+					user && user.id === group.owner.id ?
+					<div className={clsx(btnClass, 'bg-red-500 hover:bg-red-400 text-white')} onClick={onDelete}>
+						<Delete/> Delete
+					</div> :
+
+					<div className={clsx(btnClass, 'bg-red-500 hover:bg-red-400 text-white')} onClick={onExit}>
+						<Delete/> Exit
+					</div>
+
+				}
 			</div>
 		</div> 
 	)

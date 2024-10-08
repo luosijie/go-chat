@@ -2,6 +2,7 @@ package serviceGroup
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/luosijie/go-chat/server/database/sql"
@@ -18,7 +19,7 @@ import (
 // @Param   memberIds   body     []uint    true   "MemberIds"
 // @Success 200         { object }  interface{}
 // @Router 	/group      [post]
-func CreateGroup(c *gin.Context) {
+func createGroup(c *gin.Context) {
 	userID := c.MustGet("userID").(uint)
 
 	reqData := createGroupReq{}
@@ -59,13 +60,11 @@ func CreateGroup(c *gin.Context) {
 // @Param   Token      	header   string  true  "Token"
 // @Param   id        path     string  true  "ID"
 // @Success 200         { object }  interface{}
-// @Router 	/group/list      [post]
-func GetGroupList(c *gin.Context) {
+// @Router 	/group/list      [get]
+func getGroupList(c *gin.Context) {
 	userID := c.MustGet("userID").(uint)
 
 	var groups []groupFields
-
-	fmt.Println("-------------------------------------------------")
 
 	if err := sql.FintMemberGroups(userID, &groups); err != nil {
 		response.ServerFail(c, response.ErrorUnknown)
@@ -87,4 +86,65 @@ func GetGroupList(c *gin.Context) {
 
 	response.Success(c, "Get group list success", &res)
 
+}
+
+// @Summary DeleteGroup
+// @Tags    Group
+// @Param   Token      	         header      string     true  "Token"
+// @Param   groupId                   path        string     true  "ID"
+// @Success 200         		 { object }  interface{}
+// @Router 	/group/:groupId      [delete]
+func deleteGroup(c *gin.Context) {
+	userID := c.MustGet("userID").(uint)
+
+	groupId, err := strconv.Atoi(c.Param("groupId"))
+
+	if err != nil {
+		response.RequestFail(c, response.ErrorParamLost)
+		return
+	}
+
+	group := sql.FindGroupByID(uint(groupId))
+
+	if userID != group.OwnerID {
+		response.RequestFail(c, response.Error{
+			Code:    -1,
+			Message: "Only owner can delete group",
+		})
+
+		return
+	}
+
+	if err := sql.DeleteGroup(uint(groupId)); err != nil {
+		response.ServerFail(c, response.Error{
+			Code:    -1,
+			Message: err.Error(),
+		})
+	}
+	response.Success(c, "Group deleted", groupId)
+}
+
+// @Summary ExitGroup
+// @Tags    Group
+// @Param   Token      	          header      string     true  "Token"
+// @Param   groupId               path        string     true  "ID"
+// @Success 200         		  { object }  interface{}
+// @Router 	/group/exit/:groupId  [post]
+func exitGroup(c *gin.Context) {
+	userID := c.MustGet("userID").(uint)
+
+	groupId, err := strconv.Atoi(c.Param("groupId"))
+
+	if err != nil {
+		response.RequestFail(c, response.ErrorParamLost)
+		return
+	}
+	if err := sql.DeleteGroupMembers(uint(groupId), userID); err != nil {
+		response.ServerFail(c, response.Error{
+			Code:    -1,
+			Message: err.Error(),
+		})
+	}
+	//
+	response.Success(c, "Exit group success", groupId)
 }

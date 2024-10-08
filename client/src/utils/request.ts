@@ -1,4 +1,4 @@
-import { useUserStore } from "@/stores/user"
+
 import toast from "react-hot-toast"
 import { userStorage } from "./storage"
 
@@ -19,7 +19,7 @@ export type RequestConfig = {
     toast?: boolean // if toast error
 }
 
-type Result = {
+export type Result = {
     success: boolean
     message: string
     code: number

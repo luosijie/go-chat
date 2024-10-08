@@ -181,8 +181,50 @@ paths:
       summary: CreateGroup
       tags:
       - Group
-  /group/list:
+  /group/:groupId:
+    delete:
+      parameters:
+      - description: Token
+        in: header
+        name: Token
+        required: true
+        type: string
+      - description: ID
+        in: path
+        name: groupId
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: ""
+      summary: DeleteGroup
+      tags:
+      - Group
+  /group/exit/:groupId:
     post:
+      parameters:
+      - description: Token
+        in: header
+        name: Token
+        required: true
+        type: string
+      - description: ID
+        in: path
+        name: groupId
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: ""
+      summary: ExitGroup
+      tags:
+      - Group
+  /group/list:
+    get:
       parameters:
       - description: Token
         in: header
