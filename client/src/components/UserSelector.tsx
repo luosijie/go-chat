@@ -47,7 +47,7 @@ const UserSelector = forwardRef(({list, value, onChange }:Props, ref:ForwardedRe
                             {
                                 list.map(u => (
                                     <div key={u.id} className='flex items-center gap-3'>
-                                        <Avatar name={u.username} avatar={u.avatar} className='size-9 text-sm'/>
+                                        <Avatar name={u.username} avatar={u.avatar} className='size-9 text-sm flex-shrink-0'/>
                                         <span className='text-xl font-bold flex-grow'>{ u.username }</span>
                                         <div onClick={() => handleSelect(u)}>
                                             {

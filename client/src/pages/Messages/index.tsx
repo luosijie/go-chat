@@ -24,6 +24,7 @@ const Messages = () => {
     }, [])
 
     const onSend = (content:Content) => {
+        console.log('active', active)
         if (!user || !active) return
 
         const from:UserSummary = {
@@ -57,12 +58,7 @@ const Messages = () => {
 
             { 
                 active ? 
-                <>
-                    <Chat group={active} onSend={onSend}/>
-                    {/* <div className="w-60 border-l">
-                        <Info group={active}/>
-                    </div> */}
-                </> :
+                <Chat group={active} onSend={onSend}/> :
                 <Empty/>
             }
         </div>
