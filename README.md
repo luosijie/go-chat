@@ -33,7 +33,7 @@ jwt:
 
 > Server will run on port: 3000
 ```sh
-cd serve
+cd server
 
 make run
 ```
