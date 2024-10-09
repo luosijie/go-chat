@@ -24,7 +24,6 @@ const Messages = () => {
     }, [])
 
     const onSend = (content:Content) => {
-        console.log('active', active)
         if (!user || !active) return
 
         const from:UserSummary = {

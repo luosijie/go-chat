@@ -14,6 +14,7 @@ type MessageStore = {
     createChatFromMessage: (msg:Message) => Promise<number>
     findChat: (id: string) => Chat | undefined
     findChatIndex: (id: string) => number
+    deleteChat: (id: string) => void
     setActive: (contact: Chat) => void
     onMessage: (msg: Message) => Promise<void>
     setHistory: (chatId: string, ...msgs:Message[]) => void
@@ -174,6 +175,23 @@ export const useMessageStore = create<MessageStore>((set, get) => ({
 
     findChat: (id: string) =>  {
         return get().chatList.find(e => e.id === id)
+    },
+
+    deleteChat: (id: string) => {
+        const index = get().findChatIndex(id)
+        if (index < 0) return
+
+
+        set(produce(state => {
+            if (state.active === id) {
+                state.active = null
+            }
+            state.chatList.splice(index, 1)
+        }))
+
+
+        chatStorage.setList(get().chatList)
+
     },
 
     findChatIndex: (id: string) => {

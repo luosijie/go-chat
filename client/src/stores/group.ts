@@ -1,6 +1,5 @@
 import { UserSummary } from '@/types'
 import request, { Result } from '@/utils/request'
-import { group } from 'console'
 import { produce } from 'immer'
 import { create } from 'zustand'
 

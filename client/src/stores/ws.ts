@@ -28,8 +28,9 @@ export const useWsStore = create<WsStore>((set, get) => ({
             console.log('[ws:open]', evt)
         }
         ws.onmessage = evt => {
+            
             const msg:Message = JSON.parse(evt.data)
-
+            console.log('on-message:', msg)
             if (msg.type === MessageType.Chat) {
                 useMessageStore.getState().onMessage(msg)
             }
