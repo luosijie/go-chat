@@ -6,8 +6,6 @@ import (
 )
 
 func Router(router *gin.Engine) {
-	// Static server
-	router.Static("/images", ".temp/images")
 
 	g := router.Group("/static")
 

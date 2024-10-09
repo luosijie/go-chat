@@ -38,6 +38,9 @@ func NewRouter() *gin.Engine {
 	docs.SwaggerInfo.BasePath = ""
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
+	// Static server
+	router.Static("/images", ".temp/images")
+
 	serviceAuth.Router(router)
 	serviceUser.Router(router)
 	serviceContacts.Router(router)
